@@ -20,6 +20,7 @@ package org.opensatnav;
 import java.util.ArrayList;
 
 import org.andnav.osm.util.GeoPoint;
+import org.andnav.osm.views.util.OpenStreetMapRendererInfo;
 import org.opensatnav.services.GeoCoder;
 import org.opensatnav.services.OSMGeoCoder;
 import org.opensatnav.services.Router;
@@ -31,6 +32,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,9 +58,7 @@ public class GetDirectionsActivity extends Activity {
 	protected GeoPoint from;
 	protected String toText;
 	protected EditText toField;
-//	protected RadioButton carButton;
-//	protected RadioButton bicycleButton;
-//	protected RadioButton walkingButton;
+	protected Spinner vehicleSpinner;
 	protected String vehicle;
 	protected Boolean backgroundThreadComplete;
 
@@ -76,9 +76,7 @@ public class GetDirectionsActivity extends Activity {
 		    s.setAdapter(adapter);
 		    s.setPrompt((CharSequence) findViewById(R.string.transport_type));
 
-//		carButton = (RadioButton) findViewById(R.id.car_radio_button);
-//		bicycleButton = (RadioButton) findViewById(R.id.bicycle_radio_button);
-//		walkingButton = (RadioButton) findViewById(R.id.walking_radio_button);
+		vehicleSpinner = (Spinner) findViewById(R.id.modeoftransport);
 		toField = (EditText) findViewById(R.id.to_text_field);
 		toField.setOnKeyListener(new OnKeyListener() {
 			@Override
@@ -105,7 +103,7 @@ public class GetDirectionsActivity extends Activity {
 				finish();
 			}
 		});
-//		carButton.toggle();
+		//TODO: save and restore vehicle type
 	}
 
 	public void getLocations(final String toText) {
@@ -160,6 +158,23 @@ public class GetDirectionsActivity extends Activity {
 	}
 
 	public void getRoute(final GeoPoint to) {
+		String selectedVehicle = (String) vehicleSpinner.getSelectedItem();
+		//TODO: make this less wasteful and dumb :)
+		//the point is to support i18n by not hardcoding the text selected
+		String car = (String) this.getResources().getText(R.string.car);
+		String bicycle = (String) this.getResources().getText(R.string.bicycle);
+		String walking = (String) this.getResources().getText(R.string.walking);
+		
+		if (selectedVehicle.compareTo(car)==0) {
+			vehicle = Router.CAR;
+		}
+		else if (selectedVehicle.compareTo(bicycle)==0) {
+			vehicle = Router.BICYCLE;
+		}
+		else if (selectedVehicle.compareTo(walking)==0) {
+			vehicle = Router.WALKING;
+		}
+
 		final ProgressDialog progress = ProgressDialog.show(GetDirectionsActivity.this, this.getResources().getText(
 				R.string.please_wait), this.getResources().getText(R.string.getting_route), true, true);
 		final Handler handler = new Handler() {
