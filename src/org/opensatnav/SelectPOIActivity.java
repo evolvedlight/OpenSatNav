@@ -16,7 +16,9 @@ This file is part of OpenSatNav.
  */
 package org.opensatnav;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.services.GeoCoder;
@@ -55,6 +57,9 @@ public class SelectPOIActivity extends ListActivity {
 		setTitle("Find nearest...");
 		// Use an existing ListAdapter that will map an array
 		// of strings to TextViews
+		String[] poisUnsorted = this.getResources().getStringArray(R.array.poi_types);
+		Arrays.sort(poisUnsorted);
+		final String [] pois = poisUnsorted;
 		setListAdapter(new android.widget.ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pois));
 		getListView().setTextFilterEnabled(true);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
@@ -67,10 +72,7 @@ public class SelectPOIActivity extends ListActivity {
 
 		});
 	}
-
-	private String[] pois = { "ATM", "Cafe", "Fast food", "Fuel", "Hospital", "Night club", "Parking",
-			"Police station", "Post box", "Pub", "Restaurant", "Toilets", "Taxi rank" };
-
+	
 	public void getLocations(final String toText) {
 		if (toText.length() != 0) {
 			final ProgressDialog progress = ProgressDialog.show(SelectPOIActivity.this, this.getResources().getText(
@@ -143,6 +145,7 @@ public class SelectPOIActivity extends ListActivity {
 		new Thread(new Runnable() {
 			public void run() {
 				// put long running operations here
+				//TODO: support non car routing for these as well
 				Router router = new YOURSRouter();
 				if (to != null)
 					route = router.getRoute(from, to, Router.CAR, SelectPOIActivity.this);
