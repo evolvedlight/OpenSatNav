@@ -13,36 +13,44 @@ This file is part of OpenSatNav.
 
     You should have received a copy of the GNU General Public License
     along with OpenSatNav.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 // Created by plusminus on 00:14:42 - 02.10.2008
 package org.opensatnav;
 
 import org.andnav.osm.util.constants.OpenStreetMapConstants;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.util.Log;
+import android.widget.Toast;
+import android.net.NetworkInfo;
 
 /**
  * Baseclass for Activities who want to contribute to the OpenStreetMap Project.
+ * 
  * @author Nicolas Gramlich
- *
+ * 
  */
 public abstract class OpenStreetMapActivity extends Activity implements OpenStreetMapConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
-	protected static final String PROVIDER_NAME = LocationManager.GPS_PROVIDER;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	protected SampleLocationListener mLocationListener;
 
 	protected boolean mDoGPSRecordingAndContributing;
@@ -50,53 +58,107 @@ public abstract class OpenStreetMapActivity extends Activity implements OpenStre
 	protected LocationManager mLocationManager;
 
 	public int mNumSatellites = NOT_SET;
-	
+
 	protected PowerManager.WakeLock wl;
-	
+
 	protected Location temporaryLocation;
-	
+
 	protected Location currentLocation;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	/**
-	 * Calls <code>onCreate(final Bundle savedInstanceState, final boolean pDoGPSRecordingAndContributing)</code> with <code>pDoGPSRecordingAndContributing == true</code>.<br/>
-	 * That means it automatically contributes to the OpenStreetMap Project in the background.
+	 * Calls
+	 * <code>onCreate(final Bundle savedInstanceState, final boolean pDoGPSRecordingAndContributing)</code>
+	 * with <code>pDoGPSRecordingAndContributing == true</code>.<br/>
+	 * That means it automatically contributes to the OpenStreetMap Project in
+	 * the background.
+	 * 
 	 * @param savedInstanceState
 	 */
 	public void onCreate(final Bundle savedInstanceState) {
 		onCreate(savedInstanceState, true);
 	}
+
 	/**
 	 * Called when the activity is first created. Registers LocationListener.
+	 * 
 	 * @param savedInstanceState
-	 * @param pDoGPSRecordingAndContributing If <code>true</code>, it automatically contributes to the OpenStreetMap Project in the background.
+	 * @param pDoGPSRecordingAndContributing
+	 *            If <code>true</code>, it automatically contributes to the
+	 *            OpenStreetMap Project in the background.
 	 */
 	public void onCreate(final Bundle savedInstanceState, final boolean pDoGPSRecordingAndContributing) {
 		super.onCreate(savedInstanceState);
+
+		// check for network
+		ConnectivityManager connec = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		// get state for both phone network and wifi
+		if ((connec.getNetworkInfo(0).getState() == NetworkInfo.State.DISCONNECTED)
+				&& (connec.getNetworkInfo(1).getState() == NetworkInfo.State.DISCONNECTED)) {
+			Toast.makeText(this, R.string.network_unavailable, Toast.LENGTH_LONG).show();
+		}
+
+		// get screen to stay on
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		wl = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "My Tag");
+		wl.acquire();
+
 		// register location listener
 		initLocation();
-		
-		//get screen to stay on
-		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		 wl = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK , "My Tag");
-		 wl.acquire();
 
 	}
 
 	private LocationManager getLocationManager() {
-		if(this.mLocationManager == null)
+		if (this.mLocationManager == null)
 			this.mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		return this.mLocationManager; 
+		return this.mLocationManager;
 	}
 
 	private void initLocation() {
 		this.mLocationListener = new SampleLocationListener();
-		temporaryLocation = getLocationManager().getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		// last known location using network seems to be more recent generally
+		temporaryLocation = getLocationManager().getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		if (temporaryLocation == null)
+			temporaryLocation = getLocationManager().getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+		// test to see if location services are available
+		if (getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
+			if (getLocationManager().isProviderEnabled(LocationManager.NETWORK_PROVIDER) == false) {
+				//no location providers are available, ask the user if they want to go and change the setting
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setCancelable(true);
+				builder.setMessage(R.string.location_services_disabled).setCancelable(false).setPositiveButton(android.R.string.yes,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+								startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+							}
+						}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
+
+			}
+
+			else
+				// we have network location but no GPS, tell the user that
+				// accuracy is bad because of this
+				Toast.makeText(this, R.string.gps_disabled, Toast.LENGTH_LONG).show();
+		}
+		// we have GPS but no network, this tells the user that they might have
+		// to wait for a fix
+		else if (getLocationManager().isProviderEnabled(LocationManager.NETWORK_PROVIDER) == false) {
+			Toast.makeText(this, R.string.getting_gps_fix, Toast.LENGTH_LONG).show();
+		}
+
 		getLocationManager().requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this.mLocationListener);
-		getLocationManager().requestLocationUpdates(PROVIDER_NAME, 0, 0, this.mLocationListener);
+		getLocationManager().requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this.mLocationListener);
 	}
 
 	// ===========================================================
@@ -106,17 +168,21 @@ public abstract class OpenStreetMapActivity extends Activity implements OpenStre
 	// ===========================================================
 	// Methods from SuperClass/Interfaces
 	// ===========================================================
-	
-	public abstract void onLocationLost();
+
+	public void onLocationLost() {
+		// try to get the location back (not sure if this actually works)
+		getLocationManager().requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this.mLocationListener);
+		getLocationManager().requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this.mLocationListener);
+	}
 
 	public abstract void onLocationChanged(final Location pLoc);
-	
+
 	/**
 	 * Called when activity is destroyed. Unregisters LocationListener.
 	 */
 	@Override
 	protected void onDestroy() {
-		//allow the screen to turn off again
+		// allow the screen to turn off again
 		wl.release();
 		super.onDestroy();
 		getLocationManager().removeUpdates(mLocationListener);
@@ -125,8 +191,6 @@ public abstract class OpenStreetMapActivity extends Activity implements OpenStre
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-
 
 	// ===========================================================
 	// Inner and Anonymous Classes
@@ -134,27 +198,37 @@ public abstract class OpenStreetMapActivity extends Activity implements OpenStre
 
 	/**
 	 * Logs all Location-changes to <code>mRouteRecorder</code>.
+	 * 
 	 * @author plusminus
 	 */
 	private class SampleLocationListener implements LocationListener {
 		public void onLocationChanged(final Location loc) {
-			if (loc != null){
+			if (loc != null) {
 				currentLocation = loc;
-				if(loc.getProvider()==LocationManager.GPS_PROVIDER) {
-					getLocationManager().removeUpdates(mLocationListener);
-					getLocationManager().requestLocationUpdates(PROVIDER_NAME, 0, 0, mLocationListener);
-				}
+				// if(loc.getProvider()==LocationManager.GPS_PROVIDER) {
+				// getLocationManager().removeUpdates(mLocationListener);
+				// getLocationManager().requestLocationUpdates(LocationManager.GPS_PROVIDER,
+				// 0, 0, mLocationListener);
+				// }
 				OpenStreetMapActivity.this.onLocationChanged(loc);
-			}else{
+			} else {
 				OpenStreetMapActivity.this.onLocationLost();
 			}
 		}
 
 		public void onStatusChanged(String a, int i, Bundle b) {
-			OpenStreetMapActivity.this.mNumSatellites = b.getInt("satellites", NOT_SET); // TODO Check on an actual device
+			OpenStreetMapActivity.this.mNumSatellites = b.getInt("satellites", NOT_SET); // TODO
+			// Check
+			// on
+			// an
+			// actual
+			// device
 		}
-		
-		public void onProviderEnabled(String a) { /* ignore  */ }
-		public void onProviderDisabled(String a) { /* ignore  */ }
+
+		public void onProviderEnabled(String a) { /* ignore */
+		}
+
+		public void onProviderDisabled(String a) { /* ignore */
+		}
 	}
 }
