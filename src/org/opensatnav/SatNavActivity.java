@@ -82,7 +82,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState, false); // Pass true here to actually
 		// contribute to OSM!
-
 		final RelativeLayout rl = new RelativeLayout(this);
 
 		this.mOsmv = new OpenStreetMapView(this, OpenStreetMapRendererInfo.MAPNIK);
@@ -153,16 +152,13 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 			this.mMyLocationOverlay.setLocation(TypeConverter.locationToGeoPoint(newLocation));
 			this.mMyLocationOverlay.setBearing(newLocation.getBearing());
 			this.mMyLocationOverlay.setSpeed(newLocation.getSpeed());
+			this.mMyLocationOverlay.setAccuracy(newLocation.getAccuracy());
 			if (this.autoFollowing)
 				this.mOsmv.setMapCenter(TypeConverter.locationToGeoPoint(newLocation));
 			currentLocation = newLocation;
 		}
 	}
 
-	@Override
-	public void onLocationLost() {
-		// We'll do nothing here.
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(final Menu pMenu) {

@@ -26,9 +26,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Paint.Style;
+import android.util.Log;
 
 /**
  * 
@@ -60,6 +63,8 @@ public class OpenStreetMapViewDirectedLocationOverlay extends OpenStreetMapViewO
 	private final int DIRECTION_ARROW_WIDTH;
 	private final int DIRECTION_ARROW_HEIGHT;
 
+	protected float accuracy = 0;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -89,6 +94,10 @@ public class OpenStreetMapViewDirectedLocationOverlay extends OpenStreetMapViewO
 		this.speed = speed;
 	}
 
+	public void setAccuracy(float accuracy) {
+		this.accuracy = accuracy;
+	}
+
 	// ===========================================================
 	// Methods from SuperClass/Interfaces
 	// ===========================================================
@@ -104,11 +113,28 @@ public class OpenStreetMapViewDirectedLocationOverlay extends OpenStreetMapViewO
 			final OpenStreetMapViewProjection pj = osmv.getProjection();
 			final Point screenCoords = new Point();
 			pj.toPixels(this.mLocation, screenCoords);
-			//0.5 m/s is a slow person walking
+			// draw innacuracy circle
+			// accuracy means the number of metres that we are accurate to
+			float diameter = pj.metersToEquatorPixels(accuracy) * 100;
+			//if it won't be hidden under the icon anyway
+			if (diameter > DIRECTION_ARROW_WIDTH) {
+				this.mPaint.setColor(Color.BLUE);
+				this.mPaint.setAlpha(80);
+				this.mPaint.setStrokeWidth(2);
+				this.mPaint.setStyle(Style.STROKE);
+				this.mPaint.setAntiAlias(true);
+				c.drawCircle(screenCoords.x, screenCoords.y, diameter, this.mPaint);
+				this.mPaint.setAlpha(20);
+				this.mPaint.setStyle(Style.FILL);
+				c.drawCircle(screenCoords.x, screenCoords.y, diameter, this.mPaint);
+				//reset alpha
+				this.mPaint.setAlpha(255);
+			}
+			// 0.5 m/s is a slow person walking
 			if (speed > 0.5f) {
 				/*
 				 * Rotate the direction-Arrow according to the bearing we are
-				 * driving. And draw it to the canvas.
+				 * moving. And draw it to the canvas.
 				 */
 				this.directionRotater.setRotate(this.mBearing, DIRECTION_ARROW_CENTER_X, DIRECTION_ARROW_CENTER_Y);
 				Bitmap rotatedDirection = Bitmap.createBitmap(LOCATION_MOVING, 0, 0, DIRECTION_ARROW_WIDTH,

@@ -332,13 +332,13 @@ public class OpenStreetMapView extends View implements OpenStreetMapConstants, O
 	 * Zooms in if possible.
 	 */
 	public void zoomIn() {
-
-		// final String nextBelowMaptileUrlString =
-		// this.mRendererInfo.getTileURLString(Util
-		// .getMapTileFromCoordinates(this.mLatitudeE6, this.mLongitudeE6,
-		// this.mZoomLevel + 1,
-		// null), this.mZoomLevel + 1);
-		// this.mTileProvider.preCacheTile(nextBelowMaptileUrlString);
+//
+//		 final String nextBelowMaptileUrlString =
+//		 this.mRendererInfo.getTileURLString(Util
+//		 .getMapTileFromCoordinates(this.mLatitudeE6, this.mLongitudeE6,
+//		 this.mZoomLevel + 1,
+//		 null), this.mZoomLevel + 1);
+//		 this.mTileProvider.preCacheTile(nextBelowMaptileUrlString);
 
 		this.setZoomLevel(this.mZoomLevel + 1);
 	}
@@ -655,7 +655,8 @@ public class OpenStreetMapView extends View implements OpenStreetMapConstants, O
 		private static final int EQUATORCIRCUMFENCE = 40075;
 
 		public float metersToEquatorPixels(final float aMeters) {
-			return aMeters / EQUATORCIRCUMFENCE * OpenStreetMapView.this.mRendererInfo.MAPTILE_SIZEPX;
+			int zoomLevelDifference = 19 - zoomLevel;
+			return (aMeters / EQUATORCIRCUMFENCE * OpenStreetMapView.this.mRendererInfo.MAPTILE_SIZEPX)/zoomLevelDifference;
 		}
 
 		/**
