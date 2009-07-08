@@ -94,6 +94,9 @@ public class OSMGeoCoder implements GeoCoder {
 					}
 				}
 			}
+			//no results
+			else
+				return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.d("OSMGEOCODER", "Network timeout");

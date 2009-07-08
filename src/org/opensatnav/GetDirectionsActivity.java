@@ -68,13 +68,13 @@ public class GetDirectionsActivity extends Activity {
 		from = GeoPoint.fromDoubleString(getIntent().getDataString(), ',');
 		setTitle(R.string.get_directions);
 		setContentView(R.layout.getdirections);
-		
-		  Spinner s = (Spinner) findViewById(R.id.modeoftransport);
-		    ArrayAdapter adapter = ArrayAdapter.createFromResource(
-		            this, R.array.mode_of_transport_types, android.R.layout.simple_spinner_item);
-		    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		    s.setAdapter(adapter);
-		    s.setPrompt((CharSequence) findViewById(R.string.transport_type));
+
+		Spinner s = (Spinner) findViewById(R.id.modeoftransport);
+		ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.mode_of_transport_types,
+				android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		s.setAdapter(adapter);
+		s.setPrompt((CharSequence) findViewById(R.string.transport_type));
 
 		vehicleSpinner = (Spinner) findViewById(R.id.modeoftransport);
 		toField = (EditText) findViewById(R.id.to_text_field);
@@ -103,7 +103,7 @@ public class GetDirectionsActivity extends Activity {
 				finish();
 			}
 		});
-		//TODO: save and restore vehicle type
+		// TODO: save and restore vehicle type
 	}
 
 	public void getLocations(final String toText) {
@@ -116,15 +116,18 @@ public class GetDirectionsActivity extends Activity {
 				public void handleMessage(Message msg) {
 					progress.dismiss();
 					if (locations != null) {
+						Log.d("dvsd",""+locations);
 						Intent intent = new Intent(GetDirectionsActivity.this,
 								org.opensatnav.ChooseLocationActivity.class);
 						intent.putExtra("locations", locations);
 						startActivityForResult(intent, CHOOSE_LOCATION);
-					} else
+					} else {
 						Toast.makeText(
 								GetDirectionsActivity.this,
-								GetDirectionsActivity.this.getResources().getText(R.string.directions_not_found) + " "
+								GetDirectionsActivity.this.getResources().getText(R.string.place_not_found) + " "
 										+ toText, Toast.LENGTH_LONG).show();
+						Log.d("dvsd",""+locations);
+					}
 				}
 			};
 			new Thread(new Runnable() {
@@ -159,19 +162,17 @@ public class GetDirectionsActivity extends Activity {
 
 	public void getRoute(final GeoPoint to) {
 		String selectedVehicle = (String) vehicleSpinner.getSelectedItem();
-		//TODO: make this less wasteful and dumb :)
-		//the point is to support i18n by not hardcoding the text selected
+		// TODO: make this less wasteful and dumb :)
+		// the point is to support i18n by not hardcoding the text selected
 		String car = (String) this.getResources().getText(R.string.car);
 		String bicycle = (String) this.getResources().getText(R.string.bicycle);
 		String walking = (String) this.getResources().getText(R.string.walking);
-		
-		if (selectedVehicle.compareTo(car)==0) {
+
+		if (selectedVehicle.compareTo(car) == 0) {
 			vehicle = Router.CAR;
-		}
-		else if (selectedVehicle.compareTo(bicycle)==0) {
+		} else if (selectedVehicle.compareTo(bicycle) == 0) {
 			vehicle = Router.BICYCLE;
-		}
-		else if (selectedVehicle.compareTo(walking)==0) {
+		} else if (selectedVehicle.compareTo(walking) == 0) {
 			vehicle = Router.WALKING;
 		}
 
@@ -187,10 +188,9 @@ public class GetDirectionsActivity extends Activity {
 					setResult(RESULT_OK, data);
 					finish();
 				} else
-					Toast.makeText(
-							GetDirectionsActivity.this,
-							GetDirectionsActivity.this.getResources().getText(R.string.directions_not_found) + " "
-									+ toText, Toast.LENGTH_LONG).show();
+					Toast.makeText(GetDirectionsActivity.this,
+							GetDirectionsActivity.this.getResources().getText(R.string.directions_not_found),
+							Toast.LENGTH_LONG).show();
 			}
 		};
 		new Thread(new Runnable() {

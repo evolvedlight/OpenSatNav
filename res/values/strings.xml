@@ -11,7 +11,8 @@
 <string name="autofollow_stopped">Not following</string>
 <string name="autofollow_started">Following</string>
 <string name="unspecified_directions_failed">Getting directions failed, please try again.</string>
-<string name="directions_not_found">Sorry, couldn't find directions to</string>
+<string name="place_not_found">Sorry, couldn't find </string>
+<string name="directions_not_found">Sorry, couldn't get directions</string>
 <string name="please_wait">Please wait...</string>
 <string name="searching">Searching</string>
 <string name="getting_route">Getting route</string>
