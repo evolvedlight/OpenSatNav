@@ -116,9 +116,9 @@ public class GetDirectionsActivity extends Activity {
 				public void handleMessage(Message msg) {
 					progress.dismiss();
 					if (locations != null) {
-						Log.d("dvsd",""+locations);
 						Intent intent = new Intent(GetDirectionsActivity.this,
 								org.opensatnav.ChooseLocationActivity.class);
+						intent.putExtra("fromLocation", from.toDoubleString());
 						intent.putExtra("locations", locations);
 						startActivityForResult(intent, CHOOSE_LOCATION);
 					} else {
@@ -126,7 +126,6 @@ public class GetDirectionsActivity extends Activity {
 								GetDirectionsActivity.this,
 								GetDirectionsActivity.this.getResources().getText(R.string.place_not_found) + " "
 										+ toText, Toast.LENGTH_LONG).show();
-						Log.d("dvsd",""+locations);
 					}
 				}
 			};

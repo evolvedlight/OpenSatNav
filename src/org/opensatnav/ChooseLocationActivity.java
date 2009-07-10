@@ -16,6 +16,10 @@ This file is part of OpenSatNav.
 */
 package org.opensatnav;
 
+import java.text.DecimalFormat;
+
+import org.andnav.osm.util.GeoPoint;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,17 +28,27 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ChooseLocationActivity extends ListActivity{
+	protected DecimalFormat oneDecimalPoint; 
+	
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getBundleExtra("locations");
+        String[] locationTypes = b.getStringArray("types");
         String[] locationNames = b.getStringArray("names");
         final int[] locationLats = b.getIntArray("latitudes");
         final int[] locationLongs = b.getIntArray("longitudes");
-//        
-//        for(int i =0;i<locationNames.length;i++) {
-//        	if (locationNames[i] == null)
-//        		locationNames[i] = "Unnamed";
-//        }
+        GeoPoint from = GeoPoint.fromDoubleString(getIntent().getStringExtra("fromLocation"), ',');
+        oneDecimalPoint = new DecimalFormat("#,###.#");//format to 1 decimal place
+        
+        for(int i =0;i<locationNames.length;i++) {
+        	//add unnamed text for places that need it
+        	if (locationNames[i].length() == 0)
+        		locationNames[i] = (String) ChooseLocationActivity.this.getResources().getText(R.string.unnamed_place);
+        	//add location type
+        	locationNames[i] = locationNames[i]+" ("+locationTypes[i]+")";
+        	//add distance away
+        	locationNames[i] = locationNames[i]+" - "+formatDistance(from.distanceTo(new GeoPoint(locationLats[i],locationLongs[i])),false)+" "+ChooseLocationActivity.this.getResources().getText(R.string.away);
+        }
         setTitle("Choose location...");
         // Use an existing ListAdapter that will map an array
         // of strings to TextViews
@@ -53,5 +67,28 @@ public class ChooseLocationActivity extends ListActivity{
 			}
         	
         });
+    }
+    
+    public String formatDistance(int metres, boolean wantImperial) {
+    	int rounded = 0;
+    	if (metres < 1000) {
+    		rounded = roundToNearest(metres, 50);
+    		return Integer.toString(rounded)+"m";
+    	}
+    	else if (metres < 10000) {
+    		rounded = roundToNearest(metres, 100);
+    		//round to 1 decimal point
+    		return oneDecimalPoint.format(new Double(metres)/1000)+"km";
+    	}
+    	else {
+    		//show only whole kms
+    		rounded = roundToNearest(metres, 1000);
+    		return Integer.toString(rounded/1000)+"km";
+    	}
+    	
+    }
+    //round number to the nearest precision
+    private int roundToNearest(int number, int precision) {
+		return (number/precision)*precision;
     }
 }

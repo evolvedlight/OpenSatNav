@@ -84,6 +84,7 @@ public class SelectPOIActivity extends ListActivity {
 					progress.dismiss();
 					if((locations != null) && (locations.getStringArray("names").length!=0)) {
 						Intent intent = new Intent(SelectPOIActivity.this, org.opensatnav.ChooseLocationActivity.class);
+						intent.putExtra("fromLocation", from.toDoubleString());
 						intent.putExtra("locations", locations);
 						startActivityForResult(intent, CHOOSE_LOCATION);
 					} else
