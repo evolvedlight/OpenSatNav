@@ -12,6 +12,7 @@
 <string name="autofollow_started">Following</string>
 <string name="unspecified_directions_failed">Getting directions failed, please try again.</string>
 <string name="place_not_found">Sorry, couldn't find </string>
+<string name="unnamed_place">Unnamed</string>
 <string name="directions_not_found">Sorry, couldn't get directions</string>
 <string name="please_wait">Please wait...</string>
 <string name="searching">Searching</string>
@@ -30,7 +31,6 @@
 </string-array>
 <!-- These are the POI types that would be nice to have, but not all are in OSM namefinder yet -->
 <!-- Use the OSM tag name for the name attribute if possible -->
-<!-- don't worry about sorting this in your own language - this is done by the program -->
 <string name="atm">ATM</string>
 <string name="cafe">Café</string>
 <string name="cinema">Cinema</string>
@@ -43,6 +43,8 @@
 <string name="pub">Pub</string>
 <string name="restaurant">Restaurant</string>
 <string name="taxi_rank">Taxi Rank</string>
+<!-- these are the items that appear in the list of POIs  -->
+<!-- don't worry about sorting this in your own language - this is done by the program -->
 <string-array name="poi_types" >
     <item>@string/atm</item>
     <item>@string/cafe</item>
@@ -50,6 +52,7 @@
     <item>@string/fuel</item>
     <item>@string/hospital</item>
     <item>@string/hotel</item>
+    <item>@string/parking</item>
     <item>@string/police</item>
     <item>@string/pub</item>
     <item>@string/restaurant</item>
