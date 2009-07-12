@@ -19,7 +19,6 @@
 <string name="getting_route">Getting route</string>
 <string name="enter_destination">Where do you want to go?</string>
 <string name="transport_type">Mode of transport</string>
-<string name="start_navigation">Go</string>
 <string name="away">away</string>
 <string name="could_not_find_poi">Could not find any places matching </string>
 <string name="car">Car</string>
