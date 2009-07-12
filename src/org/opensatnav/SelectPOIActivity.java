@@ -78,7 +78,7 @@ public class SelectPOIActivity extends ListActivity {
 			final ProgressDialog progress = ProgressDialog.show(SelectPOIActivity.this, this.getResources().getText(
 					R.string.please_wait), this.getResources().getText(R.string.searching), true, true);
 			final Handler handler = new Handler() {
-				// threading stuff - this actually handles the stuff after the
+				// threading stuff - this is run after the
 				// thread has completed (code below)
 				public void handleMessage(Message msg) {
 					progress.dismiss();

@@ -91,6 +91,7 @@ public class YOURSRouter implements Router {
 						//yes, the data returned from the server is long, lat
 						float lonRegular = Float.parseFloat(coord.substring(0, coord.indexOf(',')));
 						float latRegular = Float.parseFloat(coord.substring(coord.indexOf(',')+1));
+						//convert to int format to avoid too much float processing
 						int latE6 = (int) (latRegular * 1000000);
 						int lonE6 = (int) (lonRegular * 1000000);
 						route.add(new String(latE6 + "," + lonE6));
