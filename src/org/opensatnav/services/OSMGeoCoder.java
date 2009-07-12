@@ -49,7 +49,7 @@ public class OSMGeoCoder implements GeoCoder {
 	private ArrayList<String> locationNames;
 	private ArrayList locationLatitudes;
 	private ArrayList locationLongitudes;
-	private ArrayList<String> locationTypes;
+	private ArrayList<String> locationInfo;
 
 	/* (non-Javadoc)
 	 * @see org.opensatnav.services.GeoCoder#getFromLocationName(java.lang.String, int, android.content.Context)
@@ -58,7 +58,7 @@ public class OSMGeoCoder implements GeoCoder {
 		locationNames = new ArrayList<String>();
 		locationLatitudes = new ArrayList<int[]>();
 		locationLongitudes = new ArrayList<int[]>();
-		locationTypes = new ArrayList<String>();
+		locationInfo = new ArrayList<String>();
 		try {
 			url = new URL("http://gazetteer.openstreetmap.org/namefinder/search.xml?find="
 					+ URLEncoder.encode(locationName) + "&max=" + maxResults);
@@ -86,11 +86,12 @@ public class OSMGeoCoder implements GeoCoder {
 						NamedNodeMap locationXml = locations.item(i).getAttributes();
 						Log.d("OSMGEOCODER", "found location: " + locationXml.getNamedItem("name").getNodeValue());
 						locationNames.add(locationXml.getNamedItem("name").getNodeValue());
+						//convert to integer (E6 format)
 						locationLatitudes
 								.add((int) (Float.parseFloat(locationXml.getNamedItem("lat").getNodeValue()) * 1000000));
 						locationLongitudes
 								.add((int) (Float.parseFloat(locationXml.getNamedItem("lon").getNodeValue()) * 1000000));
-						locationTypes.add(locationXml.getNamedItem("info").getNodeValue());
+						locationInfo.add(locationXml.getNamedItem("info").getNodeValue());
 					}
 				}
 			}
@@ -107,10 +108,10 @@ public class OSMGeoCoder implements GeoCoder {
 		int[] latArray = new int[locationLatitudes.size()];
 		int[] lonArray = new int[locationLatitudes.size()];
 		String[] nameArray = new String[locationNames.size()];
-		String[] typeArray = new String[locationTypes.size()];
+		String[] infoArray = new String[locationInfo.size()];
 
 		System.arraycopy(locationNames.toArray(), 0, nameArray, 0, locationNames.size());
-		System.arraycopy(locationTypes.toArray(), 0, typeArray, 0, locationTypes.size());
+		System.arraycopy(locationInfo.toArray(), 0, infoArray, 0, locationInfo.size());
 		for(int i = 0;i<locationLatitudes.size();i++)
 			latArray[i] = (Integer) locationLatitudes.get(i);
 		for(int i = 0;i<locationLatitudes.size();i++)
@@ -119,7 +120,7 @@ public class OSMGeoCoder implements GeoCoder {
 		bundle.putStringArray("names", nameArray);
 		bundle.putIntArray("latitudes", latArray);
 		bundle.putIntArray("longitudes", lonArray);
-		bundle.putStringArray("types", typeArray);
+		bundle.putStringArray("info", infoArray);
 		return bundle;
 
 	}
