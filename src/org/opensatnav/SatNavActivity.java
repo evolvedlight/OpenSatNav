@@ -156,6 +156,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 			if (this.autoFollowing)
 				this.mOsmv.setMapCenter(TypeConverter.locationToGeoPoint(newLocation));
 			currentLocation = newLocation;
+			//cache tiles around this one
 		}
 	}
 
@@ -226,9 +227,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 					// this.mOsmv.invalidate();
 					ArrayList<GeoPoint> niceRoute = new ArrayList<GeoPoint>();
 					for (int i = 0; i < route.size(); i++) {
-						int lat = Integer.parseInt(this.route.get(i).substring(0, this.route.get(i).indexOf(',')));
-						int lon = Integer.parseInt(this.route.get(i).substring(this.route.get(i).indexOf(',') + 1));
-						GeoPoint nextPoint = new GeoPoint(lat, lon);
+						GeoPoint nextPoint = GeoPoint.fromIntString(this.route.get(i));
 						niceRoute.add(nextPoint);
 					}
 
@@ -245,10 +244,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 	}
 
 	public void onSaveInstanceState(Bundle savedInstanceState) {
-		// savedInstanceState.putDouble("currentLocationLat",
-		// currentLocation.getLatitude());
-		// savedInstanceState.putDouble("currentLocationLon",
-		// currentLocation.getLongitude());
 		savedInstanceState.putStringArrayList("route", route);
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -258,15 +253,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 		route = savedInstanceState.getStringArrayList("route");
 		ArrayList<GeoPoint> niceRoute = new ArrayList<GeoPoint>();
 		for (int i = 0; i < route.size(); i++) {
-			int lat = Integer.parseInt(this.route.get(i).substring(0, this.route.get(i).indexOf(',')));
-			int lon = Integer.parseInt(this.route.get(i).substring(this.route.get(i).indexOf(',') + 1));
-			GeoPoint nextPoint = new GeoPoint(lat, lon);
+			GeoPoint nextPoint = GeoPoint.fromIntString(this.route.get(i));
 			niceRoute.add(nextPoint);
 		}
 		this.routeOverlay = new OpenStreetMapViewRouteOverlay(this, niceRoute);
 		this.mOsmv.getOverlays().add(this.routeOverlay);
-		// currentLocation.setLatitude(savedInstanceState.getDouble("currentLocationLat"));
-		// currentLocation.setLongitude(savedInstanceState.getDouble("currentLocationLon"));
-		// onLocationChanged(currentLocation);
 	}
 }
