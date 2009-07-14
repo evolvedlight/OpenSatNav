@@ -85,31 +85,31 @@ public class ChooseLocationActivity extends ListActivity {
 		if (useImperial == false) {
 			if (metres < 1000) {
 				rounded = roundToNearest(metres, 50);
-				return Integer.toString(rounded) + " m";
+				return Integer.toString(rounded) + this.getResources().getString(R.string.metres_abbreviation);
 				// less than 10km
 			} else if (metres < 10000) {
 				rounded = roundToNearest(metres, 100);
 				// round to 1 decimal point
-				return decimalFormat.format(new Double(metres) / 1000) + " km";
+				return decimalFormat.format(new Double(metres) / 1000) + this.getResources().getString(R.string.kilometres_abbreviation);
 			} else {
 				// show only whole kms
 				rounded = roundToNearest(metres, 1000);
-				return decimalFormat.format(metres / 1000) + " km";
+				return decimalFormat.format(metres / 1000) + this.getResources().getString(R.string.kilometres_abbreviation);
 			}
 		} else {
 			int yards = (int) (metres * 1.0936133);
 			if (yards < 1760) {
 				rounded = roundToNearest(yards, 50);
-				return Integer.toString(rounded) + " yd";
+				return Integer.toString(rounded) + this.getResources().getString(R.string.yards_abbreviation);
 				// less than 10 miles
 			} else if (yards < 17600) {
 				rounded = roundToNearest(yards, 176);
 				// round to 1 decimal point
-				return decimalFormat.format(new Double(yards) / 1760) + " mi";
+				return decimalFormat.format(new Double(yards) / 1760) + this.getResources().getString(R.string.miles_abbreviation);
 			} else {
 				// show only whole miles
 				rounded = roundToNearest(yards, 1760);
-				return decimalFormat.format(yards / 1760) + " mi";
+				return decimalFormat.format(yards / 1760) + this.getResources().getString(R.string.miles_abbreviation);
 			}
 		}
 

@@ -19,6 +19,11 @@
 <string name="getting_route">Getting route</string>
 <string name="enter_destination">Where do you want to go?</string>
 <string name="transport_type">Mode of transport</string>
+<!-- use a space before the abbreviation if your language uses one between the number and unit -->
+<string name="kilometres_abbreviation"> km</string>
+<string name="metres_abbreviation"> m</string>
+<string name="miles_abbreviation"> mi</string>
+<string name="yards_abbreviation"> yd</string>
 <string name="away">away</string>
 <string name="could_not_find_poi">Could not find any places matching </string>
 <string name="car">Car</string>
