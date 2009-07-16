@@ -24,54 +24,44 @@ import org.andnav.osm.util.GeoPoint;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.RelativeLayout.LayoutParams;
 
 public class ChooseLocationActivity extends ListActivity {
 	DecimalFormat decimalFormat;
 
 	public void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Bundle b = getIntent().getBundleExtra("locations");
-		String[] locationInfo = b.getStringArray("info");
-		String[] locationNames = b.getStringArray("names");
-		final int[] locationLats = b.getIntArray("latitudes");
-		final int[] locationLongs = b.getIntArray("longitudes");
+
 		// currently hard coded to locale setting in phone, should be a setting
 		// eventually
-		boolean useImperial = false;
+		boolean showImperial = false;
 		String currentLocale = this.getResources().getConfiguration().locale.getCountry();
 		if ((currentLocale.compareTo("GB") == 0) || (currentLocale.compareTo("US") == 0)) {
-			useImperial = true;
+			showImperial = true;
 		}
 		GeoPoint from = GeoPoint.fromDoubleString(getIntent().getStringExtra("fromLocation"), ',');
 		decimalFormat = new DecimalFormat("###,###.#");
-
-		for (int i = 0; i < locationNames.length; i++) {
-			// add unnamed text for places that need it
-			if (locationNames[i].length() == 0)
-				locationNames[i] = (String) ChooseLocationActivity.this.getResources().getText(R.string.unnamed_place);
-			// add location type
-			locationNames[i] = locationNames[i] + " (" + locationInfo[i] + ")";
-			// add distance away
-			locationNames[i] = locationNames[i] + " - "
-					+ formatDistance(from.distanceTo(new GeoPoint(locationLats[i], locationLongs[i])), useImperial)
-					+ " " + ChooseLocationActivity.this.getResources().getText(R.string.away);
-		}
 		setTitle("Choose location...");
-		// Use an existing ListAdapter that will map an array
-		// of strings to TextViews
-		setListAdapter(new android.widget.ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locationNames));
+		final LocationAdapter la = new LocationAdapter(from, showImperial);
+		setListAdapter(la);
 		getListView().setTextFilterEnabled(true);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long position) {
 				Intent data = getIntent();
-				data.putExtra("location", locationLats[(int) position] + "," + locationLongs[(int) position]);
+				data.putExtra("location", la.getLocation((int) position).toString());
 				setResult(RESULT_OK, data);
 				finish();
 
@@ -80,9 +70,82 @@ public class ChooseLocationActivity extends ListActivity {
 		});
 	}
 
-	public String formatDistance(int metres, boolean useImperial) {
+	protected class LocationAdapter extends BaseAdapter {
+
+		GeoPoint from;
+		boolean showImperial;
+		Bundle b = getIntent().getBundleExtra("locations");
+		String[] locationInfo = b.getStringArray("info");
+		String[] locationNames = b.getStringArray("names");
+		final int[] locationLats = b.getIntArray("latitudes");
+		final int[] locationLongs = b.getIntArray("longitudes");
+
+		public LocationAdapter(GeoPoint from, boolean showImperial) {
+			this.from = from;
+			this.showImperial = showImperial;
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return locationNames.length;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LinearLayout mainView = new LinearLayout(ChooseLocationActivity.this);
+			mainView.setOrientation(LinearLayout.VERTICAL);
+			
+			TextView placeView = new TextView(ChooseLocationActivity.this);
+			TextView infoView = new TextView(ChooseLocationActivity.this);
+			TextView distanceView = new TextView(ChooseLocationActivity.this);
+			//add name
+			String place = locationNames[position];
+			// add unnamed text for places that need it
+			if (place.length() == 0)
+				place = (String) ChooseLocationActivity.this.getResources().getText(R.string.unnamed_place);
+			// add location type
+			String info = locationInfo[position];
+			info = info.substring(0,1).toUpperCase()+info.substring(1);
+			// add distance away
+			String distance = formatDistance(from.distanceTo(new GeoPoint(locationLats[position], locationLongs[position])),
+					showImperial) + " " + ChooseLocationActivity.this.getResources().getText(R.string.away);
+			
+			placeView.setText(place);
+			placeView.setTextSize(20);
+			placeView.setTextColor(Color.WHITE);
+			infoView.setText(info);
+			distanceView.setText(distance);
+			
+			mainView.addView(placeView, 0);
+			mainView.addView(infoView, 1);
+			mainView.addView(distanceView, 2);
+			
+			return mainView;
+		}
+
+		public GeoPoint getLocation(int position) {
+			return new GeoPoint(locationLats[position], locationLongs[position]);
+
+		}
+
+	}
+
+	public String formatDistance(int metres, boolean showImperial) {
 		int rounded = 0;
-		if (useImperial == false) {
+		if (showImperial == false) {
 			if (metres < 1000) {
 				rounded = roundToNearest(metres, 50);
 				return Integer.toString(rounded) + this.getResources().getString(R.string.metres_abbreviation);
@@ -90,11 +153,13 @@ public class ChooseLocationActivity extends ListActivity {
 			} else if (metres < 10000) {
 				rounded = roundToNearest(metres, 100);
 				// round to 1 decimal point
-				return decimalFormat.format(new Double(metres) / 1000) + this.getResources().getString(R.string.kilometres_abbreviation);
+				return decimalFormat.format(new Double(metres) / 1000)
+						+ this.getResources().getString(R.string.kilometres_abbreviation);
 			} else {
 				// show only whole kms
 				rounded = roundToNearest(metres, 1000);
-				return decimalFormat.format(metres / 1000) + this.getResources().getString(R.string.kilometres_abbreviation);
+				return decimalFormat.format(metres / 1000)
+						+ this.getResources().getString(R.string.kilometres_abbreviation);
 			}
 		} else {
 			int yards = (int) (metres * 1.0936133);
@@ -105,7 +170,8 @@ public class ChooseLocationActivity extends ListActivity {
 			} else if (yards < 17600) {
 				rounded = roundToNearest(yards, 176);
 				// round to 1 decimal point
-				return decimalFormat.format(new Double(yards) / 1760) + this.getResources().getString(R.string.miles_abbreviation);
+				return decimalFormat.format(new Double(yards) / 1760)
+						+ this.getResources().getString(R.string.miles_abbreviation);
 			} else {
 				// show only whole miles
 				rounded = roundToNearest(yards, 1760);
