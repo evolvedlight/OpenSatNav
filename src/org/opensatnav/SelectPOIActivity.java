@@ -19,6 +19,8 @@ package org.opensatnav;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.services.GeoCoder;
@@ -29,11 +31,17 @@ import org.opensatnav.services.YOURSRouter;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -55,24 +63,70 @@ public class SelectPOIActivity extends ListActivity {
 		data = new Intent();
 		from = GeoPoint.fromDoubleString(getIntent().getDataString(), ',');
 		setTitle("Find nearest...");
-		// Use an existing ListAdapter that will map an array
-		// of strings to TextViews
-		String[] poisUnsorted = this.getResources().getStringArray(R.array.poi_types);
-		Arrays.sort(poisUnsorted);
-		final String [] pois = poisUnsorted;
-		setListAdapter(new android.widget.ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pois));
+		final POIAdapter pa = new POIAdapter();
+		setListAdapter(pa);
 		getListView().setTextFilterEnabled(true);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long position) {
-				getLocations(pois[(int) position] + " near " + from.toDoubleString());
+				getLocations(pa.getItem((int) position) + " near " + from.toDoubleString());
 
 			}
 
 		});
 	}
-	
+
+	/**
+	 * The an extension of the listadapter that needs to translate what was
+	 * clicked on back to English so the English only server can understand it.
+	 * 
+	 * @author kieran
+	 * 
+	 */
+	protected class POIAdapter extends BaseAdapter {
+
+		public String[] poisUnsorted;
+		String[] pois;
+		int poiIds;
+
+		public POIAdapter() {
+			poisUnsorted = SelectPOIActivity.this.getResources().getStringArray(R.array.poi_types);
+			Arrays.sort(poisUnsorted);
+			pois = poisUnsorted;
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return poisUnsorted.length;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return (poisUnsorted[position]);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			TextView poiView = new TextView(SelectPOIActivity.this);
+			poiView.setMinLines(2);
+			poiView.setGravity(Gravity.CENTER_VERTICAL);
+			poiView.setPadding(5, 5, 5, 5);
+			poiView.setTextAppearance(SelectPOIActivity.this, android.R.style.TextAppearance_Large);
+			poiView.setText(pois[position]);
+			return poiView;
+		}
+
+	}
+
 	public void getLocations(final String toText) {
 		if (toText.length() != 0) {
 			final ProgressDialog progress = ProgressDialog.show(SelectPOIActivity.this, this.getResources().getText(
@@ -82,7 +136,7 @@ public class SelectPOIActivity extends ListActivity {
 				// thread has completed (code below)
 				public void handleMessage(Message msg) {
 					progress.dismiss();
-					if((locations != null) && (locations.getStringArray("names").length!=0)) {
+					if ((locations != null) && (locations.getStringArray("names").length != 0)) {
 						Intent intent = new Intent(SelectPOIActivity.this, org.opensatnav.ChooseLocationActivity.class);
 						intent.putExtra("fromLocation", from.toDoubleString());
 						intent.putExtra("locations", locations);
@@ -146,7 +200,7 @@ public class SelectPOIActivity extends ListActivity {
 		new Thread(new Runnable() {
 			public void run() {
 				// put long running operations here
-				//TODO: support non car routing for these as well
+				// TODO: support non car routing for these as well
 				Router router = new YOURSRouter();
 				if (to != null)
 					route = router.getRoute(from, to, Router.CAR, SelectPOIActivity.this);
