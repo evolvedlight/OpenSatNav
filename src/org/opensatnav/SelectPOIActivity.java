@@ -19,8 +19,7 @@ package org.opensatnav;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.Comparator;
 
 import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.services.GeoCoder;
@@ -31,11 +30,9 @@ import org.opensatnav.services.YOURSRouter;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,25 +84,36 @@ public class SelectPOIActivity extends ListActivity {
 	protected class POIAdapter extends BaseAdapter {
 
 		public String[] poisUnsorted;
-		String[] pois;
+		String[] [] pois;
 		int poiIds;
 
 		public POIAdapter() {
-			poisUnsorted = SelectPOIActivity.this.getResources().getStringArray(R.array.poi_types);
-			Arrays.sort(poisUnsorted);
-			pois = poisUnsorted;
+			//[0] is the string that goes into the query string, [1] is the string according to current locale
+			pois = new String[] [] {
+					{"atm",SelectPOIActivity.this.getResources().getString(R.string.atm)},
+					{"cafe",SelectPOIActivity.this.getResources().getString(R.string.cafe)},
+					{"cinema",SelectPOIActivity.this.getResources().getString(R.string.cinema)},
+					{"fuel",SelectPOIActivity.this.getResources().getString(R.string.fuel)},
+					{"hospital",SelectPOIActivity.this.getResources().getString(R.string.hospital)},
+					{"hotel",SelectPOIActivity.this.getResources().getString(R.string.hotel)},
+					{"parking",SelectPOIActivity.this.getResources().getString(R.string.parking)},	
+					{"police",SelectPOIActivity.this.getResources().getString(R.string.police)},
+					{"pub",SelectPOIActivity.this.getResources().getString(R.string.pub)},
+					{"restaurant",SelectPOIActivity.this.getResources().getString(R.string.restaurant)}
+			};
+			Arrays.sort(pois, new PoiComparator());
 		}
 
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return poisUnsorted.length;
+			return pois.length;
 		}
 
 		@Override
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
-			return (poisUnsorted[position]);
+			return (pois[position][0]);
 		}
 
 		@Override
@@ -121,7 +129,7 @@ public class SelectPOIActivity extends ListActivity {
 			poiView.setGravity(Gravity.CENTER_VERTICAL);
 			poiView.setPadding(5, 5, 5, 5);
 			poiView.setTextAppearance(SelectPOIActivity.this, android.R.style.TextAppearance_Large);
-			poiView.setText(pois[position]);
+			poiView.setText(pois[position][1]);
 			return poiView;
 		}
 
@@ -209,5 +217,18 @@ public class SelectPOIActivity extends ListActivity {
 			}
 		}).start();
 
+	}
+	
+	private class PoiComparator implements Comparator<String []> {
+		/**
+		 * special comparator that is used for sorting on the second element in a 2D array 
+		 * (in this case we are sorting on the translated string)
+		 */
+		@Override
+		public int compare(String[] object1, String[] object2) {
+			// TODO Auto-generated method stub
+			return object1[1].compareTo(object2[1]);
+		}
+		
 	}
 }

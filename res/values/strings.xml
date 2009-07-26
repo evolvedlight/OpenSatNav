@@ -48,20 +48,7 @@
 <string name="pub">Pub</string>
 <string name="restaurant">Restaurant</string>
 <string name="taxi_rank">Taxi Rank</string>
-<!-- these are the items that appear in the list of POIs  -->
-<!-- don't worry about sorting this in your own language - this is done by the program -->
-<string-array name="poi_types" >
-    <item>@string/atm</item>
-    <item>@string/cafe</item>
-    <item>@string/cinema</item>
-    <item>@string/fuel</item>
-    <item>@string/hospital</item>
-    <item>@string/hotel</item>
-    <item>@string/parking</item>
-    <item>@string/police</item>
-    <item>@string/pub</item>
-    <item>@string/restaurant</item>
-</string-array>
+
 
 
 </resources>
