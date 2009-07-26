@@ -13,7 +13,7 @@ This file is part of OpenSatNav.
 
     You should have received a copy of the GNU General Public License
     along with OpenSatNav.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package org.opensatnav.services;
 
@@ -43,24 +43,26 @@ import android.util.Log;
 /**
  * 
  * @author Kieran Fleming
- *
+ * 
  */
 
 public class YOURSRouter implements Router {
 	private URL url;
 	private ArrayList<String> route;
 
-	/* (non-Javadoc)
-	 * @see org.opensatnav.services.Router#getRoute(org.andnav.osm.util.GeoPoint, org.andnav.osm.util.GeoPoint, java.lang.String, android.content.Context)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.opensatnav.services.Router#getRoute(org.andnav.osm.util.GeoPoint,
+	 * org.andnav.osm.util.GeoPoint, java.lang.String, android.content.Context)
 	 */
 	public ArrayList<String> getRoute(GeoPoint from, GeoPoint to, String vehicle, Context context) {
 		route = new ArrayList<String>();
 		try {
-			url = new URL("http://www.yournavigation.org/gosmore.php?"
-					+ "flat=" + (from.getLatitudeE6() / 1000000.0) + "&"
-					+ "flon=" + (from.getLongitudeE6() / 1000000.0) + "&"
-					+ "tlat=" + (to.getLatitudeE6() / 1000000.0) + "&"
-					+ "tlon=" + (to.getLongitudeE6() / 1000000.0) + "&" + "v="
+			url = new URL("http://www.yournavigation.org/gosmore.php?" + "flat=" + (from.getLatitudeE6() / 1000000.0)
+					+ "&" + "flon=" + (from.getLongitudeE6() / 1000000.0) + "&" + "tlat="
+					+ (to.getLatitudeE6() / 1000000.0) + "&" + "tlon=" + (to.getLongitudeE6() / 1000000.0) + "&" + "v="
 					+ vehicle + "&" + "fast=1&layer=mapnik");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -72,54 +74,51 @@ public class YOURSRouter implements Router {
 			if (userAgent != null)
 				conn.setRequestProperty("User-Agent", userAgent);
 			conn.setReadTimeout(30000);
-			BufferedReader in = new BufferedReader(new InputStreamReader(conn
-					.getInputStream()));
-			String kml = null;
+			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()), 8192);
+			StringBuilder kmlBuilder = new StringBuilder();
 			String line;
 			while ((line = in.readLine()) != null) {
-				kml = kml + "\n" + line;
+				kmlBuilder.append(line + "\n");
 			}
+			in.close();
+			String kml = kmlBuilder.toString();
 			String coords = null;
 			if (kml.indexOf("<coordinates>") != -1) {
-				coords = kml.substring(kml.indexOf("<coordinates>") + 14, kml
-						.indexOf("</coordinates>"));
-
+				coords = kml.substring(kml.indexOf("<coordinates>") + 14, kml.indexOf("</coordinates>"));
 				StringTokenizer tokenizer = new StringTokenizer(coords, "\n");
 				while (tokenizer.hasMoreTokens()) {
 					String coord = tokenizer.nextToken();
 					if ((coord != null) && (coord.indexOf(',') != -1)) {
-						//yes, the data returned from the server is long, lat
+						// yes, the data returned from the server is long, lat
 						float lonRegular = Float.parseFloat(coord.substring(0, coord.indexOf(',')));
-						float latRegular = Float.parseFloat(coord.substring(coord.indexOf(',')+1));
-						//convert to int format to avoid too much float processing
-						int latE6 = (int) (latRegular * 1000000);
-						int lonE6 = (int) (lonRegular * 1000000);
-						route.add(new String(latE6 + "," + lonE6));
+						float latRegular = Float.parseFloat(coord.substring(coord.indexOf(',') + 1));
+						// convert to int format to avoid too much float
+						// processing
+						route.add(new String((int) (latRegular * 1000000) + "," + (int) (lonRegular * 1000000)));
 					}
 				}
-			}
-			else {
+			} else {
 				throw new IOException();
 			}
 
 		} catch (Exception e) {
-			Log.d("OSMROUTER","Error");
+			e.printStackTrace();
 			return null;
 		}
-//		Log.d("OSMROUTER", "Route created");
+		// Log.d("OSMROUTER", "Route created");
 		return route;
 
 	}
-	
-	  public static String getUserAgent(Context context) {
-	        try {
-	            // Read package name and version number from manifest
-	            PackageManager manager = context.getPackageManager();
-	            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
-	            return info.packageName + " " + info.versionName;
-	            
-	        } catch(NameNotFoundException e) {
-	           return null;
-	        }
-	    }
+
+	public static String getUserAgent(Context context) {
+		try {
+			// Read package name and version number from manifest
+			PackageManager manager = context.getPackageManager();
+			PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+			return info.packageName + " " + info.versionName;
+
+		} catch (NameNotFoundException e) {
+			return null;
+		}
+	}
 }
