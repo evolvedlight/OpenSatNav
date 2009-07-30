@@ -7,11 +7,11 @@
      <string name="getting_gps_fix">Attempting to find your location using GPS...</string>
      <string name="get_directions">Directions</string>
 <string name="toggle_autofollow">Toggle autofollow</string>
-<string name="start_directions_failed">Can't get directions because your location is unknown. Please try again when you have a GPS signal.</string>
+<string name="start_directions_failed">"Can't get directions because your location is unknown. Please try again when you have a GPS signal."</string>
 <string name="autofollow_stopped">Not following</string>
 <string name="autofollow_started">Following</string>
 <string name="unspecified_directions_failed">Getting directions failed, please try again.</string>
-<string name="place_not_found">Sorry, couldn't find </string>
+<string name="place_not_found">"Sorry, couldn't find "</string>
 <string name="unnamed_place">Unnamed</string>
 <string name="directions_not_found">Sorry, couldn't get directions</string>
 <string name="please_wait">Please wait...</string>
