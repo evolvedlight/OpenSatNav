@@ -145,63 +145,30 @@ public class GetDirectionsActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CHOOSE_LOCATION) {
 			if (resultCode == RESULT_OK) {
-				GeoPoint location = GeoPoint.fromIntString(data.getStringExtra("location"));
-				getRoute(location);
-				if (route != null) {
-					Bundle bundle = new Bundle();
-					bundle.putStringArrayList("route", route);
-					data.putExtras(bundle);
-					setResult(RESULT_OK, data);
-					finish();
+				String selectedVehicle = (String) vehicleSpinner.getSelectedItem();
+				// TODO: make this less wasteful and dumb :)
+				// the point is to support i18n by not hardcoding the text
+				// selected
+				String car = (String) this.getResources().getText(R.string.car);
+				String bicycle = (String) this.getResources().getText(R.string.bicycle);
+				String walking = (String) this.getResources().getText(R.string.walking);
+
+				if (selectedVehicle.compareTo(car) == 0) {
+					vehicle = Router.CAR;
+				} else if (selectedVehicle.compareTo(bicycle) == 0) {
+					vehicle = Router.BICYCLE;
+				} else if (selectedVehicle.compareTo(walking) == 0) {
+					vehicle = Router.WALKING;
 				}
+				Bundle bundle = new Bundle();
+				bundle.putString("vehicle", vehicle);
+				bundle.putString("to", data.getStringExtra("location"));
+				data.putExtras(bundle);
+				setResult(RESULT_OK, data);
+				finish();
+
 			}
 		}
-
-	}
-
-	public void getRoute(final GeoPoint to) {
-		String selectedVehicle = (String) vehicleSpinner.getSelectedItem();
-		// TODO: make this less wasteful and dumb :)
-		// the point is to support i18n by not hardcoding the text selected
-		String car = (String) this.getResources().getText(R.string.car);
-		String bicycle = (String) this.getResources().getText(R.string.bicycle);
-		String walking = (String) this.getResources().getText(R.string.walking);
-
-		if (selectedVehicle.compareTo(car) == 0) {
-			vehicle = Router.CAR;
-		} else if (selectedVehicle.compareTo(bicycle) == 0) {
-			vehicle = Router.BICYCLE;
-		} else if (selectedVehicle.compareTo(walking) == 0) {
-			vehicle = Router.WALKING;
-		}
-
-		final ProgressDialog progress = ProgressDialog.show(GetDirectionsActivity.this, this.getResources().getText(
-				R.string.please_wait), this.getResources().getText(R.string.getting_route), true, true);
-		final Handler handler = new Handler() {
-			// threading stuff - this actually handles the stuff after the
-			// thread has completed (code below)
-			public void handleMessage(Message msg) {
-				progress.dismiss();
-				if (route != null) {
-					data.putExtra("route", route);
-					setResult(RESULT_OK, data);
-					finish();
-				} else
-					Toast.makeText(GetDirectionsActivity.this,
-							GetDirectionsActivity.this.getResources().getText(R.string.directions_not_found),
-							Toast.LENGTH_LONG).show();
-			}
-		};
-		new Thread(new Runnable() {
-			public void run() {
-				// put long running operations here
-				Router router = new YOURSRouter();
-				if (to != null)
-					route = router.getRoute(from, to, vehicle, GetDirectionsActivity.this);
-				// ok, we are done
-				handler.sendEmptyMessage(0);
-			}
-		}).start();
 
 	}
 

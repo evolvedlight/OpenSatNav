@@ -25,11 +25,18 @@ import org.andnav.osm.views.OpenStreetMapView;
 import org.andnav.osm.views.overlay.OpenStreetMapViewDirectedLocationOverlay;
 import org.andnav.osm.views.overlay.OpenStreetMapViewRouteOverlay;
 import org.andnav.osm.views.util.OpenStreetMapRendererInfo;
+import org.opensatnav.services.Router;
+import org.opensatnav.services.YOURSRouter;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -156,10 +163,9 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 			if (this.autoFollowing)
 				this.mOsmv.setMapCenter(TypeConverter.locationToGeoPoint(newLocation));
 			currentLocation = newLocation;
-			//cache tiles around this one
+			// cache tiles around this one
 		}
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(final Menu pMenu) {
@@ -222,25 +228,54 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if ((requestCode == DIRECTIONS_OPTIONS) || (requestCode == SELECT_POI)) {
 			if (resultCode == RESULT_OK) {
-				route = data.getStringArrayListExtra("route");
-				if (route != null) {
-					// this.mOsmv.invalidate();
-					ArrayList<GeoPoint> niceRoute = new ArrayList<GeoPoint>();
-					for (int i = 0; i < route.size(); i++) {
-						GeoPoint nextPoint = GeoPoint.fromIntString(this.route.get(i));
-						niceRoute.add(nextPoint);
-					}
-
-					if (this.mOsmv.getOverlays().contains(this.routeOverlay)) {
-						this.mOsmv.getOverlays().remove(this.routeOverlay);
-					}
-					this.routeOverlay = new OpenStreetMapViewRouteOverlay(this, niceRoute);
-					this.mOsmv.getOverlays().add(routeOverlay);
-				} else
-					Toast.makeText(this, R.string.unspecified_directions_failed, Toast.LENGTH_SHORT).show();
+				final GeoPoint to = GeoPoint.fromIntString(data.getStringExtra("to"));
+				final String vehicle = data.getStringExtra("vehicle");
+				refreshRoute(TypeConverter.locationToGeoPoint(currentLocation), to, vehicle);
 			}
 		}
 
+	}
+
+	public void refreshRoute(final GeoPoint from, final GeoPoint to, final String vehicle) {
+		final ProgressDialog progress = ProgressDialog.show(SatNavActivity.this, this.getResources().getText(
+				R.string.please_wait), this.getResources().getText(R.string.getting_route), true, true);
+		final Handler handler = new Handler() {
+			// threading stuff - this actually handles the stuff after the
+			// thread has completed (code below)
+			public void handleMessage(Message msg) {
+				if (route != null) {
+					ArrayList<GeoPoint> niceRoute = new ArrayList<GeoPoint>();
+					for (int i = 0; i < route.size(); i++) {
+						GeoPoint nextPoint = GeoPoint.fromIntString(route.get(i));
+						niceRoute.add(nextPoint);
+					}
+
+					if (SatNavActivity.this.mOsmv.getOverlays().contains(SatNavActivity.this.routeOverlay)) {
+						SatNavActivity.this.mOsmv.getOverlays().remove(SatNavActivity.this.routeOverlay);
+					}
+					SatNavActivity.this.routeOverlay = new OpenStreetMapViewRouteOverlay(SatNavActivity.this, niceRoute);
+					SatNavActivity.this.mOsmv.getOverlays().add(SatNavActivity.this.routeOverlay);
+					//tell the viewer that it should redraw
+					SatNavActivity.this.mOsmv.postInvalidate();
+				}
+				else {
+					Toast.makeText(SatNavActivity.this,
+							SatNavActivity.this.getResources().getText(R.string.directions_not_found),
+							Toast.LENGTH_LONG).show();
+				} 
+				progress.dismiss();
+			}
+		};
+		new Thread(new Runnable() {
+			public void run() {
+				// put long running operations here
+				Router router = new YOURSRouter();
+				if (to != null)
+					route = router.getRoute(from, to, vehicle, SatNavActivity.this);
+				// ok, we are done
+				handler.sendEmptyMessage(0);
+			}
+		}).start();
 	}
 
 	public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -251,12 +286,14 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		route = savedInstanceState.getStringArrayList("route");
-		ArrayList<GeoPoint> niceRoute = new ArrayList<GeoPoint>();
-		for (int i = 0; i < route.size(); i++) {
-			GeoPoint nextPoint = GeoPoint.fromIntString(this.route.get(i));
-			niceRoute.add(nextPoint);
+		if (route.size() > 0) {
+			ArrayList<GeoPoint> niceRoute = new ArrayList<GeoPoint>();
+			for (int i = 0; i < route.size(); i++) {
+				GeoPoint nextPoint = GeoPoint.fromIntString(this.route.get(i));
+				niceRoute.add(nextPoint);
+			}
+			this.routeOverlay = new OpenStreetMapViewRouteOverlay(this, niceRoute);
+			this.mOsmv.getOverlays().add(this.routeOverlay);
 		}
-		this.routeOverlay = new OpenStreetMapViewRouteOverlay(this, niceRoute);
-		this.mOsmv.getOverlays().add(this.routeOverlay);
 	}
 }

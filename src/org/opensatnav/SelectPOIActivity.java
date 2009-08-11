@@ -172,52 +172,17 @@ public class SelectPOIActivity extends ListActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CHOOSE_LOCATION) {
 			if (resultCode == RESULT_OK) {
-				GeoPoint location = GeoPoint.fromIntString(data.getStringExtra("location"));
-				getRoute(from, location);
-				if (route != null) {
-					Bundle bundle = new Bundle();
-					bundle.putStringArrayList("route", route);
-					data.putExtras(bundle);
-					setResult(RESULT_OK, data);
-					finish();
-				}
+				Bundle bundle = new Bundle();
+				bundle.putString("to", data.getStringExtra("location"));
+				data.putExtras(bundle);
+				setResult(RESULT_OK, data);
+				finish();
+
 			}
 		}
 
 	}
 
-	public void getRoute(final GeoPoint from, final GeoPoint to) {
-
-		final ProgressDialog progress = ProgressDialog.show(SelectPOIActivity.this, this.getResources().getText(
-				R.string.please_wait), this.getResources().getText(R.string.getting_route), true, true);
-		final Handler handler = new Handler() {
-			// threading stuff - this actually handles the stuff after the
-			// thread has completed (code below)
-			public void handleMessage(Message msg) {
-				progress.dismiss();
-				if (route != null) {
-					data.putExtra("route", route);
-					setResult(RESULT_OK, data);
-					finish();
-				} else
-					Toast.makeText(SelectPOIActivity.this,
-							SelectPOIActivity.this.getResources().getText(R.string.directions_not_found),
-							Toast.LENGTH_LONG).show();
-			}
-		};
-		new Thread(new Runnable() {
-			public void run() {
-				// put long running operations here
-				// TODO: support non car routing for these as well
-				Router router = new YOURSRouter();
-				if (to != null)
-					route = router.getRoute(from, to, Router.CAR, SelectPOIActivity.this);
-				// ok, we are done
-				handler.sendEmptyMessage(0);
-			}
-		}).start();
-
-	}
 	
 	private class PoiComparator implements Comparator<String []> {
 		/**
