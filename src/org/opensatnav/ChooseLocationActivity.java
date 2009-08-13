@@ -17,8 +17,6 @@ This file is part of OpenSatNav.
 package org.opensatnav;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 import org.andnav.osm.util.GeoPoint;
 
@@ -26,16 +24,13 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.RelativeLayout.LayoutParams;
 
 public class ChooseLocationActivity extends ListActivity {
 	DecimalFormat decimalFormat;
@@ -52,7 +47,7 @@ public class ChooseLocationActivity extends ListActivity {
 		}
 		GeoPoint from = GeoPoint.fromDoubleString(getIntent().getStringExtra("fromLocation"), ',');
 		decimalFormat = new DecimalFormat("###,###.#");
-		setTitle("Choose location...");
+		setTitle(this.getResources().getText(R.string.choose_location));
 		final LocationAdapter la = new LocationAdapter(from, showImperial);
 		setListAdapter(la);
 		getListView().setTextFilterEnabled(true);

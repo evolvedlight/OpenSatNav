@@ -48,7 +48,11 @@
 <string name="pub">Pub</string>
 <string name="restaurant">Restaurant</string>
 <string name="taxi_rank">Taxi Rank</string>
-
-
-
+<string name="find_nearest">Find nearest...</string>
+<string name="choose_location">Choose location...</string>
+<string name="touch_screen">Touch screen to continue...</string>
+<string name="welcome_to_osn">Welcome to\nOpenSatNav</string>
+<string name="welcome_desc">OpenSatNav is a free open-source application that will transform your Android handset in a full featured GPS navigation device.</string>
+<string name="no_warranty">OpenSatNav comes with absolutely no warranty</string>
+<string name="map_data_source">Map data comes from OpenStreetMap\nhttp://www.openstreetmap.org</string>
 </resources>

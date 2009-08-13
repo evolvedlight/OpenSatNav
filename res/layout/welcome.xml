@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:animationCache="false"
+	android:layout_height="wrap_content" android:layout_width="wrap_content"
+	android:id="@+id/WelcomeView" android:layout_gravity="center">
+
+	<LinearLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
+		<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:includeFontPadding="true"
+			android:layout_gravity="center_vertical" android:textColor="#9999EE"
+			android:textScaleX="1.4" android:text="@string/welcome_to_osn"></TextView>
+		<ImageView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:src="@drawable/icon"></ImageView>
+	</LinearLayout>
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+		android:padding="5px" android:text="@string/welcome_desc"></TextView>
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/no_warranty"
+		android:layout_gravity="center_horizontal" android:padding="5px"></TextView>
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:autoLink="web"
+		android:text="@string/map_data_source"
+		android:padding="5px"></TextView>
+	<ImageView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:src="@drawable/osm"
+		android:layout_margin="5px" android:layout_gravity="center_horizontal"></ImageView>
+	<TextView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:layout_gravity="center_horizontal"
+		android:padding="5px" android:layout_margin="5px" android:text="@string/touch_screen"></TextView>
+
+</LinearLayout>

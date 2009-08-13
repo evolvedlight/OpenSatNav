@@ -16,7 +16,6 @@ This file is part of OpenSatNav.
  */
 package org.opensatnav;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -24,8 +23,6 @@ import java.util.Comparator;
 import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.services.GeoCoder;
 import org.opensatnav.services.OSMGeoCoder;
-import org.opensatnav.services.Router;
-import org.opensatnav.services.YOURSRouter;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -59,7 +56,7 @@ public class SelectPOIActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		data = new Intent();
 		from = GeoPoint.fromDoubleString(getIntent().getDataString(), ',');
-		setTitle("Find nearest...");
+		setTitle(this.getResources().getText(R.string.find_nearest));
 		final POIAdapter pa = new POIAdapter();
 		setListAdapter(pa);
 		getListView().setTextFilterEnabled(true);
@@ -172,17 +169,16 @@ public class SelectPOIActivity extends ListActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CHOOSE_LOCATION) {
 			if (resultCode == RESULT_OK) {
-				Bundle bundle = new Bundle();
+					Bundle bundle = new Bundle();
 				bundle.putString("to", data.getStringExtra("location"));
-				data.putExtras(bundle);
-				setResult(RESULT_OK, data);
-				finish();
-
-			}
-		}
+					data.putExtras(bundle);
+					setResult(RESULT_OK, data);
+					finish();
 
 	}
+			}
 
+	}
 	
 	private class PoiComparator implements Comparator<String []> {
 		/**

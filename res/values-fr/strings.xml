@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>  
     <string name="app_name">OpenSatNav</string>
-     <string name="get_directions">Directions</string>
-<string name="toggle_autofollow">Toggle autofollow</string>
-<string name="start_directions_failed">Can't get directions because your location is unknown. Please try again when you have a GPS signal.</string>
-<string name="autofollow_stopped">Not following</string>
-<string name="autofollow_started">Following</string>
-<string name="unspecified_directions_failed">Getting directions failed, please try again.</string>
-<string name="directions_not_found">Sorry, couldn't find directions to</string>
-<string name="please_wait">Please wait...</string>
-<string name="searching">Searching</string>
-<string name="getting_route">Getting route</string>
-<string name="enter_destination">Where do you want to go?</string>
-<string name="transport_type">Mode of transport</string>
-<string name="could_not_find_poi">Could not find any places matching </string>
-<string name="car">Car</string>
-<string name="bicycle">Bicycle</string>
-<string name="walking">Walking</string>
+     <string name="get_directions">Itinéraire</string>
+<string name="toggle_autofollow">Activer/Désactiver suivi auto</string>
+<string name="start_directions_failed">"Impossible de déterminer l'itinéraire parce que votre location est inconnue. Veuillez réessayer lorsque le signal GPS sera meilleur."</string>
+<string name="autofollow_stopped">Suivi désactivé</string>
+<string name="autofollow_started">Suivi activé</string>
+<string name="unspecified_directions_failed">"Résolution de l'itinéraire impossible, veuillez réessayer."</string>
+<string name="directions_not_found">"Désolé, impossible de déterminer l'itinéraire"</string>
+<string name="please_wait">Veuillez patienter...</string>
+<string name="searching">Recherche en cours</string>
+<string name="getting_route">"Chargement de l'itinéraire"</string>
+<string name="enter_destination">Où voulez-vous vous rendre ?</string>
+<string name="transport_type">Moyen de transport</string>
+<string name="could_not_find_poi">Aucun lieu correspondant trouvé</string>
+<string name="car">Automobile</string>
+<string name="bicycle">Cycliste</string>
+<string name="walking">Piéton</string>
 <string-array name="mode_of_transport_types" >
     <item>@string/car</item>
     <item>@string/bicycle</item>
@@ -24,18 +24,18 @@
 </string-array>
 <!-- These are the POI types that would be nice to have, but not all are in OSM namefinder yet -->
 <!-- Use the OSM tag name for the name attribute if possible -->
-<string name="atm">GAB</string>
+<string name="atm">Distributeur de billets</string>
 <string name="cafe">Café</string>
 <string name="cinema">Cinéma</string>
-<string name="fuel">"Station d'essence"</string>
-<string name="hospital">Hospital</string>
-<string name="hotel">Hotel</string>
-<string name="night_club">Night club</string>
-<string name="parking">Parking</string>
-<string name="police">Police station</string>
-<string name="pub">Pub</string>
+<string name="fuel">Station essence</string>
+<string name="hospital">Hôpital</string>
+<string name="hotel">Hôtel</string>
+<string name="night_club">Boîte de nuit</string>
+<string name="parking">Stationnement</string>
+<string name="police">Gendarmerie/Commissariat</string>
+<string name="pub">Bar/Pub</string>
 <string name="restaurant">Restaurant</string>
-<string name="taxi_rank">Taxi Rank</string>
+<string name="taxi_rank">Station de taxi</string>
 <string-array name="poi_types" >
     <item>@string/atm</item>
     <item>@string/cafe</item>
@@ -47,6 +47,12 @@
     <item>@string/pub</item>
     <item>@string/restaurant</item>
 </string-array>
-
-
+<string name="find_nearest">Trouver le plus proche...</string>
+<string name="choose_location">Choisissez un lieu...</string>
+<string name="unnamed_place">Sans nom</string>
+<string name="touch_screen">"Touchez l'écran pour continuer..."</string>
+<string name="welcome_to_osn">Bienvenue sur\nOpenSatNav</string>
+<string name="welcome_desc">OpenSatNav est une application libre open-source qui transformera votre mobile sous Android en un véritable GPS.</string>
+<string name="no_warranty">OpenSatNav est distribué sans aucune garantie</string>
+<string name="map_data_source">Les cartes et données de celles ci sont issues du projet OpenStreetMap\nhttp://www.openstreetmap.org</string>
 </resources>
