@@ -30,13 +30,12 @@ import org.opensatnav.services.YOURSRouter;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Canvas;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -143,6 +142,17 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 		}
 
 		this.setContentView(rl);
+		// Restore preferences
+		SharedPreferences settings = getSharedPreferences(OpenSatNavConstants.PREFS_FILE, 0);
+		
+		if (!settings.getBoolean("welcomeVersionSeen", false)) {
+			displayWelcomeScreen();
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putBoolean("welcomeVersionSeen", true);
+
+			// commit edits
+			editor.commit();
+		}
 	}
 
 	// ===========================================================
@@ -171,7 +181,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 	public boolean onCreateOptionsMenu(final Menu pMenu) {
 		MenuItem directionsMenuItem = pMenu.add(0, MENU_GET_DIRECTIONS, Menu.NONE, R.string.get_directions);
 		directionsMenuItem.setIcon(android.R.drawable.ic_menu_directions);
-		MenuItem poisMenuItem = pMenu.add(0, MENU_FIND_POIS, Menu.NONE, "Find nearest...");
+		MenuItem poisMenuItem = pMenu.add(0, MENU_FIND_POIS, Menu.NONE, this
+				.getResources().getText(R.string.find_nearest));
 		poisMenuItem.setIcon(android.R.drawable.ic_menu_search);
 		MenuItem toggleAutoFollowMenuItem = pMenu.add(0, MENU_TOGGLE_AUTOFOLLOW, Menu.NONE, R.string.toggle_autofollow);
 		toggleAutoFollowMenuItem.setIcon(android.R.drawable.ic_menu_mylocation);
@@ -257,14 +268,14 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 					SatNavActivity.this.mOsmv.getOverlays().add(SatNavActivity.this.routeOverlay);
 					//tell the viewer that it should redraw
 					SatNavActivity.this.mOsmv.postInvalidate();
-				}
+			}
 				else {
 					Toast.makeText(SatNavActivity.this,
 							SatNavActivity.this.getResources().getText(R.string.directions_not_found),
 							Toast.LENGTH_LONG).show();
-				} 
+		}
 				progress.dismiss();
-			}
+	}
 		};
 		new Thread(new Runnable() {
 			public void run() {
@@ -292,8 +303,37 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 				GeoPoint nextPoint = GeoPoint.fromIntString(this.route.get(i));
 				niceRoute.add(nextPoint);
 			}
-			this.routeOverlay = new OpenStreetMapViewRouteOverlay(this, niceRoute);
+			this.routeOverlay = new OpenStreetMapViewRouteOverlay(this,
+					niceRoute);
 			this.mOsmv.getOverlays().add(this.routeOverlay);
 		}
 	}
+	private void displayWelcomeScreen() {
+
+		/*
+		 * FIXME ZeroG : need to sleep 500ms (dangerous, arbitrary value) in
+		 * order to let SatNavActivity start completely before starting the
+		 * WelcomeActivity, otherwise, it only displays a black screen on
+		 * Android 1.5 Should maybe be replaced by a call after the onCreate
+		 * method (onStart ?).
+		 */
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Intent intent = new Intent(SatNavActivity.this,
+						org.opensatnav.WelcomeActivity.class);
+				SatNavActivity.this.startActivity(intent);
+
+			}
+
+		}).start();
+	}
+
 }
