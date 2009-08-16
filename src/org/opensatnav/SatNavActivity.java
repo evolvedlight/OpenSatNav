@@ -60,8 +60,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 	private static final int MENU_ZOOMIN_ID = Menu.FIRST;
 	private static final int MENU_ZOOMOUT_ID = MENU_ZOOMIN_ID + 1;
 	private static final int MENU_RENDERER_ID = MENU_ZOOMOUT_ID + 1;
-	private static final int MENU_TOGGLE_AUTOFOLLOW = MENU_RENDERER_ID + 1;
-	private static final int MENU_FIND_POIS = MENU_TOGGLE_AUTOFOLLOW + 1;
+	private static final int MENU_TOGGLE_FOLLOW_MODE = MENU_RENDERER_ID + 1;
+	private static final int MENU_FIND_POIS = MENU_TOGGLE_FOLLOW_MODE + 1;
 	private static final int MENU_GET_DIRECTIONS = MENU_FIND_POIS + 1;
 	private static final int DIRECTIONS_OPTIONS = MENU_GET_DIRECTIONS + 1;
 	private static final int SELECT_POI = 0;
@@ -184,8 +184,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 		MenuItem poisMenuItem = pMenu.add(0, MENU_FIND_POIS, Menu.NONE, this
 				.getResources().getText(R.string.find_nearest));
 		poisMenuItem.setIcon(android.R.drawable.ic_menu_search);
-		MenuItem toggleAutoFollowMenuItem = pMenu.add(0, MENU_TOGGLE_AUTOFOLLOW, Menu.NONE, R.string.toggle_autofollow);
-		toggleAutoFollowMenuItem.setIcon(android.R.drawable.ic_menu_mylocation);
+		MenuItem toggleAutoFollowMenuItem = pMenu.add(0, MENU_TOGGLE_FOLLOW_MODE, Menu.NONE, R.string.planning_mode);
+		toggleAutoFollowMenuItem.setIcon(android.R.drawable.ic_menu_mapmode);
 		// uncomment if you want to enable map mode switching
 		// SubMenu mapModeMenuItem = pMenu.addSubMenu(0, MENU_RENDERER_ID,
 		// Menu.NONE, "Map mode");
@@ -220,13 +220,18 @@ public class SatNavActivity extends OpenStreetMapActivity implements OpenStreetM
 		case MENU_RENDERER_ID:
 			this.mOsmv.invalidate();
 			return true;
-		case MENU_TOGGLE_AUTOFOLLOW:
+		case MENU_TOGGLE_FOLLOW_MODE:
 			if (this.autoFollowing) {
 				this.autoFollowing = false;
-				Toast.makeText(this, R.string.autofollow_stopped, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.planning_mode_on, Toast.LENGTH_SHORT).show();
+				//this weird style is required to set multiple attributes on the item
+				item.setTitle(R.string.navigation_mode)
+				.setIcon(android.R.drawable.ic_menu_mylocation);
 			} else {
 				this.autoFollowing = true;
-				Toast.makeText(this, R.string.autofollow_started, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.navigation_mode_on, Toast.LENGTH_SHORT).show();
+				item.setTitle(R.string.planning_mode)
+				.setIcon(android.R.drawable.ic_menu_mapmode);
 			}
 			return true;
 
