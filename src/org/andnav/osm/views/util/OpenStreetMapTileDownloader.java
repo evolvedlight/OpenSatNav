@@ -99,10 +99,14 @@ public class OpenStreetMapTileDownloader implements OpenStreetMapConstants, Open
 					out.flush();
 
 					final byte[] data = dataStream.toByteArray();
-
-					OpenStreetMapTileDownloader.this.mMapTileFSProvider.saveFile(aURLString, data);
-					if(DEBUGMODE)
-						Log.i(DEBUGTAG, "Maptile saved to: " + aURLString);
+					if (data.length > 0) {
+						OpenStreetMapTileDownloader.this.mMapTileFSProvider.saveFile(aURLString, data);
+						if (DEBUGMODE)
+							Log.i(DEBUGTAG, "Maptile saved to: " + aURLString);
+					} else {
+						if (DEBUGMODE)
+							Log.i(DEBUGTAG, "Not saving a 0 byte response");
+					}
 
 					final Message successMessage = Message.obtain(callback, MAPTILEDOWNLOADER_SUCCESS_ID);
 					successMessage.sendToTarget();
