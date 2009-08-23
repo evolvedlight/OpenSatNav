@@ -1,60 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>  
-    <string name="app_name">OpenSatNav</string>
-    <string name="location_services_disabled">No location services are enabled. Do you want to change this setting now? \n\nAfter making the change press the Back button to return to this program.</string>
-     <string name="gps_disabled">Location accuracy will be poor because GPS is not enabled.</string>
-     <string name="network_unavailable">No data connection. Please check your settings and try again.</string>
-     <string name="getting_gps_fix">Attempting to find your location using GPS...</string>
-     <string name="get_directions">Directions</string>
-<string name="navigation_mode">Navigation mode</string>
-<!-- Padded with nbsp's so the menu doesn't rearrange itself when the button toggles -->
-<string name="planning_mode">  Planning mode  </string>
-<string name="navigation_mode_on">Navigation mode on</string>
-<string name="planning_mode_on">Planning mode on</string>
-<string name="start_directions_failed">"Can't get directions because your location is unknown. Please try again when you have a GPS signal."</string>
-<string name="unspecified_directions_failed">Getting directions failed, please try again.</string>
-<string name="place_not_found">"Sorry, couldn't find "</string>
-<string name="unnamed_place">Unnamed</string>
-<string name="directions_not_found">Sorry, couldn't get directions</string>
-<string name="please_wait">Please wait...</string>
-<string name="searching">Searching</string>
-<string name="getting_route">Getting route</string>
-<string name="enter_destination">Where do you want to go?</string>
-<string name="transport_type">Mode of transport</string>
-<!-- use a space before the abbreviation if your language uses one between the number and unit -->
-<string name="kilometres_abbreviation"> km</string>
-<string name="metres_abbreviation"> m</string>
-<string name="miles_abbreviation"> mi</string>
-<string name="yards_abbreviation"> yd</string>
-<string name="away">away</string>
-<string name="could_not_find_poi">Could not find any places matching </string>
-<string name="car">Car</string>
-<string name="bicycle">Bicycle</string>
-<string name="walking">Walking</string>
-<string-array name="mode_of_transport_types" >
-    <item>@string/car</item>
-    <item>@string/bicycle</item>
-    <item>@string/walking</item>
-</string-array>
-<!-- These are the POI types that would be nice to have, but not all are in OSM namefinder yet -->
-<!-- Use the OSM tag name for the name attribute if possible -->
-<string name="atm">ATM</string>
-<string name="cafe">Café</string>
-<string name="cinema">Cinema</string>
-<string name="fuel">Fuel</string>
-<string name="hospital">Hospital</string>
-<string name="hotel">Hotel</string>
-<string name="night_club">Night club</string>
-<string name="parking">Parking</string>
-<string name="police">Police station</string>
-<string name="pub">Pub</string>
-<string name="restaurant">Restaurant</string>
-<string name="taxi_rank">Taxi Rank</string>
-<string name="find_nearest">Find nearest...</string>
-<string name="choose_location">Choose location...</string>
-<string name="touch_screen">Touch screen to continue...</string>
-<string name="welcome_to_osn">Welcome to\nOpenSatNav</string>
-<string name="welcome_desc">OpenSatNav is a free open-source application that will transform your Android handset in a full featured GPS navigation device.</string>
-<string name="no_warranty">OpenSatNav comes with absolutely no warranty</string>
-<string name="map_data_source">Map data comes from OpenStreetMap\nhttp://www.openstreetmap.org</string>
+<resources>
+	<string name="app_name">OpenSatNav</string>
+	<string name="app_desc">A free OpenStreetMap application for Android.</string>
+	<string name="location_services_disabled">No location services are enabled. Do you want to
+		change this setting now? \n\nAfter making the change press the Back
+		button to return to this program.</string>
+	<string name="gps_disabled">Location accuracy will be poor because GPS is not
+		enabled.</string>
+	<string name="network_unavailable">No data connection. Please check your settings and
+		try again.</string>
+	<string name="getting_gps_fix">Attempting to find your location using GPS...
+	</string>
+	<string name="get_directions">Directions</string>
+	<string name="navigation_mode">Navigation mode</string>
+	<!--
+		Padded with nbsp's so the menu doesn't rearrange itself when the
+		button toggles
+	-->
+	<string name="planning_mode">  Planning mode  </string>
+	<string name="navigation_mode_on">Navigation mode on</string>
+	<string name="planning_mode_on">Planning mode on</string>
+	<string name="start_directions_failed">"Can't get directions because your location is
+		unknown. Please try again when you have a GPS signal."</string>
+	<string name="unspecified_directions_failed">Getting directions failed, please try again.
+	</string>
+	<string name="place_not_found">"Sorry, couldn't find "</string>
+	<string name="unnamed_place">Unnamed</string>
+	<string name="directions_not_found">Sorry, couldn't get directions</string>
+	<string name="please_wait">Please wait...</string>
+	<string name="searching">Searching</string>
+	<string name="getting_route">Getting route</string>
+	<string name="enter_destination">Where do you want to go?</string>
+	<string name="transport_type">Mode of transport</string>
+	<!--
+		use a space before the abbreviation if your language uses one between
+		the number and unit
+	-->
+	<string name="kilometres_abbreviation"> km</string>
+	<string name="metres_abbreviation"> m</string>
+	<string name="miles_abbreviation"> mi</string>
+	<string name="yards_abbreviation"> yd</string>
+	<string name="away">away</string>
+	<string name="could_not_find_poi">Could not find any places matching </string>
+	<string name="car">Car</string>
+	<string name="bicycle">Bicycle</string>
+	<string name="walking">Walking</string>
+	<string-array name="mode_of_transport_types">
+		<item>@string/car</item>
+		<item>@string/bicycle</item>
+		<item>@string/walking</item>
+	</string-array>
+	<!--
+		These are the POI types that would be nice to have, but not all are in
+		OSM namefinder yet
+	-->
+	<!-- Use the OSM tag name for the name attribute if possible -->
+	<string name="atm">ATM</string>
+	<string name="cafe">Café</string>
+	<string name="cinema">Cinema</string>
+	<string name="fuel">Fuel</string>
+	<string name="hospital">Hospital</string>
+	<string name="hotel">Hotel</string>
+	<string name="night_club">Night club</string>
+	<string name="parking">Parking</string>
+	<string name="police">Police station</string>
+	<string name="pub">Pub</string>
+	<string name="restaurant">Restaurant</string>
+	<string name="taxi_rank">Taxi Rank</string>
+	<string name="find_nearest">Find nearest...</string>
+	<string name="choose_location">Choose location...</string>
+	<string name="touch_screen">Touch screen to continue...</string>
+	<string name="welcome_to_osn">Welcome to\nOpenSatNav</string>
+	<string name="welcome_desc">OpenSatNav is a free open-source application that
+		will transform your Android handset in a full featured GPS navigation
+		device.</string>
+	<string name="no_warranty">OpenSatNav comes with absolutely no warranty
+	</string>
+	<string name="map_data_source">Map data comes from
+		OpenStreetMap\nhttp://www.openstreetmap.org</string>
+	<string name="preferences">Preferences</string>
+	<string name="prefs_cache_section">Tiles cache</string>
+	<string name="prefs_cache_sdcard">SD Card usage</string>
+	<string name="prefs_cache_sdcard_summary">Maximum used size of the SD card to store cached
+		tiles</string>
+	<string name="prefs_cache_sdcard_dialog">The SD card cache will contain at most the
+		following</string>
+	<string name="prefs_cache_sdcard_title">Select size</string>
+	<string name="prefs_cache_clear">Clear cache</string>
+	<string name="prefs_cache_clear_summary">Click here to empty the tiles cache</string>
+	<string name="megabytes_abbreviation">Mb</string>
+	<string name="about">About</string>
+	<string name="about_get_market">To access this screen, you need to download OI About from the Market</string>
+	<string name="about_get_market_download">Get from market</string>
+	<string name="about_get_market_cancel">Cancel</string>
+	<string-array name="about_authors">
+		<!--
+			Add your name here if you helped out
+		-->
+		<item>Kizza</item>
+		<item>Chris_debian</item>
+		<item>ZeroG</item>
+		<item>Piluso</item>
+
+		<!-- The following item should always stay at the end -->
+		<item>The OpenSatNav Project</item>
+	</string-array>
+
+	<string-array name="about_translators">
+		<!--
+			Add your name here if you helped out
+		-->
+		<item>ZeroG</item>
+	</string-array>
 </resources>
