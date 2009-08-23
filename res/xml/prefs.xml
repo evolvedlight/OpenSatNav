@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/prefs_cache_section">
+		<!--
+			The sd card size to be used for caching wil be stored in shared
+			preferences under key 'maxSdCardUsageMb' (in Mb)
+			Default values will be replaced by real sd card size (max) at start
+		-->
+		<org.opensatnav.ui.SDCardUsagePreference
+			android:title="@string/prefs_cache_sdcard"
+			android:summary="@string/prefs_cache_sdcard_summary"
+			android:persistent="true"
+			android:dialogMessage="@string/prefs_cache_sdcard_dialog"
+			android:text="@string/megabytes_abbreviation" android:max="4096" android:defaultValue="512"
+			android:dialogTitle="@string/prefs_cache_sdcard_title" android:key="maxSdCardUsageMb" />
+		<Preference android:title="@string/prefs_cache_clear"
+			android:summary="@string/prefs_cache_clear_summary"
+			android:persistent="false" />
+	</PreferenceCategory>
+</PreferenceScreen>
