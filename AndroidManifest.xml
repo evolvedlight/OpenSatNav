@@ -20,6 +20,7 @@
 
 		<activity android:name="org.opensatnav.SelectPOIActivity"></activity>
 		<activity android:name="org.opensatnav.ChooseLocationActivity"></activity>
+		<activity android:name="org.openintents.about.About"></activity>
 		<activity android:name="org.opensatnav.WelcomeActivity"
 			android:theme="@android:style/Theme.Dialog"></activity>
 		<activity android:name="org.opensatnav.ConfigurationActivity"></activity>
@@ -31,12 +32,19 @@
 			android:resource="@array/about_authors" />
 		<meta-data android:name="org.openintents.metadata.TRANSLATORS"
 			android:resource="@array/about_translators" />
-
+		<meta-data android:name="org.openintents.metadata.ARTISTS"
+			android:resource="@array/about_artists" />
+		<meta-data android:name="org.openintents.metadata.DOCUMENTERS"
+			android:resource="@array/about_documenters" />
+		<meta-data android:name="org.openintents.metadata.WEBSITE_LABEL"
+			android:value="@string/about_website_label" />
+		<meta-data android:name="org.openintents.metadata.WEBSITE_URL"
+			android:value="@string/about_website_url" />
 		<meta-data android:name="org.openintents.metadata.LICENSE"
 			android:resource="@raw/license" />
 		<meta-data android:name="org.openintents.metadata.EMAIL"
 			android:value="support@opensatnav.org" />
 	</application>
 
-	<uses-sdk android:minSdkVersion="2"/>
+	<uses-sdk android:minSdkVersion="2" />
 </manifest> 

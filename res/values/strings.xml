@@ -93,23 +93,22 @@
 	<string name="about_get_market">To access this screen, you need to download OI About from the Market</string>
 	<string name="about_get_market_download">Get from market</string>
 	<string name="about_get_market_cancel">Cancel</string>
-	<string-array name="about_authors">
-		<!--
-			Add your name here if you helped out
-		-->
-		<item>Kizza</item>
-		<item>Chris_debian</item>
-		<item>ZeroG</item>
-		<item>Piluso</item>
 
-		<!-- The following item should always stay at the end -->
-		<item>The OpenSatNav Project</item>
-	</string-array>
-
-	<string-array name="about_translators">
-		<!--
-			Add your name here if you helped out
-		-->
-		<item>ZeroG</item>
-	</string-array>
+	<!--  OI About inclusion -->
+	
+	<string name="about_website_label">OpenSatNav.org</string>
+	<string name="about_website_url">http://www.opensatnav.org/</string>	
+    <string name="menu_preferences">Preferences</string>
+    <string name="menu_about">About OI About itself</string>
+	<string name="l_authors">Written by</string>
+	<string name="l_documenters">Documented by</string>
+	<string name="l_translators">Translated by</string>
+	<string name="l_artists">Artwork by</string>
+	<string name="l_credits">Credits</string>
+	<string name="l_license">License</string>
+	<string name="l_info">General Info</string>
+	
+	<string name="no_information_available">No information available.</string>
+	<!-- / -->
+	
 </resources>

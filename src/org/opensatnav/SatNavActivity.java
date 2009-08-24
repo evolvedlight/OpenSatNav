@@ -275,10 +275,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			startActivityForResult(intent, MENU_PREFERENCES);
 			return true;
 		case MENU_ABOUT:
-			Intent intent1 = new Intent(
-					"org.openintents.action.SHOW_ABOUT_DIALOG");
-			startOrDownloadActivity(intent1);
-			
+			Intent intent1 = new Intent(this,
+					org.openintents.about.About.class);
+           	startActivityForResult(intent1, MENU_ABOUT);
+
 			return true;
 		default:
 			this.mOsmv.setRenderer(OpenStreetMapRendererInfo.values()[item
@@ -299,37 +299,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		}
 
 	}
-	
-	private void startOrDownloadActivity(Intent intent) {
-		final PackageManager packageManager = this.getPackageManager();
-        List<ResolveInfo> list =
-                packageManager.queryIntentActivities(intent,
-                        PackageManager.MATCH_DEFAULT_ONLY);
-        if (list.size()!=0) {
-           	startActivityForResult(intent, MENU_ABOUT);
-        }
-        else {
-        	new AlertDialog.Builder(this).setIcon(android.R.drawable.stat_notify_sync).setTitle("Android Market")
-            .setMessage(R.string.about_get_market)
-            .setPositiveButton(R.string.about_get_market_download, new DialogInterface.OnClickListener() {
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Uri uri = Uri.parse("market://search?q=pname:org.openintents.about");
-					Intent intentAbout = new Intent(Intent.ACTION_VIEW);
-					intentAbout.setData(uri);
-					startActivity(intentAbout);
-				}
-			}).setNegativeButton(R.string.about_get_market_cancel, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// nothing to do
-				}
-			})
-            .show();
-        }
-	}
 
 	public void refreshRoute(final GeoPoint from, final GeoPoint to,
 			final String vehicle) {
