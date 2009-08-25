@@ -8,7 +8,7 @@
 	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 
-	<application android:icon="@drawable/icon" android:label="@string/app_name">
+	<application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
 		<activity android:name="org.opensatnav.SatNavActivity">
 			<action android:name="android.intent.action.MAIN" />
 			<intent-filter>
@@ -28,6 +28,8 @@
 		<!-- values used in the About screen -->
 		<meta-data android:name="org.openintents.metadata.COMMENTS"
 			android:value="@string/app_desc" />
+		<meta-data android:name="org.openintents.metadata.LEADERS"
+			android:resource="@array/about_leaders" />			
 		<meta-data android:name="org.openintents.metadata.AUTHORS"
 			android:resource="@array/about_authors" />
 		<meta-data android:name="org.openintents.metadata.TRANSLATORS"

@@ -19,19 +19,24 @@
 */
 -->
 <resources>
+    <string-array name="about_leaders"><!-- Add your name here if you helped out -->
+		<!--
+			Add your name here if you helped out
+		-->
+		<item>chris_debian</item>
+
+    </string-array>
     <string-array name="about_authors"><!-- Add your name here if you helped out -->
 		<!--
 			Add your name here if you helped out
 		-->
 		<item>Kizza</item>
-		<item>chris_debian</item>
 		<item>ZeroG</item>
 		<item>Piluso</item>
 
     </string-array>
     
     <string-array name="about_documenters"><!-- Add your name here if you helped out -->
-    	<item>Mike</item>    
     </string-array>
     
     <string-array name="about_translators"><!-- Add your name here if you helped out, but only in the arrays.xml for the localization that you helped to translate into! -->

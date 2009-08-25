@@ -80,6 +80,8 @@ public class About extends TabActivity {
 	protected TextSwitcher mCopyrightText;
 	protected TextSwitcher mWebsiteText;
 	protected TextSwitcher mEmailText;
+	protected TextView mLeadersLabel;
+	protected TextView mLeadersText;	
 	protected TextView mAuthorsLabel;
 	protected TextView mAuthorsText;
 	protected TextView mDocumentersLabel;
@@ -206,6 +208,26 @@ public class About extends TabActivity {
 		}
 	}
 
+	/**
+	 * Fetch and display leaders information.
+	 * 
+	 * @param intent The intent from which to fetch the information.
+	 */
+	private void displayLeaders(final String packagename, final Intent intent) {
+		String[] textarray = AboutUtils.getStringArrayExtraOrMetadata(this, packagename, intent, AboutIntents.EXTRA_LEADERS, AboutMetaData.METADATA_LEADERS);
+		
+		String text = AboutUtils.getTextFromArray(textarray);
+		
+		if (!TextUtils.isEmpty(text)) {
+			mLeadersText.setText(text);
+			mLeadersLabel.setVisibility(View.VISIBLE);
+			mLeadersText.setVisibility(View.VISIBLE);
+		} else {
+			mLeadersLabel.setVisibility(View.GONE);
+			mLeadersText.setVisibility(View.GONE);
+		}
+	}
+	
 	/**
 	 * Fetch and display authors information.
 	 * 
@@ -620,7 +642,10 @@ public class About extends TabActivity {
 		mEmailText = (TextSwitcher) findViewById(R.id.t_email);
 		mEmailText.setInAnimation(in);
 		mEmailText.setOutAnimation(out);
-
+		
+		mLeadersLabel = (TextView) findViewById(R.id.l_leaders);
+		mLeadersText = (TextView) findViewById(R.id.et_leaders);
+		
 		mAuthorsLabel = (TextView) findViewById(R.id.l_authors);
 		mAuthorsText = (TextView) findViewById(R.id.et_authors);
 
@@ -697,6 +722,7 @@ public class About extends TabActivity {
     	displayComments(packagename, intent);
     	displayCopyright(packagename, intent);
     	displayWebsiteLink(packagename, intent);
+    	displayLeaders(packagename, intent);
     	displayAuthors(packagename, intent);
     	displayDocumenters(packagename, intent);
     	displayTranslators(packagename, intent);

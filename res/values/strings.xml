@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">OpenSatNav</string>
-	<string name="app_desc">A free OpenStreetMap application for Android.</string>
+	<string name="app_desc">A free and open source OpenStreetMap application for Android.</string>
 	<string name="location_services_disabled">No location services are enabled. Do you want to
 		change this setting now? \n\nAfter making the change press the Back
 		button to return to this program.</string>
@@ -71,7 +71,7 @@
 	<string name="choose_location">Choose location...</string>
 	<string name="touch_screen">Touch screen to continue...</string>
 	<string name="welcome_to_osn">Welcome to\nOpenSatNav</string>
-	<string name="welcome_desc">OpenSatNav is a free open-source application that
+	<string name="welcome_desc">OpenSatNav is a free and open source application that
 		will transform your Android handset in a full featured GPS navigation
 		device.</string>
 	<string name="no_warranty">OpenSatNav comes with absolutely no warranty
@@ -90,16 +90,13 @@
 	<string name="prefs_cache_clear_summary">Click here to empty the tiles cache</string>
 	<string name="megabytes_abbreviation">Mb</string>
 	<string name="about">About</string>
-	<string name="about_get_market">To access this screen, you need to download OI About from the Market</string>
-	<string name="about_get_market_download">Get from market</string>
-	<string name="about_get_market_cancel">Cancel</string>
 
 	<!--  OI About inclusion -->
-	
 	<string name="about_website_label">OpenSatNav.org</string>
 	<string name="about_website_url">http://www.opensatnav.org/</string>	
     <string name="menu_preferences">Preferences</string>
     <string name="menu_about">About OI About itself</string>
+	<string name="l_leaders">Project Founder</string>
 	<string name="l_authors">Written by</string>
 	<string name="l_documenters">Documented by</string>
 	<string name="l_translators">Translated by</string>
@@ -110,5 +107,7 @@
 	
 	<string name="no_information_available">No information available.</string>
 	<!-- / -->
-	
+	<string name="error_email_message">Dear All,\n\nI encountered the following issue while using OpenSatNav, could you please have a look at it?\n\n</string>
+		<string name="error_email_chooser_title">Send Mail via:</string>
+	<string name="bug_report_mail_address">bug-report@opensatnav.org</string>
 </resources>

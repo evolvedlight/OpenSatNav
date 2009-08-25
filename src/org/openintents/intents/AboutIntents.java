@@ -188,6 +188,22 @@ public final class AboutIntents {
 	
 	/**
 	 * Optional intent extra:
+	 * The leaders/founders of the program, as an array of strings.
+	 * 
+	 * Each string may contain email addresses and URLs, which will be displayed
+	 * as links.
+	 * 
+	 * By default, this is retrieved from the Manifest meta tag
+	 * with the AboutMetaData.METADATA_LEADERS name.
+	 * 
+	 * <p>
+	 * Constant Value: "org.openintents.extra.LEADERS"
+	 * </p>
+	 */
+	public static final String EXTRA_LEADERS = "org.openintents.extra.LEADERS";
+	
+	/**
+	 * Optional intent extra:
 	 * The authors of the program, as an array of strings.
 	 * 
 	 * Each string may contain email addresses and URLs, which will be displayed

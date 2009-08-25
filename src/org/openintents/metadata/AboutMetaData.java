@@ -108,6 +108,21 @@ public final class AboutMetaData {
 		"org.openintents.metadata.WEBSITE_LABEL";
 	
 	/**
+	 * Application metadata: The leaders/founders of the program, as an array of strings.
+	 * 
+	 * <p>Usage example:
+	 * <code>&lt;meta-data 
+	 * android:name="org.openintents.metadata.LEADERS"
+	 * android:resource="@array/about_leaders" /&gt;</code>
+	 * </p>
+	 * 
+	 * <p>
+	 * Constant Value: "org.openintents.metadata.LEADERS"
+	 * </p>
+	 */
+	public static final String METADATA_LEADERS = "org.openintents.metadata.LEADERS";
+	
+	/**
 	 * Application metadata: The authors of the program, as an array of strings.
 	 * 
 	 * <p>Usage example:

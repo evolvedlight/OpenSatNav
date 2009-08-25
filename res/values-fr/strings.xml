@@ -79,7 +79,4 @@
 	</string>
 	<string name="megabytes_abbreviation">Mo</string>
 	<string name="about">À propos</string>
-	<string name="about_get_market">"Pour accéder à cet écran, vous devez télécharger 'OI About' à partir du Market."</string>
-	<string name="about_get_market_download">Ok</string>
-	<string name="about_get_market_cancel">Annuler</string>
 </resources>

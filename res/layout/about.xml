@@ -116,6 +116,16 @@
 	<LinearLayout android:id="@+id/ll_credits" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:orientation="vertical">
 
+		<TextView android:id="@+id/l_leaders"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/l_leaders">
+		</TextView>
+		<TextView android:id="@+id/et_leaders"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:autoLink="all" android:layout_marginBottom="15dip">
+		</TextView>
+
 		<TextView android:id="@+id/l_authors"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:text="@string/l_authors">
