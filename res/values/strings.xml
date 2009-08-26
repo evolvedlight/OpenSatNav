@@ -110,4 +110,6 @@
 	<string name="error_email_message">Dear All,\n\nI encountered the following issue while using OpenSatNav, could you please have a look at it?\n\n</string>
 		<string name="error_email_chooser_title">Send Mail via:</string>
 	<string name="bug_report_mail_address">bug-report@opensatnav.org</string>
+		<string name="bug_report_ask_user">An unexpected error just happened. Would you like to send us a bug report?</string>
+		<string name="bug_report_ask_user_title">Unexpected Error</string>
 </resources>
