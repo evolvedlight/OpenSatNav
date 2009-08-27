@@ -13,7 +13,7 @@ This file is part of OpenSatNav.
 
     You should have received a copy of the GNU General Public License
     along with OpenSatNav.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package org.andnav.osm.views.overlay;
 
@@ -55,8 +55,7 @@ public class OpenStreetMapViewRouteOverlay extends OpenStreetMapViewOverlay impl
 	protected GeoPoint mLocation;
 	protected ArrayList<GeoPoint> pointRoute;
 	protected ArrayList<Point> pixelRoute;
-	protected Point firstPixelPoint, oldFirstPoint, lastPixelPoint,
-			oldLastPixelPoint;
+	protected Point firstPixelPoint, oldFirstPoint, lastPixelPoint, oldLastPixelPoint;
 	protected Path routePath;
 
 	// ===========================================================
@@ -75,8 +74,7 @@ public class OpenStreetMapViewRouteOverlay extends OpenStreetMapViewOverlay impl
 		routePath = new Path();
 		for (int i = 0; i < this.route.size(); i++) {
 			GeoPoint nextPoint = this.route.get(i);
-			nextPoint.setCoordsE6(nextPoint.getLatitudeE6(), nextPoint
-					.getLongitudeE6());
+			nextPoint.setCoordsE6(nextPoint.getLatitudeE6(), nextPoint.getLongitudeE6());
 			pointRoute.add(nextPoint);
 		}
 	}
@@ -106,42 +104,42 @@ public class OpenStreetMapViewRouteOverlay extends OpenStreetMapViewOverlay impl
 				oldFirstPoint = firstPixelPoint;
 			if (lastPixelPoint != null)
 				oldLastPixelPoint = lastPixelPoint;
-			//this is optimisation so the computation from lat/long to pixel coords
-			//is only done if we need to, as this is expensive
-			//right now this optimises map panning, but can optimise for zoom as well
-			
+			// this is optimisation so the computation from lat/long to pixel
+			// coords
+			// is only done if we need to, as this is expensive
+			// right now this optimises map panning, but can optimise for zoom
+			// as well
+
 			// get the points
 			firstPixelPoint = pj.toPixels((GeoPoint) pointRoute.get(0), null);
 			lastPixelPoint = pj.toPixels(this.pointRoute.get(this.pointRoute.size() - 1), null);
-			
-			//they panned, don't recompute from lat/long, just move the pixel route the appropriate amount
+
+			// they panned, don't recompute from lat/long, just move the pixel
+			// route the appropriate amount
 			if ((oldFirstPoint != null)
 					&& (oldFirstPoint.x - firstPixelPoint.x) == (oldLastPixelPoint.x - lastPixelPoint.x)
 					&& (oldFirstPoint.y - firstPixelPoint.y) == (oldLastPixelPoint.y - lastPixelPoint.y)) {
 				for (int i = 0; i < this.pixelRoute.size(); i++) {
-					this.pixelRoute.set(i, new Point(this.pixelRoute.get(i).x
-							- (oldFirstPoint.x - firstPixelPoint.x),
-							this.pixelRoute.get(i).y
-									- (oldFirstPoint.y - firstPixelPoint.y)));
+					this.pixelRoute.set(i, new Point(this.pixelRoute.get(i).x - (oldFirstPoint.x - firstPixelPoint.x),
+							this.pixelRoute.get(i).y - (oldFirstPoint.y - firstPixelPoint.y)));
 				}
 			}
 			// either there is no old point, ergo this is the first time we are
 			// here,
 			// or they have zoomed
-			//if this is false it means the map is still and we don't need to do anything
-			else if ((oldLastPixelPoint == null)
-					|| (oldLastPixelPoint.x != lastPixelPoint.x)
+			// if this is false it means the map is still and we don't need to
+			// do anything
+			else if ((oldLastPixelPoint == null) || (oldLastPixelPoint.x != lastPixelPoint.x)
 					|| (oldLastPixelPoint.y != lastPixelPoint.y)) {
 				if (pixelRoute != null)
 					pixelRoute.clear();
 				for (int i = 0; i < pointRoute.size(); i++) {
 					// Point nextScreenCoords = new Point();
-					pixelRoute.add(pj.toPixels((GeoPoint) pointRoute.get(i),
-							null));
+					pixelRoute.add(pj.toPixels((GeoPoint) pointRoute.get(i), null));
 				}
-			} 
-			
-			//draw the pixel route
+			}
+
+			// draw the pixel route
 			routePath.rewind();
 			for (int i = 0; i < this.pixelRoute.size(); i++) {
 				Point current = pixelRoute.get(i);
@@ -152,12 +150,11 @@ public class OpenStreetMapViewRouteOverlay extends OpenStreetMapViewOverlay impl
 			}
 			c.drawPath(routePath, this.mPaint);
 		}
-		// ===========================================================
-		// Methods
-		// ===========================================================
 
-		// ===========================================================
-		// Inner and Anonymous Classes
-		// ===========================================================
 	}
+
+	public ArrayList<Point> getPixelRoute() {
+		return this.pixelRoute;
+	}
+
 }

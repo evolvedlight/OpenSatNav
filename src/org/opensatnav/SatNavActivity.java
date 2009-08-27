@@ -23,9 +23,11 @@ import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.TypeConverter;
 import org.andnav.osm.util.constants.OpenStreetMapConstants;
 import org.andnav.osm.views.OpenStreetMapView;
+import org.andnav.osm.views.OpenStreetMapView.OpenStreetMapViewProjection;
 import org.andnav.osm.views.overlay.OpenStreetMapViewDirectedLocationOverlay;
 import org.andnav.osm.views.overlay.OpenStreetMapViewRouteOverlay;
 import org.andnav.osm.views.util.OpenStreetMapRendererInfo;
+import org.opensatnav.services.OSMGeoCoder;
 import org.opensatnav.services.Router;
 import org.opensatnav.services.YOURSRouter;
 
@@ -34,6 +36,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import android.graphics.Point;
+import android.graphics.Rect;
+
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.location.Location;
@@ -41,6 +47,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,6 +90,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	protected OpenStreetMapViewRouteOverlay routeOverlay;
 	protected boolean autoFollowing = true;
 	protected Location currentLocation;
+	protected GeoPoint to;
+	protected String vehicle;
 
 	protected ArrayList<String> route = new ArrayList<String>();
 
@@ -181,7 +190,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	public void onLocationChanged(Location newLocation) {
 		if ((newLocation != null)
 				&& ((currentLocation == null) || (currentLocation
-						.distanceTo(newLocation) < 50))) {
+						.distanceTo(newLocation) < 100))) {
 			this.mMyLocationOverlay.setLocation(TypeConverter
 					.locationToGeoPoint(newLocation));
 			this.mMyLocationOverlay.setBearing(newLocation.getBearing());
@@ -191,7 +200,34 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				this.mOsmv.setMapCenter(TypeConverter
 						.locationToGeoPoint(newLocation));
 			currentLocation = newLocation;
-			// cache tiles around this one
+			
+			// see if the user has moved off the route too far and we need to
+			// get it again (if we judge it's worth it based on what the user's doing)
+			if (this.routeOverlay != null && this.autoFollowing  && this.mOsmv.getZoomLevel()>14) {
+				int tolerance = 250; // metres that the user can go before we
+				// need to get the route again
+				OpenStreetMapViewProjection pj = this.mOsmv.getProjection();
+				int pixelToleranceRadius = (int) (pj.metersToEquatorPixels(tolerance)*100);
+				Point pointLocation = pj.toPixels(TypeConverter.locationToGeoPoint(currentLocation), null);
+				// if the route is within this rectangle it is close enough and
+				// we don't need a new route
+				Rect onRoute = new Rect(pointLocation.x - pixelToleranceRadius, pointLocation.y - pixelToleranceRadius,
+						pointLocation.x + pixelToleranceRadius, pointLocation.y + pixelToleranceRadius);
+				ArrayList<Point> pixelRoute = this.routeOverlay.getPixelRoute();
+				// if all of the route segments fail to intersect we need a new route
+				int offRouteCount = 0;
+				for (int i = 0; i < pixelRoute.size()-1; i++) {
+					Rect routeSegment = new Rect(pixelRoute.get(i + 1).x, pixelRoute.get(i + 1).y, pixelRoute.get(i).x,
+							pixelRoute.get(i).y);
+					if (Rect.intersects(onRoute, routeSegment))
+						break;
+					else
+						offRouteCount++;
+				}
+				if (offRouteCount == pixelRoute.size()-1) {
+					refreshRoute(TypeConverter.locationToGeoPoint(currentLocation), to, vehicle);
+				}
+			}
 		}
 	}
 
@@ -290,9 +326,9 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if ((requestCode == DIRECTIONS_OPTIONS) || (requestCode == SELECT_POI)) {
 			if (resultCode == RESULT_OK) {
-				final GeoPoint to = GeoPoint.fromIntString(data
+				to = GeoPoint.fromIntString(data
 						.getStringExtra("to"));
-				final String vehicle = data.getStringExtra("vehicle");
+				vehicle = data.getStringExtra("vehicle");
 				refreshRoute(TypeConverter.locationToGeoPoint(currentLocation),
 						to, vehicle);
 			}
