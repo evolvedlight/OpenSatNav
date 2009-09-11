@@ -5,12 +5,9 @@
 	<string name="location_services_disabled">No location services are enabled. Do you want to
 		change this setting now? \n\nAfter making the change press the Back
 		button to return to this program.</string>
-	<string name="gps_disabled">Location accuracy will be poor because GPS is not
-		enabled.</string>
-	<string name="network_unavailable">No data connection. Please check your settings and
-		try again.</string>
-	<string name="getting_gps_fix">Attempting to find your location using GPS...
-	</string>
+	<string name="gps_disabled">Location accuracy will be poor because GPS is not enabled.</string>
+	<string name="network_unavailable">No data connection. Please check your settings and try again.</string>
+	<string name="getting_gps_fix">Attempting to find your location using GPS...</string>
 	<string name="get_directions">Directions</string>
 	<string name="navigation_mode">Navigation mode</string>
 	<!--
@@ -20,10 +17,8 @@
 	<string name="planning_mode">  Planning mode  </string>
 	<string name="navigation_mode_on">Navigation mode on</string>
 	<string name="planning_mode_on">Planning mode on</string>
-	<string name="start_directions_failed">"Can't get directions because your location is
-		unknown. Please try again when you have a GPS signal."</string>
-	<string name="unspecified_directions_failed">Getting directions failed, please try again.
-	</string>
+	<string name="start_directions_failed">&quot;Can't get directions because your location is unknown. Please try again when you have a GPS signal.&quot;</string>
+	<string name="unspecified_directions_failed">Getting directions failed, please try again.</string>
 	<string name="place_not_found">"Sorry, couldn't find "</string>
 	<string name="unnamed_place">Unnamed</string>
 	<string name="directions_not_found">Sorry, couldn't get directions</string>
@@ -70,21 +65,15 @@
 	<string name="find_nearest">Find nearest...</string>
 	<string name="choose_location">Choose location...</string>
 	<string name="touch_screen">Touch screen to continue...</string>
-	<string name="welcome_to_osn">Welcome to\nOpenSatNav</string>
-	<string name="welcome_desc">OpenSatNav is a free and open source application that
-		will transform your Android handset in a full featured GPS navigation
-		device.</string>
-	<string name="no_warranty">OpenSatNav comes with absolutely no warranty
-	</string>
-	<string name="map_data_source">Map data comes from
-		OpenStreetMap\nhttp://www.openstreetmap.org</string>
+	
+	
+	
+	
 	<string name="preferences">Preferences</string>
 	<string name="prefs_cache_section">Tiles cache</string>
 	<string name="prefs_cache_sdcard">SD Card usage</string>
-	<string name="prefs_cache_sdcard_summary">Maximum used size of the SD card to store cached
-		tiles</string>
-	<string name="prefs_cache_sdcard_dialog">The SD card cache will contain at most the
-		following</string>
+	<string name="prefs_cache_sdcard_summary">Maximum used size of the SD card to store cached tiles</string>
+	<string name="prefs_cache_sdcard_dialog">The SD card cache will contain at most the following</string>
 	<string name="prefs_cache_sdcard_title">Select size</string>
 	<string name="prefs_cache_clear">Clear cache</string>
 	<string name="prefs_cache_clear_summary">Click here to empty the tiles cache</string>
