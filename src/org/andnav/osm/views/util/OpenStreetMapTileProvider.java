@@ -17,15 +17,19 @@ This file is part of OpenSatNav.
 // Created by plusminus on 21:46:22 - 25.09.2008
 package org.andnav.osm.views.util;
 
+import org.opensatnav.OpenSatNavConstants;
 import org.opensatnav.R;
 import org.andnav.osm.util.constants.OpenStreetMapConstants;
 import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -58,7 +62,10 @@ public class OpenStreetMapTileProvider implements OpenStreetMapConstants, OpenSt
 		this.mCtx = ctx;
 		this.mLoadingMapTile = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.maptile_loading);
 		this.mTileCache = new OpenStreetMapTileCache();
-		this.mFSTileProvider = new OpenStreetMapTileFilesystemProvider(ctx, 4 * 1024 * 1024, this.mTileCache); // 4MB FSCache
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(ctx);
+	    int MbsAllocated = settings.getInt("maxSdCardUsageMb", 64);
+
+		this.mFSTileProvider = new OpenStreetMapTileFilesystemProvider(ctx, MbsAllocated * 1024 * 1024, this.mTileCache); 
 		this.mTileDownloader = new OpenStreetMapTileDownloader(ctx, this.mFSTileProvider);
 		this.mDownloadFinishedListenerHander = aDownloadFinishedListener;
 	}
