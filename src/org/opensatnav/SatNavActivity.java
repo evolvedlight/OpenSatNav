@@ -164,18 +164,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		}
 
 		this.setContentView(rl);
-		// Restore preferences
-		SharedPreferences settings = getSharedPreferences(
-				OpenSatNavConstants.PREFS_FILE, 0);
-
-		if (!settings.getBoolean("welcomeVersionSeen", false)) {
-			displayWelcomeScreen();
-			SharedPreferences.Editor editor = settings.edit();
-			editor.putBoolean("welcomeVersionSeen", true);
-
-			// commit edits
-			editor.commit();
-		}
 	}
 
 	// ===========================================================
@@ -407,34 +395,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 					niceRoute);
 			this.mOsmv.getOverlays().add(this.routeOverlay);
 		}
-	}
-
-	private void displayWelcomeScreen() {
-
-		/*
-		 * FIXME ZeroG : need to sleep 500ms (dangerous, arbitrary value) in
-		 * order to let SatNavActivity start completely before starting the
-		 * WelcomeActivity, otherwise, it only displays a black screen on
-		 * Android 1.5 Should maybe be replaced by a call after the onCreate
-		 * method (onStart ?).
-		 */
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				Intent intent = new Intent(SatNavActivity.this,
-						org.opensatnav.WelcomeActivity.class);
-				SatNavActivity.this.startActivity(intent);
-
-			}
-
-		}).start();
 	}
 
 }
