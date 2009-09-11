@@ -22,8 +22,6 @@
 		<activity android:name="org.opensatnav.SelectPOIActivity"></activity>
 		<activity android:name="org.opensatnav.ChooseLocationActivity"></activity>
 		<activity android:name="org.openintents.about.About"></activity>
-		<activity android:name="org.opensatnav.WelcomeActivity"
-			android:theme="@android:style/Theme.Dialog"></activity>
 		<activity android:name="org.opensatnav.ConfigurationActivity"></activity>
 
 		<!-- values used in the About screen -->
