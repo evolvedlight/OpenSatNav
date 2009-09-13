@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">OpenSatNav</string>
+	<string name="app_desc">"Aplicación libre y de código abierto para Android basada en OpenStreetMap."</string>
+	<string name="location_services_disabled">"Ningún servicio de localización está activo. ¿Quiere activarlo ahora? \n\nDespués de aplicar los cambios, pulse el botón de Volver para regresar a éste programa."</string>
+	<string name="gps_disabled">"La precisión de su ubicación puede no ser precisa porque el GPS no está activado."</string>
+	<string name="network_unavailable">"No hay conexión de datos. Por favor, compruebe su configuración y pruebe de nuevo."</string>
+	<string name="getting_gps_fix">"Tratando de obtener su ubicación a través del GPS..."</string>
+	<string name="get_directions">Direcciones</string>
+	<string name="navigation_mode">"Modo de navegación"</string>
+	<!--
+		Padded with nbsp's so the menu doesn't rearrange itself when the
+		button toggles
+	-->
+	<string name="planning_mode">  "Modo de planificación"  </string>
+	<string name="navigation_mode_on">"Modo de Navegación activado"</string>
+	<string name="planning_mode_on">"Modo de Navegación desactivado"</string>
+	<string name="start_directions_failed">"&quot;No se pudo obtener la dirección porque la localización es desconocida. Pruebe de nuevo cuando tenga señal GPS.&quot;"</string>
+	<string name="unspecified_directions_failed">"Falló al obtener dirección, por favor, inténtelo de nuevo."</string>
+	<string name="place_not_found">"Perdón, no se pudo encontrar "</string>
+	<string name="unnamed_place">Sin nombre</string>
+	<string name="directions_not_found">"Perdón, no se ha podido obtener la dirección"</string>
+	<string name="please_wait">Por favor, espere...</string>
+	<string name="searching">Buscando</string>
+	<string name="getting_route">Obteniendo ruta</string>
+	<string name="enter_destination">"¿Dónde quiere ir?"</string>
+	<string name="transport_type">"Método de transporte"</string>
+	<!--
+		use a space before the abbreviation if your language uses one between
+		the number and unit
+	-->
+	<string name="kilometres_abbreviation"> km</string>
+	<string name="metres_abbreviation"> m</string>
+	<string name="miles_abbreviation"> mi</string>
+	<string name="yards_abbreviation"> yd</string>
+	<string name="away">lejos</string>
+	<string name="could_not_find_poi">"No se pudo encontrar ningún lugar que coincida con su criterio de búsqueda "</string>
+	<string name="car">Coche</string>
+	<string name="bicycle">Bicicleta</string>
+	<string name="walking">Andando</string>
+	<string-array name="mode_of_transport_types">
+		<item>@string/car</item>
+		<item>@string/bicycle</item>
+		<item>@string/walking</item>
+	</string-array>
+	<!--
+		These are the POI types that would be nice to have, but not all are in
+		OSM namefinder yet
+	-->
+	<!-- Use the OSM tag name for the name attribute if possible -->
+	<string name="atm">ATM</string>
+	<string name="cafe">"Cafetería"</string>
+	<string name="cinema">Cine</string>
+	<string name="fuel">Gasolinera</string>
+	<string name="hospital">Hospital</string>
+	<string name="hotel">Hotel</string>
+	<string name="night_club">Club Nocturno</string>
+	<string name="parking">Parking</string>
+	<string name="police">Comisaría</string>
+	<string name="pub">Pub</string>
+	<string name="restaurant">Restaurante</string>
+	<string name="taxi_rank">Parada de taxi</string>
+	<string name="find_nearest">Encontrar cercano...</string>
+	<string name="choose_location">"Seleccione localización..."</string>
+	<string name="touch_screen">Toque la pantalla para continuar...</string>
+	
+	
+	
+	
+	<string name="preferences">Preferencias</string>
+	<string name="prefs_cache_section">"Caché de mapas"</string>
+	<string name="prefs_cache_sdcard">Espacio usado por la tarjeta SD</string>
+	<string name="prefs_cache_sdcard_summary">"Tamaño máximo usado por la trajeta SD para guardar mapas en caché"</string>
+	<string name="prefs_cache_sdcard_dialog">"La cache de la tarjeta SD contiene la mayoría de los siguentes"</string>
+	<string name="prefs_cache_sdcard_title">"Tamaño seleccionado"</string>
+	<string name="prefs_cache_clear">"Vaciar caché"</string>
+	<string name="prefs_cache_clear_summary">"Haga click aquí para vaciar el caché de mapas"</string>
+	<string name="megabytes_abbreviation">Mb</string>
+	<string name="about">A cerca de</string>
+
+	<!--  OI About inclusion -->
+	<string name="about_website_label">OpenSatNav.org</string>
+	<string name="about_website_url">http://www.opensatnav.org/</string>	
+    <string name="menu_preferences">Preferencias</string>
+    <string name="menu_about">Acerca de OI A cerca de ello</string>
+	<string name="l_leaders">Fundador del proyecto</string>
+	<string name="l_authors">Escrito by</string>
+	<string name="l_documenters">Documentado by</string>
+	<string name="l_translators">Traducido por</string>
+	<string name="l_artists">Artwork por</string>
+	<string name="l_credits">"Créditos"</string>
+	<string name="l_license">Licencia</string>
+	<string name="l_info">Información General</string>
+	
+	<string name="no_information_available">"No hay información disponible."</string>
+	<!-- / -->
+	<string name="error_email_message">"Hola a todos,\n\nHe encontrado el siguiente error mientras usaba OpenSatNav.¿le podrian echar un vistazo?\n\n"</string>
+		<string name="error_email_chooser_title">Enviar correo via:</string>
+	<string name="bug_report_mail_address">bug-report@opensatnav.org</string>
+		<string name="bug_report_ask_user">"Ha ocurrido un error inesperado. ¿Desea enviarnos un informe de error?"</string>
+		<string name="bug_report_ask_user_title">Error inesperado</string>
+</resources>
