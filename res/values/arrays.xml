@@ -33,6 +33,7 @@
 		<item>Kizza</item>
 		<item>ZeroG</item>
 		<item>Piluso</item>
+		<item>evolvedlight</item>
 
     </string-array>
     
@@ -40,7 +41,8 @@
     </string-array>
     
     <string-array name="about_translators"><!-- Add your name here if you helped out, but only in the arrays.xml for the localization that you helped to translate into! -->
-        <item>ZeroG</item>
+        <item>ZeroG (French)</item>
+        <item>Walo (Spanish)</item>
     </string-array>
     
     <string-array name="about_artists"><!-- Add your name here if you helped out -->
