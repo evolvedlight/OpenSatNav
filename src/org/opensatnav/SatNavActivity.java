@@ -176,9 +176,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 	@Override
 	public void onLocationChanged(Location newLocation) {
-		if ((newLocation != null)
-				&& ((currentLocation == null) || (currentLocation
-						.distanceTo(newLocation) < 100))) {
+		if (newLocation != null) {
 			this.mMyLocationOverlay.setLocation(TypeConverter
 					.locationToGeoPoint(newLocation));
 			this.mMyLocationOverlay.setBearing(newLocation.getBearing());
@@ -188,32 +186,42 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				this.mOsmv.setMapCenter(TypeConverter
 						.locationToGeoPoint(newLocation));
 			currentLocation = newLocation;
-			
+
 			// see if the user has moved off the route too far and we need to
-			// get it again (if we judge it's worth it based on what the user's doing)
-			if (this.routeOverlay != null && this.autoFollowing  && this.mOsmv.getZoomLevel()>14) {
+			// get it again (if we judge it's worth it based on what the user's
+			// doing)
+			if (this.routeOverlay != null && this.autoFollowing
+					&& this.mOsmv.getZoomLevel() > 14
+					&& newLocation.getAccuracy() < 20) {
 				int tolerance = 250; // metres that the user can go before we
 				// need to get the route again
 				OpenStreetMapViewProjection pj = this.mOsmv.getProjection();
-				int pixelToleranceRadius = (int) (pj.metersToEquatorPixels(tolerance)*100);
-				Point pointLocation = pj.toPixels(TypeConverter.locationToGeoPoint(currentLocation), null);
+				int pixelToleranceRadius = (int) (pj
+						.metersToEquatorPixels(tolerance) * 100);
+				Point pointLocation = pj.toPixels(TypeConverter
+						.locationToGeoPoint(currentLocation), null);
 				// if the route is within this rectangle it is close enough and
 				// we don't need a new route
-				Rect onRoute = new Rect(pointLocation.x - pixelToleranceRadius, pointLocation.y - pixelToleranceRadius,
-						pointLocation.x + pixelToleranceRadius, pointLocation.y + pixelToleranceRadius);
+				Rect onRoute = new Rect(pointLocation.x - pixelToleranceRadius,
+						pointLocation.y - pixelToleranceRadius, pointLocation.x
+								+ pixelToleranceRadius, pointLocation.y
+								+ pixelToleranceRadius);
 				ArrayList<Point> pixelRoute = this.routeOverlay.getPixelRoute();
-				// if all of the route segments fail to intersect we need a new route
+				// if all of the route segments fail to intersect we need a new
+				// route
 				int offRouteCount = 0;
-				for (int i = 0; i < pixelRoute.size()-1; i++) {
-					Rect routeSegment = new Rect(pixelRoute.get(i + 1).x, pixelRoute.get(i + 1).y, pixelRoute.get(i).x,
+				for (int i = 0; i < pixelRoute.size() - 1; i++) {
+					Rect routeSegment = new Rect(pixelRoute.get(i + 1).x,
+							pixelRoute.get(i + 1).y, pixelRoute.get(i).x,
 							pixelRoute.get(i).y);
 					if (Rect.intersects(onRoute, routeSegment))
 						break;
 					else
 						offRouteCount++;
 				}
-				if (offRouteCount == pixelRoute.size()-1) {
-					refreshRoute(TypeConverter.locationToGeoPoint(currentLocation), to, vehicle);
+				if (offRouteCount == pixelRoute.size() - 1) {
+					refreshRoute(TypeConverter
+							.locationToGeoPoint(currentLocation), to, vehicle);
 				}
 			}
 		}
@@ -245,6 +253,22 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		// OpenStreetMapRendererInfo.values()[i].NAME);
 		// }
 		// mapModeMenuItem.setIcon(android.R.drawable.ic_menu_mapmode);
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem item = menu.findItem(MENU_TOGGLE_FOLLOW_MODE);
+		if (!(this.autoFollowing)) {
+			// this weird style is required to set multiple attributes on
+			// the item
+			item.setTitle(R.string.navigation_mode).setIcon(
+					android.R.drawable.ic_menu_mylocation);
+		} else {
+
+			item.setTitle(R.string.planning_mode).setIcon(
+					android.R.drawable.ic_menu_mapmode);
+		}
 		return true;
 	}
 
@@ -281,16 +305,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				this.autoFollowing = false;
 				Toast.makeText(this, R.string.planning_mode_on,
 						Toast.LENGTH_SHORT).show();
-				// this weird style is required to set multiple attributes on
-				// the item
-				item.setTitle(R.string.navigation_mode).setIcon(
-						android.R.drawable.ic_menu_mylocation);
 			} else {
 				this.autoFollowing = true;
 				Toast.makeText(this, R.string.navigation_mode_on,
 						Toast.LENGTH_SHORT).show();
-				item.setTitle(R.string.planning_mode).setIcon(
-						android.R.drawable.ic_menu_mapmode);
 			}
 			return true;
 		case MENU_PREFERENCES:
@@ -299,9 +317,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			startActivityForResult(intent, MENU_PREFERENCES);
 			return true;
 		case MENU_ABOUT:
-			Intent intent1 = new Intent(this,
-					org.openintents.about.About.class);
-           	startActivityForResult(intent1, MENU_ABOUT);
+			Intent intent1 = new Intent(this, org.openintents.about.About.class);
+			startActivityForResult(intent1, MENU_ABOUT);
 
 			return true;
 		default:
@@ -314,8 +331,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if ((requestCode == DIRECTIONS_OPTIONS) || (requestCode == SELECT_POI)) {
 			if (resultCode == RESULT_OK) {
-				to = GeoPoint.fromIntString(data
-						.getStringExtra("to"));
+				to = GeoPoint.fromIntString(data.getStringExtra("to"));
 				vehicle = data.getStringExtra("vehicle");
 				refreshRoute(TypeConverter.locationToGeoPoint(currentLocation),
 						to, vehicle);
@@ -323,7 +339,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		}
 
 	}
-
 
 	public void refreshRoute(final GeoPoint from, final GeoPoint to,
 			final String vehicle) {
@@ -379,6 +394,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		savedInstanceState.putStringArrayList("route", route);
+		savedInstanceState.putInt("zoomLevel", this.mOsmv.getZoomLevel());
+		savedInstanceState.putBoolean("autoFollowing", autoFollowing);
+		savedInstanceState.putInt("mLatitudeE6", this.mOsmv.getMapCenterLatitudeE6());
+		savedInstanceState.putInt("mLongitudeE6", this.mOsmv.getMapCenterLongitudeE6());
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
@@ -394,6 +413,9 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			this.routeOverlay = new OpenStreetMapViewRouteOverlay(this,
 					niceRoute);
 			this.mOsmv.getOverlays().add(this.routeOverlay);
+			autoFollowing = savedInstanceState.getBoolean("autoFollowing");
+			this.mOsmv.setZoomLevel(savedInstanceState.getInt("zoomLevel"));
+			this.mOsmv.setMapCenter(savedInstanceState.getInt("mLatitudeE6"), savedInstanceState.getInt("mLongitudeE6"));
 		}
 	}
 

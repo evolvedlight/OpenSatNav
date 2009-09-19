@@ -205,11 +205,10 @@ public abstract class OpenStreetMapActivity extends Activity implements OpenStre
 		public void onLocationChanged(final Location loc) {
 			if (loc != null) {
 				currentLocation = loc;
-				// if(loc.getProvider()==LocationManager.GPS_PROVIDER) {
-				// getLocationManager().removeUpdates(mLocationListener);
-				// getLocationManager().requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				// 0, 0, mLocationListener);
-				// }
+				if(loc.getProvider()==LocationManager.GPS_PROVIDER) {
+					getLocationManager().removeUpdates(mLocationListener);
+					getLocationManager().requestLocationUpdates(LocationManager.GPS_PROVIDER,0, 0, mLocationListener);
+				}
 				OpenStreetMapActivity.this.onLocationChanged(loc);
 			} else {
 				OpenStreetMapActivity.this.onLocationLost();
