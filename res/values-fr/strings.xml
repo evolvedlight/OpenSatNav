@@ -2,12 +2,9 @@
 <resources>
 	<string name="app_name">OpenSatNav</string>
 	<string name="get_directions">Itinéraire</string>
-	<string name="toggle_autofollow">Activer/Désactiver suivi auto</string>
 	<string name="start_directions_failed">"Impossible de déterminer l'itinéraire parce que
 		votre location est inconnue. Veuillez réessayer lorsque le signal GPS
 		sera meilleur."</string>
-	<string name="autofollow_stopped">Suivi désactivé</string>
-	<string name="autofollow_started">Suivi activé</string>
 	<string name="unspecified_directions_failed">"Résolution de l'itinéraire impossible, veuillez
 		réessayer."</string>
 	<string name="directions_not_found">"Désolé, impossible de déterminer l'itinéraire"
@@ -58,14 +55,6 @@
 	<string name="choose_location">Choisissez un lieu...</string>
 	<string name="unnamed_place">Sans nom</string>
 	<string name="touch_screen">"Touchez l'écran pour continuer..."</string>
-	<string name="welcome_to_osn">Bienvenue sur\nOpenSatNav</string>
-	<string name="welcome_desc">OpenSatNav est une application libre open-source
-		qui transformera votre mobile sous Android en un véritable GPS.
-	</string>
-	<string name="no_warranty">OpenSatNav est distribué sans aucune garantie
-	</string>
-	<string name="map_data_source">Les cartes et données de celles ci sont issues du
-		projet OpenStreetMap\nhttp://www.openstreetmap.org</string>
 	<string name="preferences">Préférences</string>
 	<string name="prefs_cache_section">Cache</string>
 	<string name="prefs_cache_sdcard">Utilisation de la carte SD</string>
