@@ -91,7 +91,10 @@ public class OSMGeoCoder implements GeoCoder {
 								.add((int) (Float.parseFloat(locationXml.getNamedItem("lat").getNodeValue()) * 1000000));
 						locationLongitudes
 								.add((int) (Float.parseFloat(locationXml.getNamedItem("lon").getNodeValue()) * 1000000));
-						locationInfo.add(locationXml.getNamedItem("info").getNodeValue());
+						if(locationXml.getNamedItem("info")!= null)
+							locationInfo.add(locationXml.getNamedItem("info").getNodeValue());
+						else
+							locationInfo.add(" ");
 					}
 				}
 			}
