@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">OpenSatNav</string>
-	<string name="app_desc">"Aplicación libre y de código abierto para Android basada en OpenStreetMap."</string>
+	<string name="app_desc">"Aplicación libre y de código abierto para Android basada en OpenStreetMap"</string>
 	<string name="location_services_disabled">"Ningún servicio de localización está activo. ¿Quiere activarlo ahora? \n\nDespués de aplicar los cambios, pulse el botón de Volver para regresar a éste programa."</string>
 	<string name="gps_disabled">"La precisión de su ubicación puede no ser precisa porque el GPS no está activado."</string>
 	<string name="network_unavailable">"No hay conexión de datos. Por favor, compruebe su configuración y pruebe de nuevo."</string>
@@ -16,7 +16,7 @@
 	<string name="navigation_mode_on">"Modo de Navegación activado"</string>
 	<string name="planning_mode_on">"Modo de Navegación desactivado"</string>
 	<string name="start_directions_failed">"&quot;No se pudo obtener la dirección porque la localización es desconocida. Pruebe de nuevo cuando tenga señal GPS.&quot;"</string>
-	<string name="unspecified_directions_failed">"Falló al obtener dirección, por favor, inténtelo de nuevo."</string>
+	<string name="unspecified_directions_failed">"Falló al obtener la dirección, por favor, inténtelo de nuevo."</string>
 	<string name="place_not_found">"Perdón, no se pudo encontrar "</string>
 	<string name="unnamed_place">Sin nombre</string>
 	<string name="directions_not_found">"Perdón, no se ha podido obtener la dirección"</string>
@@ -71,7 +71,7 @@
 	<string name="prefs_cache_section">"Caché de mapas"</string>
 	<string name="prefs_cache_sdcard">Espacio usado por la tarjeta SD</string>
 	<string name="prefs_cache_sdcard_summary">"Tamaño máximo usado por la trajeta SD para guardar mapas en caché"</string>
-	<string name="prefs_cache_sdcard_dialog">"La cache de la tarjeta SD contiene la mayoría de los siguentes"</string>
+	<string name="prefs_cache_sdcard_dialog">"La cache de la tarjeta SD almacenará:"</string>
 	<string name="prefs_cache_sdcard_title">"Tamaño seleccionado"</string>
 	<string name="prefs_cache_clear">"Vaciar caché"</string>
 	<string name="prefs_cache_clear_summary">"Haga click aquí para vaciar el caché de mapas"</string>
@@ -82,10 +82,10 @@
 	<string name="about_website_label">OpenSatNav.org</string>
 	<string name="about_website_url">http://www.opensatnav.org/</string>	
     <string name="menu_preferences">Preferencias</string>
-    <string name="menu_about">Acerca de OI A cerca de ello</string>
+    <string name="menu_about">A Cerca de OI A cerca de ello</string>
 	<string name="l_leaders">Fundador del proyecto</string>
-	<string name="l_authors">Escrito by</string>
-	<string name="l_documenters">Documentado by</string>
+	<string name="l_authors">Escrito por</string>
+	<string name="l_documenters">Documentado por</string>
 	<string name="l_translators">Traducido por</string>
 	<string name="l_artists">Artwork por</string>
 	<string name="l_credits">"Créditos"</string>

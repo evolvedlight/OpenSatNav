@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">OpenSatNav</string>
+	<string name="app_desc">Une application libre et open-source pour Android
+		basée sur OpenStreetMap.</string>
+	<string name="location_services_disabled">"Aucun service de localisation n'est activé. Voulez
+		vous en activer un maintenant ? \n\nAprès cette modification, vous
+		devrez relancer l'application."</string>
+	<string name="gps_disabled">"La précision de la position sera faible car le GPS
+		n'est pas activé."</string>
+	<string name="network_unavailable">Pas de connexion de données. Vérifiez les
+		paramètres et réessayez.</string>
+	<string name="getting_gps_fix">Essai de localisation par le GPS...</string>
 	<string name="get_directions">Itinéraire</string>
+	<string name="navigation_mode">Mode Navigation</string>
+	<!--
+		Padded with nbsp's so the menu doesn't rearrange itself when the
+		button toggles
+	-->
+	<string name="planning_mode">  Mode Planning  </string>
+	<string name="navigation_mode_on">Mode Navigation activé</string>
+	<string name="planning_mode_on">Mode Planning activé</string>
+
 	<string name="start_directions_failed">"Impossible de déterminer l'itinéraire parce que
 		votre location est inconnue. Veuillez réessayer lorsque le signal GPS
 		sera meilleur."</string>
 	<string name="unspecified_directions_failed">"Résolution de l'itinéraire impossible, veuillez
 		réessayer."</string>
+	<string name="place_not_found">"Désolé, impossible de trouver "</string>
+	<string name="unnamed_place">Sans nom</string>
 	<string name="directions_not_found">"Désolé, impossible de déterminer l'itinéraire"
 	</string>
 	<string name="please_wait">Veuillez patienter...</string>
@@ -14,6 +35,7 @@
 	<string name="getting_route">"Chargement de l'itinéraire"</string>
 	<string name="enter_destination">Où voulez-vous vous rendre ?</string>
 	<string name="transport_type">Moyen de transport</string>
+	<string name="away">de distance</string>
 	<string name="could_not_find_poi">Aucun lieu correspondant trouvé</string>
 	<string name="car">Automobile</string>
 	<string name="bicycle">Cycliste</string>
@@ -53,7 +75,7 @@
 	</string-array>
 	<string name="find_nearest">Trouver le plus proche...</string>
 	<string name="choose_location">Choisissez un lieu...</string>
-	<string name="unnamed_place">Sans nom</string>
+
 	<string name="touch_screen">"Touchez l'écran pour continuer..."</string>
 	<string name="preferences">Préférences</string>
 	<string name="prefs_cache_section">Cache</string>
@@ -68,4 +90,29 @@
 	</string>
 	<string name="megabytes_abbreviation">Mo</string>
 	<string name="about">À propos</string>
+
+	<!--  OI About inclusion -->
+	<string name="about_website_label">OpenSatNav.org</string>
+	<string name="about_website_url">http://www.opensatnav.org/</string>
+	<string name="menu_preferences">Préférences</string>
+	<string name="menu_about">About OI About itself</string>
+	<string name="l_leaders">Fondateur</string>
+	<string name="l_authors">Développé par</string>
+	<string name="l_documenters">Documenté par</string>
+	<string name="l_translators">Traduit par</string>
+	<string name="l_artists">Graphismes par</string>
+	<string name="l_credits">Credits</string>
+	<string name="l_license">License</string>
+	<string name="l_info">Information Générale</string>
+
+	<string name="no_information_available">"Pas d'information disponible."</string>
+	<!-- / -->
+	<string name="error_email_message">"Cher tous,\n\nJ'ai rencontré le problème suivant
+		en utilisant OpenSatNav, pourriez vous s'il vous plait y jeter un oeil
+		?\n\n"</string>
+	<string name="error_email_chooser_title">Envoyer un mail par :</string>
+	<string name="bug_report_mail_address">bug-report@opensatnav.org</string>
+	<string name="bug_report_ask_user">Une erreur inattendue vient de se produire.
+		Voulez-vous bien nous transmettre un rapport de bug ?</string>
+	<string name="bug_report_ask_user_title">Erreur Inattendue</string>
 </resources>
