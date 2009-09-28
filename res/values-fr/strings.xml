@@ -115,4 +115,29 @@
 	<string name="bug_report_ask_user">Une erreur inattendue vient de se produire.
 		Voulez-vous bien nous transmettre un rapport de bug ?</string>
 	<string name="bug_report_ask_user_title">Erreur Inattendue</string>
+	
+	<string name="menu_contribute">Contribuer</string>
+	<string name="contribute_title">Contribuer à OSM</string>
+	<string name="prefs_contribute_section">Contribuer</string>
+	<string name="prefs_contribute_osm_username">"Nom d'utilisateur"</string>
+	<string name="prefs_contribute_osm_username_summary">"Veuillez entrer votre nom d'utilisateur OSM ici"</string>
+	<string name="prefs_contribute_osm_password">Mot de passe</string>
+	<string name="prefs_contribute_osm_password_summary">Veuillez entrer votre mot de passe OSM ici</string>
+	<string name="pref_username_key">pref_username_key</string>
+	<string name="pref_password_key">pref_password_key</string>
+	<string name="contribute_introduction">Vous pouvez aider OpenSatNav en envoyant des traces GPS au projet Open Street Map</string>
+	<string name="contribute_start_recording">Démarrer l'enregistrement</string>
+	<string name="contribute_upload">Envoyer les traces GPS à OSM</string>
+	<string name="contribute_delete_traces">Supprimer les traces GPS</string>
+	<string name="contribute_new_waypoint">Nouveau Waypoint</string>
+	<string name="contribute_dialogue_trace_description">Description de la trace</string>
+	<string name="contribute_dialogue_trace_message">Veuillez saisir une description pour cette trace</string>
+	<string name="contribute_dialogue_new_waypoint">Nouveau Waypoint</string>
+	<string name="contribute_dialogue_new_waypoint_message">Veuillez entrer un nom de Waypoint</string>
+	<string name="contribute_username_not_entered">Pas encore renseigné</string>
+	<string name="contribute_error_enter_osm_login_details">"Veuillez entrer vos informations d'authentification au préalable"</string>
+	<string name="contribute_gps_on">Suivi GPS activé</string>
+	<string name="contribute_gps_off">Suivi GPS désactivé</string>
+	<string name="contribute_track_cleared">Trace réinitialisée</string>
+	<string name="contribute_error_no_traces">"Pas de traces collectées jusqu'à présent"</string>	
 </resources>
