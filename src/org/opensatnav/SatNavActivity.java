@@ -17,7 +17,6 @@ This file is part of OpenSatNav.
 package org.opensatnav;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.TypeConverter;
@@ -27,27 +26,19 @@ import org.andnav.osm.views.OpenStreetMapView.OpenStreetMapViewProjection;
 import org.andnav.osm.views.overlay.OpenStreetMapViewDirectedLocationOverlay;
 import org.andnav.osm.views.overlay.OpenStreetMapViewRouteOverlay;
 import org.andnav.osm.views.util.OpenStreetMapRendererInfo;
-import org.opensatnav.services.OSMGeoCoder;
 import org.opensatnav.services.Router;
 import org.opensatnav.services.YOURSRouter;
+import org.opensatnav.util.BugReportExceptionHandler;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-
 import android.graphics.Point;
 import android.graphics.Rect;
-
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -102,6 +93,9 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Thread
+				.setDefaultUncaughtExceptionHandler(new BugReportExceptionHandler(
+						this));
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState, false); // Pass true here to actually
 		// contribute to OSM!
@@ -396,8 +390,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		savedInstanceState.putStringArrayList("route", route);
 		savedInstanceState.putInt("zoomLevel", this.mOsmv.getZoomLevel());
 		savedInstanceState.putBoolean("autoFollowing", autoFollowing);
-		savedInstanceState.putInt("mLatitudeE6", this.mOsmv.getMapCenterLatitudeE6());
-		savedInstanceState.putInt("mLongitudeE6", this.mOsmv.getMapCenterLongitudeE6());
+		savedInstanceState.putInt("mLatitudeE6", this.mOsmv
+				.getMapCenterLatitudeE6());
+		savedInstanceState.putInt("mLongitudeE6", this.mOsmv
+				.getMapCenterLongitudeE6());
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
@@ -415,7 +411,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			this.mOsmv.getOverlays().add(this.routeOverlay);
 			autoFollowing = savedInstanceState.getBoolean("autoFollowing");
 			this.mOsmv.setZoomLevel(savedInstanceState.getInt("zoomLevel"));
-			this.mOsmv.setMapCenter(savedInstanceState.getInt("mLatitudeE6"), savedInstanceState.getInt("mLongitudeE6"));
+			this.mOsmv.setMapCenter(savedInstanceState.getInt("mLatitudeE6"),
+					savedInstanceState.getInt("mLongitudeE6"));
 		}
 	}
 

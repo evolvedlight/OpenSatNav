@@ -117,8 +117,6 @@
 	<string name="contribute_new_waypoint">Nueva Coordenada</string>
 	<string name="contribute_dialogue_trace_description">"Descripción de la traza"</string>
 	<string name="contribute_dialogue_trace_message">"Por favor, introduzca una descripción para la traza"</string>
-	<string name="contribute_dialogue_ok">Ok</string>
-	<string name="contribute_dialogue_cancel">Cancelar</string>
 	<string name="contribute_dialogue_new_waypoint">Nueva Coordenada</string>
 	<string name="contribute_dialogue_new_waypoint_message">"Por favor, introduzca nombre de la coordenada"</string>
 	<string name="contribute_username_not_entered">"Todavía no introducido"</string>

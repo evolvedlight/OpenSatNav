@@ -16,6 +16,11 @@ This file is part of OpenSatNav.
  */
 package org.opensatnav;
 
+import java.io.File;
+
+import android.os.Environment;
+
+
 /**
  * @author Guillaume
  *
@@ -24,9 +29,16 @@ public interface OpenSatNavConstants {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
-	/** OSN config file name **/	
-	public static final String PREFS_FILE = "config.properties";
+	// TODO ZeroG remove cyclic dependency from org.andnav2 package on this Interface
+	public static final File DATA_ROOT_DEVICE = Environment.getExternalStorageDirectory();
+	public static final String DATA_PATH= "/org.opensatnav";
+	
+	public static final String TILE_CACHE_PATH = DATA_PATH + "/tiles";
+	public static final String ERROR_PATH = DATA_PATH + "/errors";
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+
 }

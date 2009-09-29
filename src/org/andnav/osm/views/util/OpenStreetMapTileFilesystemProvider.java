@@ -19,15 +19,12 @@ package org.andnav.osm.views.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +36,7 @@ import java.util.concurrent.Executors;
 import org.andnav.osm.exceptions.EmptyCacheException;
 import org.andnav.osm.util.constants.OpenStreetMapConstants;
 import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
+import org.opensatnav.OpenSatNavConstants;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -47,7 +45,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -81,7 +78,7 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 	protected int mCurrentFSCacheByteSize;
 	protected ExecutorService mThreadPool = Executors.newFixedThreadPool(2);
 	protected final OpenStreetMapTileCache mCache;
-	protected final String tileFolder = "/org.opensatnav/tiles";
+	protected final String tileFolder = OpenSatNavConstants.TILE_CACHE_PATH;
 	protected HashSet<String> mPending = new HashSet<String>();
 
 	// ===========================================================
@@ -122,7 +119,7 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 			return;
 
 		final String formattedTileURLString = OpenStreetMapTileNameFormatter.format(aTileURLString);
-		File root = Environment.getExternalStorageDirectory();
+		File root = OpenSatNavConstants.DATA_ROOT_DEVICE;
 		File tileFile = new File(root, tileFolder+aTileURLString.substring(7)+".osn");
 		FileInputStream fis = null;
 		if (root.canRead()) {
@@ -177,7 +174,7 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 
 	public void saveFile(final String aURLString, final byte[] someData) throws IOException {
 		final String fullName = OpenStreetMapTileNameFormatter.format(aURLString);
-		File sdCard = Environment.getExternalStorageDirectory();
+		File sdCard = OpenSatNavConstants.DATA_ROOT_DEVICE;
 		File folderPath = new File(sdCard, tileFolder+aURLString.substring(7,aURLString.lastIndexOf('/')));
 		File tileFile = new File(sdCard, tileFolder+aURLString.substring(7)+".osn");
 		FileOutputStream fos = null;
