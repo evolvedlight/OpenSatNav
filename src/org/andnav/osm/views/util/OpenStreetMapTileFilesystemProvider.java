@@ -81,7 +81,7 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 	protected int mCurrentFSCacheByteSize;
 	protected ExecutorService mThreadPool = Executors.newFixedThreadPool(2);
 	protected final OpenStreetMapTileCache mCache;
-
+	protected final String tileFolder = "/org.opensatnav/tiles";
 	protected HashSet<String> mPending = new HashSet<String>();
 
 	// ===========================================================
@@ -123,7 +123,7 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 
 		final String formattedTileURLString = OpenStreetMapTileNameFormatter.format(aTileURLString);
 		File root = Environment.getExternalStorageDirectory();
-		File tileFile = new File(root, "osn/"+aTileURLString.substring(7)+".osn");
+		File tileFile = new File(root, tileFolder+aTileURLString.substring(7)+".osn");
 		FileInputStream fis = null;
 		if (root.canRead()) {
 			fis = new FileInputStream(tileFile);
@@ -178,8 +178,8 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 	public void saveFile(final String aURLString, final byte[] someData) throws IOException {
 		final String fullName = OpenStreetMapTileNameFormatter.format(aURLString);
 		File sdCard = Environment.getExternalStorageDirectory();
-		File folderPath = new File(sdCard, "osn/"+aURLString.substring(7,aURLString.lastIndexOf('/')));
-		File tileFile = new File(sdCard, "osn/"+aURLString.substring(7)+".osn");
+		File folderPath = new File(sdCard, tileFolder+aURLString.substring(7,aURLString.lastIndexOf('/')));
+		File tileFile = new File(sdCard, tileFolder+aURLString.substring(7)+".osn");
 		FileOutputStream fos = null;
 		if (sdCard.canWrite()) {
 			folderPath.mkdirs();
