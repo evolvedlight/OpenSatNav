@@ -181,42 +181,56 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 						.locationToGeoPoint(newLocation));
 			currentLocation = newLocation;
 
-			// see if the user has moved off the route too far and we need to
-			// get it again (if we judge it's worth it based on what the user's
-			// doing)
-			if (this.routeOverlay != null && this.autoFollowing
+			/*
+			 * 2 situations where we want to fetch the route again: 1: if we got
+			 * back from ChooseLocationActivity and didn't have a location yet
+			 * and the accuracy's good enough (otherwise GPS will probably kick
+			 * in soon and it's best to wait) 2: if the user has moved off the
+			 * route (if we judge it's worth it based on what the user's doing)
+			 */
+			if (this.to != null && this.autoFollowing
 					&& this.mOsmv.getZoomLevel() > 14
-					&& newLocation.getAccuracy() < 20) {
-				int tolerance = 250; // metres that the user can go before we
-				// need to get the route again
-				OpenStreetMapViewProjection pj = this.mOsmv.getProjection();
-				int pixelToleranceRadius = (int) (pj
-						.metersToEquatorPixels(tolerance) * 100);
-				Point pointLocation = pj.toPixels(TypeConverter
-						.locationToGeoPoint(currentLocation), null);
-				// if the route is within this rectangle it is close enough and
-				// we don't need a new route
-				Rect onRoute = new Rect(pointLocation.x - pixelToleranceRadius,
-						pointLocation.y - pixelToleranceRadius, pointLocation.x
-								+ pixelToleranceRadius, pointLocation.y
-								+ pixelToleranceRadius);
-				ArrayList<Point> pixelRoute = this.routeOverlay.getPixelRoute();
-				// if all of the route segments fail to intersect we need a new
-				// route
-				int offRouteCount = 0;
-				for (int i = 0; i < pixelRoute.size() - 1; i++) {
-					Rect routeSegment = new Rect(pixelRoute.get(i + 1).x,
-							pixelRoute.get(i + 1).y, pixelRoute.get(i).x,
-							pixelRoute.get(i).y);
-					if (Rect.intersects(onRoute, routeSegment))
-						break;
-					else
-						offRouteCount++;
-				}
-				if (offRouteCount == pixelRoute.size() - 1) {
+					&& newLocation.getAccuracy() < 40) {
+				if (this.routeOverlay != null) {
+					int tolerance = 250;
+					// metres that the user can go before
+					// we need to get the route again
+					OpenStreetMapViewProjection pj = this.mOsmv.getProjection();
+					int pixelToleranceRadius = (int) (pj
+							.metersToEquatorPixels(tolerance) * 100);
+					Point pointLocation = pj.toPixels(TypeConverter
+							.locationToGeoPoint(currentLocation), null);
+
+					// constuct a Rect that defines the area where the user
+					// should be within if on the route
+					Rect onRoute = new Rect(pointLocation.x
+							- pixelToleranceRadius, pointLocation.y
+							- pixelToleranceRadius, pointLocation.x
+							+ pixelToleranceRadius, pointLocation.y
+							+ pixelToleranceRadius);
+					ArrayList<Point> pixelRoute = this.routeOverlay
+							.getPixelRoute();
+
+					// if all of the route segments fail to intersect
+					// we need a new route
+					int offRouteCount = 0;
+					for (int i = 0; i < pixelRoute.size() - 1; i++) {
+						Rect routeSegment = new Rect(pixelRoute.get(i + 1).x,
+								pixelRoute.get(i + 1).y, pixelRoute.get(i).x,
+								pixelRoute.get(i).y);
+						if (Rect.intersects(onRoute, routeSegment))
+							break;
+						else
+							offRouteCount++;
+					}
+					if (offRouteCount == pixelRoute.size() - 1) {
+						refreshRoute(TypeConverter
+								.locationToGeoPoint(currentLocation), to,
+								vehicle);
+					}
+				} else
 					refreshRoute(TypeConverter
 							.locationToGeoPoint(currentLocation), to, vehicle);
-				}
 			}
 		}
 	}
@@ -327,8 +341,9 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			if (resultCode == RESULT_OK) {
 				to = GeoPoint.fromIntString(data.getStringExtra("to"));
 				vehicle = data.getStringExtra("vehicle");
-				refreshRoute(TypeConverter.locationToGeoPoint(currentLocation),
-						to, vehicle);
+				if (currentLocation != null)
+					refreshRoute(TypeConverter
+							.locationToGeoPoint(currentLocation), to, vehicle);
 			}
 		}
 
@@ -394,6 +409,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				.getMapCenterLatitudeE6());
 		savedInstanceState.putInt("mLongitudeE6", this.mOsmv
 				.getMapCenterLongitudeE6());
+		if (to != null) {
+			savedInstanceState.putInt("toLatitudeE6", to.getLatitudeE6());
+			savedInstanceState.putInt("toLongitudeE6", to.getLongitudeE6());
+		}
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
@@ -413,7 +432,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			this.mOsmv.setZoomLevel(savedInstanceState.getInt("zoomLevel"));
 			this.mOsmv.setMapCenter(savedInstanceState.getInt("mLatitudeE6"),
 					savedInstanceState.getInt("mLongitudeE6"));
+			if(savedInstanceState.getInt("toLatitudeE6")==0)
+			this.to = new GeoPoint(savedInstanceState.getInt("toLatitudeE6"), savedInstanceState.getInt("toLongitudeE6"));
 		}
 	}
-
 }
