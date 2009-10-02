@@ -36,6 +36,8 @@ public interface OpenSatNavConstants {
 	public static final String TILE_CACHE_PATH = DATA_PATH + "/tiles";
 	public static final String ERROR_PATH = DATA_PATH + "/errors";
 	
+	// tag used to log any useful information Log.info(LOG_TAG, String msg)
+	public static final String LOG_TAG = "OpenSatNav";
 	// ===========================================================
 	// Methods
 	// ===========================================================

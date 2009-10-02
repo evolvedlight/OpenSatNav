@@ -93,9 +93,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Thread
-				.setDefaultUncaughtExceptionHandler(new BugReportExceptionHandler(
-						this));
+		BugReportExceptionHandler.register(this);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState, false); // Pass true here to actually
 		// contribute to OSM!

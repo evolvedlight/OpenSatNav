@@ -549,7 +549,7 @@ public class OpenStreetMapView extends View implements OpenStreetMapConstants, O
 			c.drawRect(0, 0, viewWidth - 1, viewHeight - 1, this.mPaint);
 
 		final long endMs = System.currentTimeMillis();
-		Log.i(DEBUGTAG, "Rendering overall: " + (endMs - startMs) + "ms");
+		Log.d(DEBUGTAG, "Rendering overall: " + (endMs - startMs) + "ms");
 	}
 
 	// ===========================================================
