@@ -281,7 +281,14 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 			this.mCtx = context;
 			this.mDatabase = new AndNavDatabaseHelper(context).getWritableDatabase();
 		}
-
+		@Override
+		protected void finalize() throws Throwable {
+			super.finalize();
+			// ensure the SqlLite db is closed 
+			if (this.mDatabase != null)
+				this.mDatabase.close();
+		}		
+		
 		public void incrementUse(final String aFormattedTileURLString) {
 			final Cursor c = this.mDatabase.rawQuery("UPDATE " + T_FSCACHE + " SET " + T_FSCACHE_USAGECOUNT + " = "
 					+ T_FSCACHE_USAGECOUNT + " + 1 , " + T_FSCACHE_TIMESTAMP + " = '" + getNowAsIso8601() + "' WHERE "
