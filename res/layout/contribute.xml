@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+**
+** 	 Copyright (C) 2008-2009 pjv (and others, see About dialog)
+** 
+** 	 This file is part of OI About.
+**
+**   OI About is free software: you can redistribute it and/or modify
+**   it under the terms of the GNU General Public License as published by
+**   the Free Software Foundation, either version 3 of the License, or
+**   (at your option) any later version.
+**
+**   OI About is distributed in the hope that it will be useful,
+**   but WITHOUT ANY WARRANTY; without even the implied warranty of
+**   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**   GNU General Public License for more details.
+**
+**   You should have received a copy of the GNU General Public License
+**   along with OI About.  If not, see <http://www.gnu.org/licenses/>.
+*/
+-->
+
+
+
+
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical">
+
+
+
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/introText" android:text="@string/contribute_introduction"></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textInfo"></TextView>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/startRecord" android:text="@string/contribute_start_recording" android:drawableLeft="@android:drawable/ic_menu_compass" android:fitsSystemWindows="true"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/contribute_upload" android:id="@+id/uploadButton" android:drawableLeft="@android:drawable/ic_menu_upload" android:fitsSystemWindows="true"></Button>
+
+
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/contribute_delete_traces" android:id="@+id/deleteTracks" android:drawableLeft="@android:drawable/ic_menu_delete" android:fitsSystemWindows="true"></Button>
+
+
+
+
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/clearOldTraces" android:drawableLeft="@android:drawable/ic_menu_delete" android:text="Delete old traces"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/newWayPoint" android:text="@string/contribute_new_waypoint" android:drawableLeft="@android:drawable/ic_menu_add"></Button>
+
+</LinearLayout>

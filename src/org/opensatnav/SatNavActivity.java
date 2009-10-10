@@ -16,31 +16,44 @@ This file is part of OpenSatNav.
  */
 package org.opensatnav;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.anddev.openstreetmap.contributor.util.OSMUploader;
+import org.anddev.openstreetmap.contributor.util.RecordedGeoPoint;
+import org.anddev.openstreetmap.contributor.util.RecordedWayPoint;
+import org.anddev.openstreetmap.contributor.util.RouteRecorder;
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.TypeConverter;
 import org.andnav.osm.util.constants.OpenStreetMapConstants;
+
 import org.andnav.osm.views.OpenStreetMapView;
 import org.andnav.osm.views.OpenStreetMapView.OpenStreetMapViewProjection;
 import org.andnav.osm.views.overlay.OpenStreetMapViewDirectedLocationOverlay;
+import org.andnav.osm.views.overlay.OpenStreetMapViewOldTraceOverlay;
 import org.andnav.osm.views.overlay.OpenStreetMapViewRouteOverlay;
+import org.andnav.osm.views.overlay.OpenStreetMapViewTraceOverlay;
 import org.andnav.osm.views.util.OpenStreetMapRendererInfo;
+import org.opensatnav.services.OSMGeoCoder;
 import org.opensatnav.services.Router;
 import org.opensatnav.services.YOURSRouter;
 import org.opensatnav.util.BugReportExceptionHandler;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.location.Location;
 import android.net.Uri;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -70,22 +83,39 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	private static final int MENU_PREFERENCES = MENU_GET_DIRECTIONS + 1;
 	private static final int MENU_ABOUT = MENU_PREFERENCES + 1;
 	private static final int DIRECTIONS_OPTIONS = MENU_ABOUT + 1;
+	private static final int MENU_CONTRIBUTE = DIRECTIONS_OPTIONS + 1;
+	
 	private static final int SELECT_POI = 0;
+	private static final int CONTRIBUTE = SELECT_POI + 1;
+	private static final int UPLOAD_NOW = 10;
+	private static final int TRACE_TOGGLE = UPLOAD_NOW + 1;
+	private static final int DELETE_TRACKS = TRACE_TOGGLE + 1;
+	private static final int NEW_WAYPOINT = DELETE_TRACKS + 1;
+	private static final int CLEAR_OLD_TRACES = NEW_WAYPOINT + 1;
+	private static final String TAG = "OpenSatNav";
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
 	private OpenStreetMapView mOsmv;
+	private GLSurfaceView mGLView;
+	
 	private OpenStreetMapViewDirectedLocationOverlay mMyLocationOverlay;
 	protected OpenStreetMapViewRouteOverlay routeOverlay;
+	protected OpenStreetMapViewTraceOverlay traceOverlay;
+	protected OpenStreetMapViewTraceOverlay oldTraceOverlay;
 	protected boolean autoFollowing = true;
 	protected Location currentLocation;
 	protected GeoPoint to;
 	protected String vehicle;
+	
+	private boolean tracing = false;
 
 	protected ArrayList<String> route = new ArrayList<String>();
-
+	
+	private RouteRecorder mRouteRecorder = new RouteRecorder();
+	private RouteRecorder mOldRoutes = new RouteRecorder();
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -95,7 +125,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		BugReportExceptionHandler.register(this);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState, false); // Pass true here to actually
+		super.onCreate(savedInstanceState, true); // Pass true here to actually
 		// contribute to OSM!
 		final RelativeLayout rl = new RelativeLayout(this);
 
@@ -177,7 +207,13 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			if (this.autoFollowing)
 				this.mOsmv.setMapCenter(TypeConverter
 						.locationToGeoPoint(newLocation));
+			if (tracing == true) {	
+				SatNavActivity.this.mRouteRecorder.add(newLocation);	
+				refreshTracks();
+			}
+			Log.v(TAG, "Accuracy: " + newLocation.getAccuracy());
 			currentLocation = newLocation;
+
 
 			/*
 			 * 2 situations where we want to fetch the route again: 1: if we got
@@ -229,6 +265,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				} else
 					refreshRoute(TypeConverter
 							.locationToGeoPoint(currentLocation), to, vehicle);
+
 			}
 		}
 	}
@@ -238,6 +275,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		MenuItem directionsMenuItem = pMenu.add(0, MENU_GET_DIRECTIONS,
 				Menu.NONE, R.string.get_directions);
 		directionsMenuItem.setIcon(android.R.drawable.ic_menu_directions);
+		
+		MenuItem contributeMenuItem = pMenu.add(0, MENU_CONTRIBUTE,
+				Menu.NONE, R.string.menu_contribute);
+		contributeMenuItem.setIcon(android.R.drawable.ic_menu_edit);
 		MenuItem poisMenuItem = pMenu.add(0, MENU_FIND_POIS, Menu.NONE, this
 				.getResources().getText(R.string.find_nearest));
 		poisMenuItem.setIcon(android.R.drawable.ic_menu_search);
@@ -250,33 +291,20 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		MenuItem aboutMenuItem = pMenu.add(0, MENU_ABOUT, Menu.NONE,
 				R.string.about);
 		aboutMenuItem.setIcon(android.R.drawable.ic_menu_info_details);
-		// uncomment if you want to enable map mode switching
-		// SubMenu mapModeMenuItem = pMenu.addSubMenu(0, MENU_RENDERER_ID,
-		// Menu.NONE, "Map mode");
-		// {
-		// for (int i = 0; i < OpenStreetMapRendererInfo.values().length; i++)
-		// mapModeMenuItem.add(0, 1000 + i, Menu.NONE,
-		// OpenStreetMapRendererInfo.values()[i].NAME);
-		// }
-		// mapModeMenuItem.setIcon(android.R.drawable.ic_menu_mapmode);
+		
+		 //uncomment if you want to enable map mode switching
+		 //SubMenu mapModeMenuItem = pMenu.addSubMenu(0, MENU_RENDERER_ID,
+		 //Menu.NONE, "Map mode");
+		 //{
+		 //for (int i = 0; i < OpenStreetMapRendererInfo.values().length; i++)
+		 //mapModeMenuItem.add(0, 1000 + i, Menu.NONE,
+		 //OpenStreetMapRendererInfo.values()[i].NAME);
+		 //}
+		 //mapModeMenuItem.setIcon(android.R.drawable.ic_menu_mapmode);
 		return true;
 	}
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		MenuItem item = menu.findItem(MENU_TOGGLE_FOLLOW_MODE);
-		if (!(this.autoFollowing)) {
-			// this weird style is required to set multiple attributes on
-			// the item
-			item.setTitle(R.string.navigation_mode).setIcon(
-					android.R.drawable.ic_menu_mylocation);
-		} else {
-
-			item.setTitle(R.string.planning_mode).setIcon(
-					android.R.drawable.ic_menu_mapmode);
-		}
-		return true;
-	}
+	
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
@@ -291,6 +319,14 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			} else
 				Toast.makeText(this, R.string.start_directions_failed,
 						Toast.LENGTH_LONG).show();
+			return true;
+		case MENU_CONTRIBUTE:
+			
+				Intent intentContribute = new Intent(this,
+						org.opensatnav.ContributeActivity.class);
+				intentContribute.setData(Uri.parse(String.valueOf(tracing)));
+				startActivityForResult(intentContribute, CONTRIBUTE);
+				
 			return true;
 		case MENU_FIND_POIS:
 			if (currentLocation != null) {
@@ -308,7 +344,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			return true;
 		case MENU_TOGGLE_FOLLOW_MODE:
 			if (this.autoFollowing) {
-				this.autoFollowing = false;
+				this.autoFollowing = false; 
 				Toast.makeText(this, R.string.planning_mode_on,
 						Toast.LENGTH_SHORT).show();
 			} else {
@@ -321,18 +357,40 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			Intent intent = new Intent(this,
 					org.opensatnav.ConfigurationActivity.class);
 			startActivityForResult(intent, MENU_PREFERENCES);
+			
+
 			return true;
 		case MENU_ABOUT:
 			Intent intent1 = new Intent(this, org.openintents.about.About.class);
 			startActivityForResult(intent1, MENU_ABOUT);
 
 			return true;
+		
+			
 		default:
 			this.mOsmv.setRenderer(OpenStreetMapRendererInfo.values()[item
 					.getItemId() - 1000]);
 		}
 		return false;
 	}
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem item = menu.findItem(MENU_TOGGLE_FOLLOW_MODE);
+		if (!(this.autoFollowing)) {
+			
+			// this weird style is required to set multiple attributes on
+			// the item
+			
+			item.setTitle(R.string.navigation_mode).setIcon(
+					android.R.drawable.ic_menu_mylocation);
+		} else {
+			
+			item.setTitle(R.string.planning_mode).setIcon(
+					android.R.drawable.ic_menu_mapmode);
+		}
+		return true;
+	}
+	
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if ((requestCode == DIRECTIONS_OPTIONS) || (requestCode == SELECT_POI)) {
@@ -344,7 +402,117 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 							.locationToGeoPoint(currentLocation), to, vehicle);
 			}
 		}
+		if(requestCode == CONTRIBUTE) {
+			Log.v(TAG, "Result code is " + resultCode);
+			if (resultCode == UPLOAD_NOW) {
+				//Check actually got some traces:
+				if (mRouteRecorder.getRecordedGeoPoints().size() == 0)
+				{
+					displayToast(R.string.contribute_error_no_traces);
+				} else {
 
+					ProgressDialog dialog = ProgressDialog.show(this, "", "Uploading traces", true);
+
+					dialog.show();
+
+					//Check logged in:
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+					String username = prefs.getString(getString(R.string.pref_username_key), null);
+					String password = prefs.getString(getString(R.string.pref_password_key), null);
+					if(username == null || password == null) {
+						displayToast(R.string.contribute_error_enter_osm_login_details);
+					} else {
+						try {
+
+
+							String description = data.getStringExtra("description");
+							OSMUploader.uploadAsync(this.mRouteRecorder, username, password, description);
+
+							displayToast("Track with description \"" + description + "\" uploaded to OSM. Track cleared and tracing off");
+							for(RecordedWayPoint wtp : mRouteRecorder.getRecordedWayPoints()) {
+								mOldRoutes.addWayPoint(wtp);
+							}
+							for(RecordedGeoPoint gpt : mRouteRecorder.getRecordedGeoPoints()) {
+								mOldRoutes.add(gpt);
+							}
+							mRouteRecorder = new RouteRecorder();
+							tracing = false;
+
+						} catch (IOException e) {
+							displayToast("Sorry, an error happened: " + e); //i think this is never called because expections happen earlier in the code
+							Log.e(TAG, "Error uploading route to openstreemaps.", e);
+						} 
+					}
+					dialog.dismiss();
+				}
+
+			}
+			if (resultCode == TRACE_TOGGLE) {
+				if (tracing == true) {
+					tracing = false;
+					displayToast(R.string.contribute_gps_off);
+				} else {
+					tracing = true;
+					displayToast(R.string.contribute_gps_on);
+				}
+
+			}
+
+			if (resultCode == DELETE_TRACKS) {
+				mRouteRecorder = new RouteRecorder();
+				displayToast(R.string.contribute_track_cleared);
+			}
+			
+			if (resultCode == NEW_WAYPOINT) {
+				if (mRouteRecorder.getRecordedGeoPoints().size() !=  0) {
+					String wayPointName = data.getStringExtra("wayPointName");
+					mRouteRecorder.addWayPoint(wayPointName);
+					displayToast("Waypoint \"" + wayPointName + "\" added");
+				} else {
+					displayToast("GPS fix not good enough to add waypoint, try again");
+				}
+			}
+			if (resultCode == CLEAR_OLD_TRACES) {
+				mOldRoutes = new RouteRecorder();
+				displayToast("Done");
+			}
+			refreshTracks();
+		}
+
+	}
+	public void refreshTracks() {
+		
+		
+		if (mRouteRecorder.getRecordedGeoPoints() != null) {
+			if (SatNavActivity.this.mOsmv.getOverlays().contains(
+					SatNavActivity.this.traceOverlay)) {
+				SatNavActivity.this.mOsmv.getOverlays().remove(
+						SatNavActivity.this.traceOverlay);
+			}
+			SatNavActivity.this.traceOverlay = new OpenStreetMapViewTraceOverlay(
+					SatNavActivity.this, mRouteRecorder);
+			SatNavActivity.this.mOsmv.getOverlays().add(
+					SatNavActivity.this.traceOverlay);
+			Log.v(TAG, "Drew " + mRouteRecorder.getRecordedGeoPoints().size() + " points");
+			// tell the viewer that it should redraws
+			SatNavActivity.this.mOsmv.postInvalidate();
+		}
+		
+		if (mOldRoutes.getRecordedGeoPoints() != null) {
+			if (SatNavActivity.this.mOsmv.getOverlays().contains(
+					SatNavActivity.this.oldTraceOverlay)) {
+				SatNavActivity.this.mOsmv.getOverlays().remove(
+						SatNavActivity.this.oldTraceOverlay);
+			}
+			SatNavActivity.this.oldTraceOverlay = new OpenStreetMapViewOldTraceOverlay(
+					SatNavActivity.this, mOldRoutes);
+			SatNavActivity.this.mOsmv.getOverlays().add(
+					SatNavActivity.this.oldTraceOverlay);
+			
+			// tell the viewer that it should redraws
+			SatNavActivity.this.mOsmv.postInvalidate();
+		}
+		
 	}
 
 	public void refreshRoute(final GeoPoint from, final GeoPoint to,
@@ -401,18 +569,23 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		savedInstanceState.putStringArrayList("route", route);
+
+		savedInstanceState.putBoolean("tracing", tracing);
 		savedInstanceState.putInt("zoomLevel", this.mOsmv.getZoomLevel());
 		savedInstanceState.putBoolean("autoFollowing", autoFollowing);
-		savedInstanceState.putInt("mLatitudeE6", this.mOsmv
-				.getMapCenterLatitudeE6());
-		savedInstanceState.putInt("mLongitudeE6", this.mOsmv
-				.getMapCenterLongitudeE6());
+		savedInstanceState.putInt("mLatitudeE6", this.mOsmv.getMapCenterLatitudeE6());
+		savedInstanceState.putInt("mLongitudeE6", this.mOsmv.getMapCenterLongitudeE6());
+		savedInstanceState.putBundle("trace", mRouteRecorder.getBundle());
+		savedInstanceState.putBundle("oldtrace", mOldRoutes.getBundle());
+
 		if (to != null) {
 			savedInstanceState.putInt("toLatitudeE6", to.getLatitudeE6());
 			savedInstanceState.putInt("toLongitudeE6", to.getLongitudeE6());
 		}
+
 		super.onSaveInstanceState(savedInstanceState);
 	}
+	
 
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
@@ -433,5 +606,25 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			if(savedInstanceState.getInt("toLatitudeE6")==0)
 			this.to = new GeoPoint(savedInstanceState.getInt("toLatitudeE6"), savedInstanceState.getInt("toLongitudeE6"));
 		}
+		mRouteRecorder = new RouteRecorder(savedInstanceState.getBundle("trace"));
+		mOldRoutes = new RouteRecorder(savedInstanceState.getBundle("oldtrace"));
+		tracing = savedInstanceState.getBoolean("tracing");
+		autoFollowing = savedInstanceState.getBoolean("autoFollowing");
+		this.mOsmv.setZoomLevel(savedInstanceState.getInt("zoomLevel"));
+		this.mOsmv.setMapCenter(savedInstanceState.getInt("mLatitudeE6"), savedInstanceState.getInt("mLongitudeE6"));
+		
 	}
+
+	
+	private void displayToast(String msg)
+	{
+	     Toast.makeText(getBaseContext(), msg, 
+	     Toast.LENGTH_SHORT).show();        
+	}
+	
+	private void displayToast(int stringReference) {
+		displayToast((String) getText(stringReference));
+	}
+
+
 }

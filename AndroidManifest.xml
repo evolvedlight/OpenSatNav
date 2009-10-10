@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.opensatnav" android:versionCode="1" android:versionName="0.8">
+<manifest package="org.opensatnav" android:versionCode="1" android:versionName="0.8" xmlns:android="http://schemas.android.com/apk/res/android">
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -45,7 +44,10 @@
 			android:resource="@raw/license" />
 		<meta-data android:name="org.openintents.metadata.EMAIL"
 			android:value="support@opensatnav.org" />
-	</application>
+	<activity android:name="ContributeActivity"></activity>
 
-	<uses-sdk android:minSdkVersion="2" />
+
+</application>
+
+	<uses-sdk android:minSdkVersion="3"/>
 </manifest> 
