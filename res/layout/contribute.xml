@@ -22,12 +22,12 @@
 
 
 
-
-<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical">
-
-
-
+<ScrollView android:id="@+id/ScrollView01" android:layout_width="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="wrap_content">
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent"  android:orientation="vertical">
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/introText" android:text="@string/contribute_introduction"></TextView>
+
+
+
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textInfo"></TextView>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/startRecord" android:text="@string/contribute_start_recording" android:drawableLeft="@android:drawable/ic_menu_compass" android:fitsSystemWindows="true"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/contribute_upload" android:id="@+id/uploadButton" android:drawableLeft="@android:drawable/ic_menu_upload" android:fitsSystemWindows="true"></Button>
 
@@ -39,4 +39,6 @@
 
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/clearOldTraces" android:drawableLeft="@android:drawable/ic_menu_delete" android:text="Delete old traces"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/newWayPoint" android:text="@string/contribute_new_waypoint" android:drawableLeft="@android:drawable/ic_menu_add"></Button>
 
+
 </LinearLayout>
+</ScrollView>
