@@ -28,8 +28,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -79,7 +81,8 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 	protected ExecutorService mThreadPool = Executors.newFixedThreadPool(2);
 	protected final OpenStreetMapTileCache mCache;
 	protected final String tileFolder = OpenSatNavConstants.TILE_CACHE_PATH;
-	protected HashSet<String> mPending = new HashSet<String>();
+	protected Set<String> mPending = Collections.synchronizedSet(new HashSet<String>());
+
 
 	// ===========================================================
 	// Constructors

@@ -23,7 +23,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -52,7 +54,7 @@ public class OpenStreetMapTileDownloader implements OpenStreetMapConstants, Open
 	// Fields
 	// ===========================================================
 
-	protected HashSet<String> mPending = new HashSet<String>();
+	protected Set<String> mPending = Collections.synchronizedSet(new HashSet<String>());
 	protected Context mCtx;
 	protected OpenStreetMapTileFilesystemProvider mMapTileFSProvider;
 	protected ExecutorService mThreadPool = Executors.newFixedThreadPool(5);
