@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">OpenSatNav</string>
-	<string name="app_desc">Une application libre et open-source pour Android
-		basée sur OpenStreetMap.</string>
+	<string name="app_desc">Une application de navigation libre et open-source pour Android basée sur OpenStreetMap.</string>
 	<string name="location_services_disabled">"Aucun service de localisation n'est activé. Voulez
 		vous en activer un maintenant ? \n\nAprès cette modification, vous
 		devrez relancer l'application."</string>
-	<string name="gps_disabled">"La précision de la position sera faible car le GPS
-		n'est pas activé."</string>
-	<string name="network_unavailable">Pas de connexion de données. Vérifiez les
-		paramètres et réessayez.</string>
+	<string name="gps_disabled">La précision de votre position sera faible car le GPS n\'est pas activé.</string>
+	<string name="network_unavailable">Pas de connexion de données. Vérifiez vos paramètres réseau et réessayez.</string>
 	<string name="getting_gps_fix">Essai de localisation par le GPS...</string>
 	<string name="get_directions">Itinéraire</string>
 	<string name="navigation_mode">Mode Navigation</string>
@@ -101,11 +98,11 @@
 	<string name="l_documenters">Documenté par</string>
 	<string name="l_translators">Traduit par</string>
 	<string name="l_artists">Graphismes par</string>
-	<string name="l_credits">Credits</string>
+	<string name="l_credits">Crédits</string>
 	<string name="l_license">License</string>
 	<string name="l_info">Information Générale</string>
 
-	<string name="no_information_available">"Pas d'information disponible."</string>
+	<string name="no_information_available">Pas d\'information disponible</string>
 	<!-- / -->
 	<string name="error_email_message">"Cher tous,\n\nJ'ai rencontré le problème suivant
 		en utilisant OpenSatNav, pourriez vous s'il vous plait y jeter un oeil
@@ -113,21 +110,21 @@
 	<string name="error_email_chooser_title">Envoyer un mail par :</string>
 	<string name="bug_report_mail_address">bug-reports@opensatnav.org</string>
 	<string name="bug_report_not_sent_ask_user">"Une erreur inattendue s'est produite lors de votre dernière utilisation d'OpenSatNav. Voulez-vous bien nous transmettre un rapport de bug ?</string>	
-	<string name="bug_report_ask_user">Une erreur inattendue vient de se produire.
-		Voulez-vous bien nous transmettre un rapport de bug ?</string>
-	<string name="bug_report_ask_user_title">Erreur Inattendue</string>
+	<string name="bug_report_ask_user">Une erreur inattendue vient de se produire. Voulez-vous bien nous transmettre un rapport de bug ?</string>
+	<string name="bug_report_ask_user_title">Erreur inattendue</string>
 	
 	<string name="menu_contribute">Contribuer</string>
 	<string name="contribute_title">Contribuer à OSM</string>
 	<string name="prefs_contribute_section">Contribuer</string>
-	<string name="prefs_contribute_osm_username">"Nom d'utilisateur"</string>
-	<string name="prefs_contribute_osm_username_summary">"Veuillez entrer votre nom d'utilisateur OSM"</string>
+	<string name="prefs_contribute_osm_username">Nom d\'utilisateur</string>
+	<string name="prefs_contribute_osm_username_summary">Veuillez entrer votre nom d\'utilisateur OSM</string>
 	<string name="prefs_contribute_osm_password">Mot de passe</string>
 	<string name="prefs_contribute_osm_password_summary">Veuillez entrer votre mot de passe OSM</string>
 	<string name="pref_username_key">pref_username_key</string>
 	<string name="pref_password_key">pref_password_key</string>
 	<string name="contribute_introduction">Vous pouvez aider OpenSatNav en envoyant des traces GPS au projet Open Street Map</string>
-	<string name="contribute_start_recording">"Démarrer l'enregistrement"</string>
+	<string name="contribute_start_recording">Démarrer l\'enregistrement</string>
+	<string name="contribute_stop_recording">Arrêt de l\'enregistrement</string>	
 	<string name="contribute_upload">Envoyer les traces GPS à OSM</string>
 	<string name="contribute_delete_traces">Supprimer les traces GPS</string>
 	<string name="contribute_new_waypoint">Nouveau Waypoint</string>
@@ -136,9 +133,9 @@
 	<string name="contribute_dialogue_new_waypoint">Nouveau Waypoint</string>
 	<string name="contribute_dialogue_new_waypoint_message">Veuillez entrer un nom de Waypoint</string>
 	<string name="contribute_username_not_entered">Pas encore renseigné</string>
-	<string name="contribute_error_enter_osm_login_details">"Veuillez entrer vos informations d'authentification au préalable"</string>
+	<string name="contribute_error_enter_osm_login_details">Veuillez entrer vos informations d\'authentification au préalable</string>
 	<string name="contribute_gps_on">Suivi GPS activé</string>
 	<string name="contribute_gps_off">Suivi GPS désactivé</string>
 	<string name="contribute_track_cleared">Trace réinitialisée</string>
-	<string name="contribute_error_no_traces">"Pas de traces collectées jusqu'à présent"</string>	
+	<string name="contribute_error_no_traces">Pas de traces collectées jusqu\'à présent</string>	
 </resources>
