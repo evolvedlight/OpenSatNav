@@ -56,7 +56,8 @@ public class ContributeActivity extends Activity {
 		Boolean tracing = Boolean.valueOf(getIntent().getDataString());
 		Button startButton = (Button) findViewById(R.id.startRecord);
 		if (tracing == true) {
-			startButton.setText("Stop Recording");
+			startButton.setText(this.getResources().getText(
+					R.string.contribute_stop_recording));
 		}
 		Button deleteButton = (Button) findViewById(R.id.deleteTracks);
 
