@@ -19,7 +19,7 @@
 	
 </PreferenceCategory><PreferenceCategory android:title="@string/prefs_contribute_section">
 <EditTextPreference android:dialogTitle="@string/prefs_contribute_osm_username" android:summary="@string/prefs_contribute_osm_username_summary" android:title="@string/prefs_contribute_osm_username" android:dialogMessage="@string/prefs_contribute_osm_username_summary" android:key="@string/pref_username_key"></EditTextPreference>
-<EditTextPreference android:dialogMessage="@string/prefs_contribute_osm_password_summary" android:summary="@string/prefs_contribute_osm_username_summary" android:title="@string/prefs_contribute_osm_password" android:dialogTitle="@string/prefs_contribute_osm_password" android:key="@string/pref_password_key" android:password="true"  ></EditTextPreference>
+<EditTextPreference android:dialogMessage="@string/prefs_contribute_osm_password_summary" android:summary="@string/prefs_contribute_osm_password_summary" android:title="@string/prefs_contribute_osm_password" android:dialogTitle="@string/prefs_contribute_osm_password" android:key="@string/pref_password_key" android:password="true"  ></EditTextPreference>
 
 </PreferenceCategory>
 </PreferenceScreen>

@@ -121,9 +121,9 @@
 	<string name="contribute_title">Contribuer à OSM</string>
 	<string name="prefs_contribute_section">Contribuer</string>
 	<string name="prefs_contribute_osm_username">"Nom d'utilisateur"</string>
-	<string name="prefs_contribute_osm_username_summary">"Veuillez entrer votre nom d'utilisateur OSM ici"</string>
+	<string name="prefs_contribute_osm_username_summary">"Veuillez entrer votre nom d'utilisateur OSM"</string>
 	<string name="prefs_contribute_osm_password">Mot de passe</string>
-	<string name="prefs_contribute_osm_password_summary">Veuillez entrer votre mot de passe OSM ici</string>
+	<string name="prefs_contribute_osm_password_summary">Veuillez entrer votre mot de passe OSM</string>
 	<string name="pref_username_key">pref_username_key</string>
 	<string name="pref_password_key">pref_password_key</string>
 	<string name="contribute_introduction">Vous pouvez aider OpenSatNav en envoyant des traces GPS au projet Open Street Map</string>
