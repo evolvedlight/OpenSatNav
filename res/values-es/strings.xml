@@ -96,7 +96,7 @@
 	<!-- / -->
 	<string name="error_email_message">"Hola a todos,\n\nHe encontrado el siguiente error mientras usaba OpenSatNav.¿le podrian echar un vistazo?\n\n"</string>
 	<string name="error_email_chooser_title">Enviar correo via:</string>
-	<string name="bug_report_mail_address">bug-report@opensatnav.org</string>
+	<string name="bug_report_mail_address">bug-reports@opensatnav.org</string>
 	<string name="bug_report_ask_user">"Ha ocurrido un error inesperado. ¿Desea enviarnos un informe de error?"</string>
 	<string name="bug_report_ask_user_title">Error inesperado</string>
 	

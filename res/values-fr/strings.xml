@@ -111,7 +111,7 @@
 		en utilisant OpenSatNav, pourriez vous s'il vous plait y jeter un oeil
 		?\n\n"</string>
 	<string name="error_email_chooser_title">Envoyer un mail par :</string>
-	<string name="bug_report_mail_address">bug-report@opensatnav.org</string>
+	<string name="bug_report_mail_address">bug-reports@opensatnav.org</string>
 	<string name="bug_report_not_sent_ask_user">"Une erreur inattendue s'est produite lors de votre dernière utilisation d'OpenSatNav. Voulez-vous bien nous transmettre un rapport de bug ?</string>	
 	<string name="bug_report_ask_user">Une erreur inattendue vient de se produire.
 		Voulez-vous bien nous transmettre un rapport de bug ?</string>
