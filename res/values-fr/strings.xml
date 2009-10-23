@@ -127,7 +127,7 @@
 	<string name="pref_username_key">pref_username_key</string>
 	<string name="pref_password_key">pref_password_key</string>
 	<string name="contribute_introduction">Vous pouvez aider OpenSatNav en envoyant des traces GPS au projet Open Street Map</string>
-	<string name="contribute_start_recording">Démarrer l'enregistrement</string>
+	<string name="contribute_start_recording">"Démarrer l'enregistrement"</string>
 	<string name="contribute_upload">Envoyer les traces GPS à OSM</string>
 	<string name="contribute_delete_traces">Supprimer les traces GPS</string>
 	<string name="contribute_new_waypoint">Nouveau Waypoint</string>
