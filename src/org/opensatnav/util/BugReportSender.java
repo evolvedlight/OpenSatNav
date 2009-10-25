@@ -73,9 +73,9 @@ public class BugReportSender {
 	private Intent send(final String stackTrace) {
 		String[] addressee = { parent
 				.getString(R.string.bug_report_mail_address) };
-
-		String subject = new StringBuilder(getVersionName()).append(
-				" Error Report (Android: ").append(Build.VERSION.RELEASE)
+BugReportHelper helper = new BugReportHelper(parent);
+		String subject = new StringBuilder(helper.getVersionName()).append(" [SVN Rev ").append(helper.getRevision()).append(
+				"] Error Report (Android: ").append(Build.VERSION.RELEASE)
 				.append(" - model: ").append(Build.MODEL).append(")")
 				.toString();
 		String message = parent.getString(R.string.error_email_message);
@@ -91,18 +91,5 @@ public class BugReportSender {
 				.getString(R.string.error_email_chooser_title));
 	}
 
-	private String getVersionName() {
-		return parent.getString(R.string.app_name) + " " + getVersionNumber();
-	}
 
-	private String getVersionNumber() {
-		String version = "Unknown version";
-		try {
-			PackageInfo pi = parent.getPackageManager().getPackageInfo(
-					parent.getPackageName(), 0);
-			version = pi.versionName;
-		} catch (PackageManager.NameNotFoundException e) {
-		}
-		return version;
-	}
 }

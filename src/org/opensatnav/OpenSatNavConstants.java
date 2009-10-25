@@ -38,6 +38,9 @@ public interface OpenSatNavConstants {
 	
 	// tag used to log any useful information Log.info(LOG_TAG, String msg)
 	public static final String LOG_TAG = "OpenSatNav";
+	
+	// metadata key used to retrieve SVN revision in Manifest.xml
+	public static final String REVISION_METADATA = "org.opensatnav.metadata.REVISION";
 	// ===========================================================
 	// Methods
 	// ===========================================================

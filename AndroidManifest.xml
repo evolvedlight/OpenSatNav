@@ -22,6 +22,7 @@
 		<activity android:name="org.opensatnav.ChooseLocationActivity"></activity>
 		<activity android:name="org.openintents.about.About"></activity>
 		<activity android:name="org.opensatnav.ConfigurationActivity"></activity>
+		<activity android:name="ContributeActivity"></activity>
 
 		<!-- values used in the About screen -->
 		<meta-data android:name="org.openintents.metadata.COMMENTS"
@@ -44,9 +45,8 @@
 			android:resource="@raw/license" />
 		<meta-data android:name="org.openintents.metadata.EMAIL"
 			android:value="support@opensatnav.org" />
-	<activity android:name="ContributeActivity"></activity>
-
-
+		<!-- SVNREV value will be replaced by automatic build by the current SVN revision to help in generating bug reports -->
+		<meta-data android:name="org.opensatnav.metadata.REVISION" android:value="$SVNREV$"/>
 </application>
 
 	<uses-sdk android:minSdkVersion="3"/>

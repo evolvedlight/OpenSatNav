@@ -36,6 +36,7 @@ import org.andnav.osm.views.util.OpenStreetMapRendererInfo;
 import org.opensatnav.services.Router;
 import org.opensatnav.services.YOURSRouter;
 import org.opensatnav.util.BugReportExceptionHandler;
+import org.opensatnav.util.BugReportHelper;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -48,7 +49,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -354,6 +354,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 			return true;
 		case MENU_ABOUT:
+			Log.i(OpenSatNavConstants.LOG_TAG, new BugReportHelper(this).getRevision());
 			Intent intent1 = new Intent(this, org.openintents.about.About.class);
 			startActivityForResult(intent1, MENU_ABOUT);
 
