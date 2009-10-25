@@ -1,32 +1,16 @@
 package org.opensatnav;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import org.anddev.openstreetmap.contributor.util.OSMUploader;
-import org.xmlpull.v1.XmlSerializer;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.TextWatcher;
-import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 public class ContributeActivity extends Activity {
 	Bundle gpsTracks = new Bundle();
@@ -36,9 +20,6 @@ public class ContributeActivity extends Activity {
 	private static final int DELETE_TRACKS = TRACE_TOGGLE + 1;
 	private static final int NEW_WAYPOINT = DELETE_TRACKS + 1;
 	private static final int CLEAR_OLD_TRACES = NEW_WAYPOINT + 1;
-	
-	private String editName = "";
-	private String editDescription = "";
 	
 	private Boolean inEditName = false;
 	private Boolean inEditDescription = false;
@@ -134,7 +115,7 @@ public class ContributeActivity extends Activity {
 
 		alert.setView(input);
 
-		alert.setPositiveButton(getText(R.string.contribute_dialogue_ok), new DialogInterface.OnClickListener() {
+		alert.setPositiveButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String description = input.getText().toString();
 				Intent data = getIntent();
@@ -146,7 +127,7 @@ public class ContributeActivity extends Activity {
 		
 		
 
-		alert.setNegativeButton(getText(R.string.contribute_dialogue_cancel), new DialogInterface.OnClickListener() {
+		alert.setNegativeButton(getText(android.R.string.cancel), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				// Canceled.
 			}
@@ -168,7 +149,7 @@ public class ContributeActivity extends Activity {
 		
 		alert.setView(wayPointName);
 
-		alert.setPositiveButton(getText(R.string.contribute_dialogue_ok), new DialogInterface.OnClickListener() {
+		alert.setPositiveButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String name = wayPointName.getText().toString();
 				
@@ -179,7 +160,7 @@ public class ContributeActivity extends Activity {
 			}
 		});
 
-		alert.setNegativeButton(getText(R.string.contribute_dialogue_cancel), new DialogInterface.OnClickListener() {
+		alert.setNegativeButton(getText(android.R.string.cancel), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				// Canceled.
 			}

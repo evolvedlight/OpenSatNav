@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">OpenSatNav</string>
-	<string name="app_desc">A free and open source OpenStreetMap application for Android.</string>
+	<string name="app_desc">A free and open source OpenStreetMap application
+		for Android.</string>
 	<string name="location_services_disabled">No location services are enabled. Do you want to
 		change this setting now? \n\nAfter making the change press the Back
 		button to return to this program.</string>
-	<string name="gps_disabled">Location accuracy will be poor because GPS is not enabled.</string>
-	<string name="network_unavailable">No data connection. Please check your settings and try again.</string>
-	<string name="getting_gps_fix">Attempting to find your location using GPS...</string>
+	<string name="gps_disabled">Location accuracy will be poor because GPS is not
+		enabled.</string>
+	<string name="network_unavailable">No data connection. Please check your settings and
+		try again.</string>
+	<string name="getting_gps_fix">Attempting to find your location using GPS...
+	</string>
 	<string name="get_directions">Directions</string>
 	<string name="navigation_mode">Navigation mode</string>
 	<!--
@@ -17,8 +21,10 @@
 	<string name="planning_mode">  Planning mode  </string>
 	<string name="navigation_mode_on">Navigation mode on</string>
 	<string name="planning_mode_on">Planning mode on</string>
-	<string name="start_directions_failed">&quot;Can't get directions because your location is unknown. Please try again when you have a GPS signal.&quot;</string>
-	<string name="unspecified_directions_failed">Getting directions failed, please try again.</string>
+	<string name="start_directions_failed">&quot;Can't get directions because your location is
+		unknown. Please try again when you have a GPS signal.&quot;</string>
+	<string name="unspecified_directions_failed">Getting directions failed, please try again.
+	</string>
 	<string name="place_not_found">"Sorry, couldn't find "</string>
 	<string name="unnamed_place">Unnamed</string>
 	<string name="directions_not_found">Sorry, couldn't get directions</string>
@@ -65,15 +71,17 @@
 	<string name="find_nearest">Find nearest...</string>
 	<string name="choose_location">Choose location...</string>
 	<string name="touch_screen">Touch screen to continue...</string>
-	
-	
-	
-	
+
+
+
+
 	<string name="preferences">Preferences</string>
 	<string name="prefs_cache_section">Tiles cache</string>
 	<string name="prefs_cache_sdcard">SD Card usage</string>
-	<string name="prefs_cache_sdcard_summary">Maximum used size of the SD card to store cached tiles</string>
-	<string name="prefs_cache_sdcard_dialog">The SD card cache will contain at most the following</string>
+	<string name="prefs_cache_sdcard_summary">Maximum used size of the SD card to store cached
+		tiles</string>
+	<string name="prefs_cache_sdcard_dialog">The SD card cache will contain at most the
+		following</string>
 	<string name="prefs_cache_sdcard_title">Select size</string>
 	<string name="prefs_cache_clear">Clear cache</string>
 	<string name="prefs_cache_clear_summary">Click here to empty the tiles cache</string>
@@ -82,9 +90,9 @@
 
 	<!--  OI About inclusion -->
 	<string name="about_website_label">OpenSatNav.org</string>
-	<string name="about_website_url">http://www.opensatnav.org/</string>	
-    <string name="menu_preferences">Preferences</string>
-    <string name="menu_about">About OI About itself</string>
+	<string name="about_website_url">http://www.opensatnav.org/</string>
+	<string name="menu_preferences">Preferences</string>
+	<string name="menu_about">About OI About itself</string>
 	<string name="l_leaders">Project Founder</string>
 	<string name="l_authors">Written by</string>
 	<string name="l_documenters">Documented by</string>
@@ -93,40 +101,53 @@
 	<string name="l_credits">Credits</string>
 	<string name="l_license">License</string>
 	<string name="l_info">General Info</string>
-	
+
 	<string name="no_information_available">No information available.</string>
 	<!-- / -->
-	<string name="error_email_message">Dear All,\n\nI encountered the following issue while using OpenSatNav, could you please have a look at it?\n\n</string>
-		<string name="error_email_chooser_title">Send Mail via:</string>
+	<string name="error_email_message">Dear All,\n\nI encountered the following issue
+		while using OpenSatNav, could you please have a look at it?\n\n
+	</string>
+	<string name="error_email_chooser_title">Send Mail via:</string>
 	<string name="bug_report_mail_address">bug-reports@opensatnav.org</string>
-		<string name="bug_report_ask_user">An unexpected error just happened. Would you like to send us a bug report?</string>
-		<string name="bug_report_not_sent_ask_user">An unexpected error happened last time you used OpenSatNav. Would you like to send us a bug report?</string>
-		<string name="bug_report_ask_user_title">Unexpected Error</string>
-<string name="menu_contribute">Contribute</string>
-<string name="contribute_title">Contribute to OSM</string>
-<string name="prefs_contribute_section">Contribute</string>
-<string name="prefs_contribute_osm_username">Username</string>
-<string name="prefs_contribute_osm_username_summary">Please enter your OSM username here</string>
-<string name="prefs_contribute_osm_password">Password</string>
-<string name="prefs_contribute_osm_password_summary">Please enter your OSM password here</string>
-<string name="pref_username_key">pref_username_key</string>
-<string name="pref_password_key">pref_password_key</string>
-<string name="contribute_introduction">You can help OpenSatNav by contributing GPS traces to the Open Street Map Project</string>
-<string name="contribute_start_recording">Start Recording</string>
-<string name="contribute_stop_recording">Stop Recording</string>
-<string name="contribute_upload">Upload Tracks to OSM</string>
-<string name="contribute_delete_traces">Delete Traces</string>
-<string name="contribute_new_waypoint">New Waypoint</string>
-<string name="contribute_dialogue_trace_description">Trace Description</string>
-<string name="contribute_dialogue_trace_message">Please set a description for this trace</string>
-<string name="contribute_dialogue_ok">Ok</string>
-<string name="contribute_dialogue_cancel">Cancel</string>
-<string name="contribute_dialogue_new_waypoint">New Waypoint</string>
-<string name="contribute_dialogue_new_waypoint_message">Please enter waypoint name</string>
-<string name="contribute_username_not_entered">Not yet entered</string>
-<string name="contribute_error_enter_osm_login_details">Please enter your login details first</string>
-<string name="contribute_gps_on">GPS Tracking turned On</string>
-<string name="contribute_gps_off">GPS Tracking turned Off</string>
-<string name="contribute_track_cleared">Track cleared</string>
-<string name="contribute_error_no_traces">No traces collected yet</string>
+	<string name="bug_report_ask_user">An unexpected error just happened. Would you like
+		to send us a bug report?</string>
+	<string name="bug_report_not_sent_ask_user">An unexpected error happened last time you used
+		OpenSatNav. Would you like to send us a bug report?</string>
+	<string name="bug_report_ask_user_title">Unexpected Error</string>
+	<string name="menu_contribute">Contribute</string>
+	<string name="contribute_title">Contribute to OSM</string>
+	<string name="prefs_contribute_section">Contribute</string>
+	<string name="prefs_contribute_osm_username">Username</string>
+	<string name="prefs_contribute_osm_username_summary">Please enter your OSM username here</string>
+	<string name="prefs_contribute_osm_password">Password</string>
+	<string name="prefs_contribute_osm_password_summary">Please enter your OSM password here</string>
+	<string name="pref_username_key">pref_username_key</string>
+	<string name="pref_password_key">pref_password_key</string>
+	<string name="contribute_introduction">You can help OpenSatNav by contributing GPS traces
+		to the Open Street Map Project</string>
+	<string name="contribute_start_recording">Start Recording</string>
+	<string name="contribute_stop_recording">Stop Recording</string>
+	<string name="contribute_upload">Upload Tracks to OSM</string>
+	<string name="contribute_delete_traces">Delete Traces</string>
+	<string name="contribute_new_waypoint">New Waypoint</string>
+	<string name="contribute_dialogue_trace_description">Trace Description</string>
+	<string name="contribute_dialogue_trace_message">Please set a description for this trace</string>
+	<string name="contribute_dialogue_new_waypoint">New Waypoint</string>
+	<string name="contribute_dialogue_new_waypoint_message">Please enter waypoint name</string>
+	<string name="contribute_username_not_entered">Not yet entered</string>
+	<string name="contribute_error_enter_osm_login_details">Please enter your login details first</string>
+	<string name="contribute_gps_on">GPS Tracking turned On</string>
+	<string name="contribute_gps_off">GPS Tracking turned Off</string>
+	<string name="contribute_track_cleared">Track cleared</string>
+	<string name="contribute_error_no_traces">No traces collected yet</string>
+	<string name="contribute_uploading_traces">Uploading traces</string>
+	<!--
+		%1$s will be replaced at runtime by track description, keep it
+		unchanged in translations
+	-->
+	<string name="contribute_track_uploaded">Track with description \"%1$s\" uploaded to OSM. Track cleared and tracing off</string>
+	<string name="contribute_waypoint_added">Waypoint \"%1$s\" added</string>
+	
+	<string name="contribute_track_error_happened">Sorry, an error happened: </string>
+	<string name="contribute_waypoing_gps_fix_not_good">GPS fix not good enough to add waypoint, try again</string>
 </resources>

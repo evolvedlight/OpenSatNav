@@ -20,11 +20,9 @@ package org.opensatnav;
 import java.util.ArrayList;
 
 import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.views.util.OpenStreetMapRendererInfo;
 import org.opensatnav.services.GeoCoder;
 import org.opensatnav.services.OSMGeoCoder;
 import org.opensatnav.services.Router;
-import org.opensatnav.services.YOURSRouter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -32,7 +30,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;

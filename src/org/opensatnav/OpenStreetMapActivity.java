@@ -114,7 +114,7 @@ public abstract class OpenStreetMapActivity extends Activity implements
 
 		// get screen to stay on
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		wl = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "My Tag");
+		wl = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, OpenSatNavConstants.LOG_TAG);
 		wl.acquire();
 
 		// register location listeners
@@ -225,7 +225,7 @@ public abstract class OpenStreetMapActivity extends Activity implements
 			firstLocation = getLocationManager().getLastKnownLocation(
 					bestProvider());
 		} catch (Exception e) {
-			Log.d("OpenSatNav", "Error getting the first location");
+			Log.d(OpenSatNavConstants.LOG_TAG, "Error getting the first location");
 		}
 
 		// test to see which location services are available

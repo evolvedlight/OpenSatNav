@@ -108,7 +108,6 @@
 		en utilisant OpenSatNav, pourriez vous s'il vous plait y jeter un oeil
 		?\n\n"</string>
 	<string name="error_email_chooser_title">Envoyer un mail par :</string>
-	<string name="bug_report_mail_address">bug-reports@opensatnav.org</string>
 	<string name="bug_report_not_sent_ask_user">"Une erreur inattendue s'est produite lors de votre dernière utilisation d'OpenSatNav. Voulez-vous bien nous transmettre un rapport de bug ?</string>	
 	<string name="bug_report_ask_user">Une erreur inattendue vient de se produire. Voulez-vous bien nous transmettre un rapport de bug ?</string>
 	<string name="bug_report_ask_user_title">Erreur inattendue</string>
@@ -137,5 +136,15 @@
 	<string name="contribute_gps_on">Suivi GPS activé</string>
 	<string name="contribute_gps_off">Suivi GPS désactivé</string>
 	<string name="contribute_track_cleared">Trace réinitialisée</string>
-	<string name="contribute_error_no_traces">Pas de traces collectées jusqu\'à présent</string>	
+	<string name="contribute_error_no_traces">Pas de traces collectées jusqu\'à présent</string>
+	<string name="contribute_uploading_traces">Traces en cours d\'envoi</string>
+	<!--
+		%1$s will be replaced at runtime by track description, keep it
+		unchanged in translations
+	-->
+	<string name="contribute_track_uploaded">La trace avec la description \"%1$s\" a été transmise à OSM. Reprise du tracé</string>
+	<string name="contribute_waypoint_added">Waypoint \"%1$s\" ajouté</string>
+	
+	<string name="contribute_track_error_happened">Désolé, une erreur s\'est produite : </string>
+	<string name="contribute_waypoing_gps_fix_not_good">La synchronisation du GPS n\'est pas suffisante pour ajouter un waypoint, veuillez réessayer</string>
 </resources>

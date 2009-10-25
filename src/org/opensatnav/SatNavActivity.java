@@ -48,6 +48,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -89,7 +90,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	private static final int DELETE_TRACKS = TRACE_TOGGLE + 1;
 	private static final int NEW_WAYPOINT = DELETE_TRACKS + 1;
 	private static final int CLEAR_OLD_TRACES = NEW_WAYPOINT + 1;
-	private static final String TAG = "OpenSatNav";
 
 	// ===========================================================
 	// Fields
@@ -208,7 +208,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				SatNavActivity.this.mRouteRecorder.add(newLocation);
 				refreshTracks();
 			}
-			Log.v(TAG, "Accuracy: " + newLocation.getAccuracy());
+			Log.v(OpenSatNavConstants.LOG_TAG, "Accuracy: " + newLocation.getAccuracy());
 			currentLocation = newLocation;
 
 			/*
@@ -395,7 +395,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			}
 		}
 		if (requestCode == CONTRIBUTE) {
-			Log.v(TAG, "Result code is " + resultCode);
+			Log.v(OpenSatNavConstants.LOG_TAG, "Result code is " + resultCode);
 			if (resultCode == UPLOAD_NOW) {
 				// Check actually got some traces:
 				if (mRouteRecorder.getRecordedGeoPoints().size() == 0) {
@@ -403,7 +403,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				} else {
 
 					ProgressDialog dialog = ProgressDialog.show(this, "",
-							"Uploading traces", true);
+							getText(R.string.contribute_uploading_traces), true);
 
 					dialog.show();
 
@@ -424,9 +424,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 							OSMUploader.uploadAsync(this.mRouteRecorder,
 									username, password, description);
 
-							displayToast("Track with description \""
-									+ description
-									+ "\" uploaded to OSM. Track cleared and tracing off");
+							String resultsTextFormat = getString(R.string.contribute_track_uploaded);
+							String resultsText = String.format(resultsTextFormat, description);
+
+							displayToast(resultsText);
 							for (RecordedWayPoint wtp : mRouteRecorder
 									.getRecordedWayPoints()) {
 								mOldRoutes.addWayPoint(wtp);
@@ -439,7 +440,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 							tracing = false;
 
 						} catch (IOException e) {
-							displayToast("Sorry, an error happened: " + e); // i
+							displayToast(getString(R.string.contribute_track_error_happened) + e); // i
 																			// think
 																			// this
 																			// is
@@ -452,7 +453,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 																			// in
 																			// the
 																			// code
-							Log.e(TAG,
+							Log.e(OpenSatNavConstants.LOG_TAG,
 									"Error uploading route to openstreemaps.",
 									e);
 						}
@@ -481,9 +482,11 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				if (mRouteRecorder.getRecordedGeoPoints().size() != 0) {
 					String wayPointName = data.getStringExtra("wayPointName");
 					mRouteRecorder.addWayPoint(wayPointName);
-					displayToast("Waypoint \"" + wayPointName + "\" added");
+					String resultsTextFormat = getString(R.string.contribute_waypoint_added);
+					String resultsText = String.format(resultsTextFormat, wayPointName);
+					displayToast(resultsText);
 				} else {
-					displayToast("GPS fix not good enough to add waypoint, try again");
+					displayToast(R.string.contribute_waypoing_gps_fix_not_good);
 				}
 			}
 			if (resultCode == CLEAR_OLD_TRACES) {
@@ -507,7 +510,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 					SatNavActivity.this, mRouteRecorder);
 			SatNavActivity.this.mOsmv.getOverlays().add(
 					SatNavActivity.this.traceOverlay);
-			Log.v(TAG, "Drew " + mRouteRecorder.getRecordedGeoPoints().size()
+			Log.v(OpenSatNavConstants.LOG_TAG, "Drew " + mRouteRecorder.getRecordedGeoPoints().size()
 					+ " points");
 			// tell the viewer that it should redraws
 			SatNavActivity.this.mOsmv.postInvalidate();
