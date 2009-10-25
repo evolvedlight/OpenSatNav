@@ -354,7 +354,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 			return true;
 		case MENU_ABOUT:
-			Log.i(OpenSatNavConstants.LOG_TAG, new BugReportHelper(this).getRevision());
 			Intent intent1 = new Intent(this, org.openintents.about.About.class);
 			startActivityForResult(intent1, MENU_ABOUT);
 
