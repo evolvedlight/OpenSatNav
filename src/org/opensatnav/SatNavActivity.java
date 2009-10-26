@@ -569,7 +569,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 									R.string.directions_not_found),
 							Toast.LENGTH_LONG).show();
 				}
-				progress.dismiss();
+				if (progress.isShowing())
+					progress.dismiss();
 			}
 		};
 		new Thread(new Runnable() {
