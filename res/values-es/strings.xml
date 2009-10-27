@@ -126,5 +126,14 @@
 	<string name="contribute_gps_off">"Trazado GPS desactivado"</string>
 	<string name="contribute_track_cleared">"Traza limpia"</string>
 	<string name="contribute_error_no_traces">"Aún no ha contribuido con trazas"</string>
-
+	<string name="contribute_uploading_traces">Subiendo trazas</string>
+	<!--
+		%1$s will be replaced at runtime by track description, keep it
+		unchanged in translations
+	-->
+	<string name="contribute_track_uploaded">"Traza con descripción \"%1$s\" subida a OSM. Traza limpiada y trazado GPS desactivado"</string>
+	<string name="contribute_waypoint_added">"Punto de interés \"%1$s\" añadido"</string>
+	
+	<string name="contribute_track_error_happened">"Perdone, un error ocurrió: "</string>
+	<string name="contribute_waypoing_gps_fix_not_good">"No hay señal GPS lo suficientemente buena como para añadir un punto de interés, pruebe de nuevo."</string>
 </resources>
