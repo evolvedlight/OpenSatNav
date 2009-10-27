@@ -115,6 +115,11 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 	public int getCurrentFSCacheByteSize() {
 		return this.mCurrentFSCacheByteSize;
 	}
+	
+	public File getFileForURL(final String aTileURLString) {
+		return new File(OpenSatNavConstants.DATA_ROOT_DEVICE,
+				tileFolder + File.separator + aTileURLString.substring(7)+".osn");
+	}
 
 	public void loadMapTileToMemCacheAsync(final String aTileURLString, final Handler callback)
 			throws FileNotFoundException {
@@ -122,17 +127,16 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 			return;
 
 		final String formattedTileURLString = OpenStreetMapTileNameFormatter.format(aTileURLString);
-		File root = OpenSatNavConstants.DATA_ROOT_DEVICE;
-		File tileFile = new File(root, tileFolder+aTileURLString.substring(7)+".osn");
+		final File tileFile = getFileForURL(aTileURLString);
 		FileInputStream fis = null;
-		if (root.canRead()) {
+		final boolean onSD = tileFile.canRead();
+		if (onSD) {
 			fis = new FileInputStream(tileFile);
 		} else {
 			fis = this.mCtx.openFileInput(formattedTileURLString);
 		}
 		final BufferedInputStream bis = new BufferedInputStream(fis,4096);
 		
-
 		this.mPending.add(aTileURLString);
 
 		this.mThreadPool.execute(new Runnable() {
@@ -152,6 +156,16 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 					final byte[] data = dataStream.toByteArray();
 					final Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length); // ,
 					// BITMAPLOADOPTIONS);
+
+					if (bmp == null) {
+						// image file is obvously corrupted - remove it.
+						if (onSD) {
+							tileFile.delete();
+						} else {
+							OpenStreetMapTileFilesystemProvider.this.mCtx.deleteFile(formattedTileURLString);
+						}
+						throw new IOException("Image file was not decodable: " + tileFile);
+					}
 
 					OpenStreetMapTileFilesystemProvider.this.mCache.putTile(aTileURLString, bmp);
 
@@ -175,17 +189,20 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 		});
 	}
 
-	public void saveFile(final String aURLString, final byte[] someData) throws IOException {
-		final String fullName = OpenStreetMapTileNameFormatter.format(aURLString);
-		File sdCard = OpenSatNavConstants.DATA_ROOT_DEVICE;
-		File folderPath = new File(sdCard, tileFolder+aURLString.substring(7,aURLString.lastIndexOf('/')));
-		File tileFile = new File(sdCard, tileFolder+aURLString.substring(7)+".osn");
+	public void saveFile(final String aTileURLString, final byte[] someData) throws IOException {
+		if (someData.length == 0) {
+			throw new IOException("Cannot save file of zero length: " + aTileURLString);
+		}
+		final String formattedTileURLString = OpenStreetMapTileNameFormatter.format(aTileURLString);
+		final File tileFile = getFileForURL(aTileURLString);
+		final File folderPath = tileFile.getParentFile();
+
 		FileOutputStream fos = null;
-		if (sdCard.canWrite()) {
+		if (OpenSatNavConstants.DATA_ROOT_DEVICE.canWrite()) {
 			folderPath.mkdirs();
 			fos = new FileOutputStream(tileFile);
 		} else {
-			fos = this.mCtx.openFileOutput(fullName, Context.MODE_WORLD_READABLE);
+			fos = this.mCtx.openFileOutput(formattedTileURLString, Context.MODE_WORLD_READABLE);
 		}
 		final BufferedOutputStream bos = new BufferedOutputStream(fos, 4096);
 		bos.write(someData);
@@ -193,7 +210,7 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 		bos.close();
 
 		synchronized (this) {
-			final int bytesGrown = this.mDatabase.addTileOrIncrement(fullName, someData.length);
+			final int bytesGrown = this.mDatabase.addTileOrIncrement(formattedTileURLString, someData.length);
 			this.mCurrentFSCacheByteSize += bytesGrown;
 
 			if (DEBUGMODE)
