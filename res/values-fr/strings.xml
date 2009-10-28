@@ -126,6 +126,7 @@
 	<string name="contribute_stop_recording">Arrêt de l\'enregistrement</string>	
 	<string name="contribute_upload">Envoyer les traces GPS à OSM</string>
 	<string name="contribute_delete_traces">Supprimer les traces GPS</string>
+	<string name="contribute_delete_old_traces">Supprimer les anciennes traces GPS</string>	
 	<string name="contribute_new_waypoint">Nouveau Waypoint</string>
 	<string name="contribute_dialogue_trace_description">Description de la trace</string>
 	<string name="contribute_dialogue_trace_message">Veuillez saisir une description pour cette trace</string>

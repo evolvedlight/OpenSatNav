@@ -129,6 +129,7 @@
 	<string name="contribute_stop_recording">Stop Recording</string>
 	<string name="contribute_upload">Upload Tracks to OSM</string>
 	<string name="contribute_delete_traces">Delete Traces</string>
+	<string name="contribute_delete_old_traces">Delete old traces</string>
 	<string name="contribute_new_waypoint">New Waypoint</string>
 	<string name="contribute_dialogue_trace_description">Trace Description</string>
 	<string name="contribute_dialogue_trace_message">Please set a description for this trace</string>

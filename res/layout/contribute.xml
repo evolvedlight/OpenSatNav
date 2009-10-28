@@ -37,7 +37,7 @@
 
 
 
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/clearOldTraces" android:drawableLeft="@android:drawable/ic_menu_delete" android:text="Delete old traces"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/newWayPoint" android:text="@string/contribute_new_waypoint" android:drawableLeft="@android:drawable/ic_menu_add"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/clearOldTraces" android:drawableLeft="@android:drawable/ic_menu_delete" android:text="@string/contribute_delete_old_traces"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/newWayPoint" android:text="@string/contribute_new_waypoint" android:drawableLeft="@android:drawable/ic_menu_add"></Button>
 
 
 </LinearLayout>
