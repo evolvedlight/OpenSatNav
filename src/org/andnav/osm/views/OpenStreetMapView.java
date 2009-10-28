@@ -498,20 +498,27 @@ public class OpenStreetMapView extends View implements OpenStreetMapConstants, O
 		 * Calculate the amount of tiles needed for each side around the center
 		 * one.
 		 */
-		final int additionalTilesNeededToLeftOfCenter = (int) Math.ceil((float) centerMapTileScreenLeft / tileSizePx); // i.e.
-		// "30 / 256"
-		// = 1;
-		final int additionalTilesNeededToRightOfCenter = (int) Math.ceil((float) (viewWidth - centerMapTileScreenRight)
-				/ tileSizePx);
-		final int additionalTilesNeededToTopOfCenter = (int) Math.ceil((float) centerMapTileScreenTop / tileSizePx); // i.e.
-		// "30 / 256"
-		// = 1;
-		final int additionalTilesNeededToBottomOfCenter = (int) Math
-				.ceil((float) (viewHeight - centerMapTileScreenBottom) / tileSizePx);
+		final int additionalTilesNeededToLeftOfCenter =
+				(int) Math.ceil((float) (viewWidth + centerMapTileScreenLeft) / tileSizePx);
+		final int additionalTilesNeededToRightOfCenter =
+				(int) Math.ceil((float) (2*viewWidth - centerMapTileScreenRight) / tileSizePx);
+		final int additionalTilesNeededToTopOfCenter =
+				(int) Math.ceil((float) (viewHeight + centerMapTileScreenTop) / tileSizePx);
+		final int additionalTilesNeededToBottomOfCenter =
+				(int) Math.ceil((float) (2*viewHeight - centerMapTileScreenBottom) / tileSizePx);
 
 		final int mapTileUpperBound = (int) Math.pow(2, zoomLevel);
 		final int[] mapTileCoords = new int[] { centerMapTileCoords[MAPTILE_LATITUDE_INDEX],
 				centerMapTileCoords[MAPTILE_LONGITUDE_INDEX] };
+
+		int numTiles = (additionalTilesNeededToTopOfCenter+additionalTilesNeededToBottomOfCenter+1)*
+						(additionalTilesNeededToLeftOfCenter+additionalTilesNeededToRightOfCenter+1);
+
+		// Log.d(DEBUGTAG, "Rendering y-range: -" + additionalTilesNeededToTopOfCenter+ " to " + additionalTilesNeededToBottomOfCenter
+		// 				+ ", x-range: -" + additionalTilesNeededToLeftOfCenter + " to " + additionalTilesNeededToRightOfCenter
+		//				+ " : total: " + numTiles);
+
+		mTileProvider.ensureMemoryCacheSize(numTiles);
 
 		/* Draw all the MapTiles (from the upper left to the lower right). */
 		for (int y = -additionalTilesNeededToTopOfCenter; y <= additionalTilesNeededToBottomOfCenter; y++) {
@@ -520,22 +527,28 @@ public class OpenStreetMapView extends View implements OpenStreetMapConstants, O
 				 * Add/substract the difference of the tile-position to the one
 				 * of the center.
 				 */
+				final int tileLeft = this.mTouchMapOffsetX + centerMapTileScreenLeft + (x * tileSizePx);
+				final int tileRight = tileLeft + tileSizePx;
+				final int tileTop = this.mTouchMapOffsetY + centerMapTileScreenTop + (y * tileSizePx);
+				final int tileBottom = tileTop + tileSizePx;
+
+				if (c.quickReject(tileLeft, tileTop, tileRight, tileBottom, Canvas.EdgeType.BW))
+					continue;
+
+				/* Construct a URLString, which represents the MapTile. */
 				mapTileCoords[MAPTILE_LATITUDE_INDEX] = MyMath.mod(centerMapTileCoords[MAPTILE_LATITUDE_INDEX] + y,
 						mapTileUpperBound);
 				mapTileCoords[MAPTILE_LONGITUDE_INDEX] = MyMath.mod(centerMapTileCoords[MAPTILE_LONGITUDE_INDEX] + x,
 						mapTileUpperBound);
-				/* Construct a URLString, which represents the MapTile. */
 				final String tileURLString = this.mRendererInfo.getTileURLString(mapTileCoords, zoomLevel);
 
 				/* Draw the MapTile 'i tileSizePx' above of the centerMapTile */
 				final Bitmap currentMapTile = this.mTileProvider.getMapTile(tileURLString);
-				final int tileLeft = this.mTouchMapOffsetX + centerMapTileScreenLeft + (x * tileSizePx);
-				final int tileTop = this.mTouchMapOffsetY + centerMapTileScreenTop + (y * tileSizePx);
 				c.drawBitmap(currentMapTile, tileLeft, tileTop, this.mPaint);
 
 				if (DEBUGMODE) {
-					c.drawLine(tileLeft, tileTop, tileLeft + tileSizePx, tileTop, this.mPaint);
-					c.drawLine(tileLeft, tileTop, tileLeft, tileTop + tileSizePx, this.mPaint);
+					c.drawLine(tileLeft, tileTop, tileRight, tileTop, this.mPaint);
+					c.drawLine(tileLeft, tileTop, tileLeft, tileBottom, this.mPaint);
 				}
 			}
 		}

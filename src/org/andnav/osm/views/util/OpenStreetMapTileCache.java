@@ -37,7 +37,7 @@ public class OpenStreetMapTileCache implements OpenStreetMapViewConstants{
 	// Fields
 	// ===========================================================
 	
-	protected HashMap<String, Bitmap> mCachedTiles;
+	protected LRUMapTileCache<String, Bitmap> mCachedTiles;
 
 	// ===========================================================
 	// Constructors
@@ -51,7 +51,7 @@ public class OpenStreetMapTileCache implements OpenStreetMapViewConstants{
 	 * @param aMaximumCacheSize Maximum amount of MapTiles to be hold within.
 	 */
 	public OpenStreetMapTileCache(final int aMaximumCacheSize){
-		this.mCachedTiles = new LRUMapTileCache(aMaximumCacheSize);
+		this.mCachedTiles = new LRUMapTileCache<String, Bitmap>(aMaximumCacheSize);
 	}
 
 	// ===========================================================
@@ -73,6 +73,10 @@ public class OpenStreetMapTileCache implements OpenStreetMapViewConstants{
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public void ensureCacheSize(int newSize) {
+		mCachedTiles.setMaxCacheSize(Math.max(newSize, CACHE_MAPTILECOUNT_DEFAULT));
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

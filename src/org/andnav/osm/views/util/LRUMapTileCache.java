@@ -17,10 +17,7 @@ This file is part of OpenSatNav.
 // Created by plusminus on 22:13:10 - 28.09.2008
 package org.andnav.osm.views.util;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-
-import android.graphics.Bitmap;
+import java.util.LinkedHashMap;
 
 /**
  * Simple LRU cache for any type of object. Implemented as an extended
@@ -29,22 +26,22 @@ import android.graphics.Bitmap;
  * @author Nicolas Gramlich
  *
  */
-public class LRUMapTileCache extends HashMap<String, Bitmap> {
+public class LRUMapTileCache<K, V> extends LinkedHashMap<K, V> {
 
 	// ===========================================================
 	// Constants
 	// ===========================================================
 	
-	private static final long serialVersionUID = 3345124753192560741L;
+	// private static final long serialVersionUID = 3345124753192560741L;
+
+	protected static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 	
 	/** Maximum cache size. */
-	private final int maxCacheSize;
-	/** LRU list. */
-	private final LinkedList<String> list;
+	private int maxCacheSize;
 
 	// ===========================================================
 	// Constructors
@@ -56,91 +53,17 @@ public class LRUMapTileCache extends HashMap<String, Bitmap> {
 	 * @param maxCacheSize the maximum number of entries in this cache before entries are aged off.
 	 */
 	public LRUMapTileCache(final int maxCacheSize) {
-		super(maxCacheSize);
+		super(maxCacheSize, DEFAULT_LOAD_FACTOR, true);
 		this.maxCacheSize = Math.max(0, maxCacheSize);
-		this.list = new LinkedList<String>();
 	}
 
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
-
-	// ===========================================================
-	// Methods from SuperClass/Interfaces
-	// ===========================================================
-	
-	/**
-	 * Overrides clear() to also clear the LRU list.
-	 */
-	public synchronized void clear() {
-		super.clear();
-		list.clear();
+	public void setMaxCacheSize(int newMax) {
+		// warning: cache will not grow beyond this size, but if already beyond this size,
+		// it will not shrink by itself!
+		maxCacheSize = newMax;
 	}
 
-	/**
-	 * Overrides <code>put()</code> so that it also updates the LRU list.
-	 * 
-	 * @param key
-	 *            key with which the specified value is to be associated
-	 * @param value
-	 *            value to be associated with the key
-	 * @return previous value associated with key or <code>null</code> if there
-	 *         was no mapping for key; a <code>null</code> return can also
-	 *         indicate that the cache previously associated <code>null</code>
-	 *         with the specified key
-	 */
-	public synchronized Bitmap put(final String key, final Bitmap value) {
-		if (maxCacheSize == 0){
-			return null;
-		}
-
-		// if the key isn't in the cache and the cache is full...
-		if (!super.containsKey(key) && !list.isEmpty() && list.size() + 1 > maxCacheSize) {
-			final Object deadKey = list.removeLast();
-			super.remove(deadKey);
-		}
-
-		updateKey(key);
-		return super.put(key, value);
+	protected boolean removeEldestEntry(Entry<K, V> eldest) {
+		return (size() > maxCacheSize);
 	}
-
-	/**
-	 * Overrides <code>get()</code> so that it also updates the LRU list.
-	 * 
-	 * @param key
-	 *            key with which the expected value is associated
-	 * @return the value to which the cache maps the specified key, or
-	 *         <code>null</code> if the map contains no mapping for this key
-	 */
-	public synchronized Bitmap get(final String key) {
-		final Bitmap value = super.get(key);
-		if (value != null) {
-			updateKey(key);
-		}
-		return value;
-	}
-
-	public synchronized Bitmap remove(final String key) {
-		list.remove(key);
-		return super.remove(key);
-	}
-
-	/**
-	 * Moves the specified value to the top of the LRU list (the bottom of the
-	 * list is where least recently used items live).
-	 * 
-	 * @param key of the value to move to the top of the list
-	 */
-	private void updateKey(final String key) {
-		list.remove(key);
-		list.addFirst(key);
-	}
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
-
-	// ===========================================================
-	// Inner and Anonymous Classes
-	// ===========================================================
 }

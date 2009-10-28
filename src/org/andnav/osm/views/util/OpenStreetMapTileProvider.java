@@ -142,4 +142,10 @@ public class OpenStreetMapTileProvider implements OpenStreetMapConstants, OpenSt
 	public void preCacheTile(String aTileURLString) {
 		getMapTile(aTileURLString);
 	}
+
+	public void ensureMemoryCacheSize(int newSize) {
+		mTileCache.ensureCacheSize(newSize);
+	}
+
+
 }
