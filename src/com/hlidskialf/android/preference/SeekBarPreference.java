@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.util.Log;
 
 public class SeekBarPreference extends DialogPreference implements
 		SeekBar.OnSeekBarChangeListener, View.OnTouchListener,
@@ -58,7 +59,6 @@ public class SeekBarPreference extends DialogPreference implements
 
 	@Override
 	protected View onCreateDialogView() {
-
 		LinearLayout.LayoutParams params;
 		LinearLayout layout = new LinearLayout(mContext);
 		layout.setOrientation(LinearLayout.VERTICAL);
@@ -84,12 +84,13 @@ public class SeekBarPreference extends DialogPreference implements
 		if (shouldPersist())
 			mValue = getPersistedInt(mDefault);
 
-		mSeekBar.setMax(mMax);
+		mSeekBar.setMax(modFunc(mMax));
 
 		mValueText.setOnTouchListener(this);
 		mValueText.setOnFocusChangeListener(this);
 		mValueText.setOnEditorActionListener(this);
 		mValueText.setInputType(InputType.TYPE_CLASS_NUMBER);
+		mValueText.setFocusableInTouchMode(false);
 
 		dispatchValue(mValue);
 
@@ -99,8 +100,9 @@ public class SeekBarPreference extends DialogPreference implements
 	@Override
 	protected void onBindDialogView(View v) {
 		super.onBindDialogView(v);
-		mSeekBar.setMax(mMax);
-		mSeekBar.setProgress(mValue);
+		mSeekBar.setMax(modFunc(mMax));
+
+		setProgress(mValue);
 	}
 
 	@Override
@@ -112,32 +114,82 @@ public class SeekBarPreference extends DialogPreference implements
 			mValue = (Integer) defaultValue;
 	}
 
-	public void onProgressChanged(SeekBar seek, int value, boolean fromTouch) {
-		dispatchValue(value);
+	// called if the user touches the text edit box
 
-		callChangeListener(new Integer(value));
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			mValueText.setFocusableInTouchMode(true);
+			CharSequence text = ((TextView) v).getText();
+			if (TextUtils.isEmpty(text) || !TextUtils.isDigitsOnly(text)) {
+				// on Touch, remove the suffix if there is one.
+				// If the user is already editing, then the suffix will already be gone
+				// and in that case, don't change the value on the user.
+				((TextView) v).setText(Integer.toString(mValue));
+			}
+		}
+		return false;
 	}
 
-	private void dispatchValue(int value) {
+	// called when the user hits enter on the text edit box
+	// sets the progress bar value, which flows on to other
+	// values
+
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		setProgress(v.getText());
+		return true;
+	}
+
+	private void setProgress(CharSequence text) {
+		if (!TextUtils.isEmpty(text)) {
+			if (TextUtils.isDigitsOnly(text))
+				setProgress(Integer.parseInt(text.toString()));
+		}
+	}
+
+	// set the Progress bar to a given value.
+	// will in turn cause onProgressChanged() to be called
+
+	public void setProgress(int progress) {
+		int modifiedValue = modFunc(progress);
+		
+		if (mSeekBar != null)
+			mSeekBar.setProgress(modifiedValue);
+		dispatchValue(progress);
+	}
+
+	public int getProgress() {
+		return mValue;
+	}
+
+	public void onProgressChanged(SeekBar seek, int modifiedValue, boolean fromTouch) {
+		int value = invModFunc(modifiedValue);
+		
 		String t = String.valueOf(value);
 
-		mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
+		if (mValueText != null)
+			mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
 		mValue = value;
-
-		if (shouldPersist())
-			persistInt(value);
 	}
 
 	public void onStartTrackingTouch(SeekBar seek) {
 	}
 
 	public void onStopTrackingTouch(SeekBar seek) {
+		dispatchValue(mValue);
 	}
 
-	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		setProgress(v.getText());
-		return true;
+	private void dispatchValue(int value) {
+		String t = String.valueOf(value);
+
+		if (mValueText != null)
+			mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
+		mValue = value;
+		// callChangeListener(new Integer(value));
+
+		if (shouldPersist())
+			persistInt(value);
 	}
 
 	@Override
@@ -148,36 +200,22 @@ public class SeekBarPreference extends DialogPreference implements
 			setProgress(((TextView) v).getText());
 	}
 
-	private void setProgress(CharSequence text) {
-
-		if (!TextUtils.isEmpty(text)) {
-			if (TextUtils.isDigitsOnly(text))
-				dispatchValue(Integer.parseInt(text.toString()));
-		}
-	}
-
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_DOWN)
-			((TextView) v).setText(Integer.toString(mValue));
-		return false;
-	}
-
 	public void setMax(int max) {
 		mMax = max;
+		if (mSeekBar != null)
+			mSeekBar.setMax(modFunc(mMax));
 	}
 
 	public int getMax() {
 		return mMax;
 	}
 
-	public void setProgress(int progress) {
-		mValue = progress;
-		if (mSeekBar != null)
-			mSeekBar.setProgress(progress);
+	protected int modFunc(int value) {
+		return (int)Math.sqrt(value);
 	}
 
-	public int getProgress() {
-		return mValue;
+	protected int invModFunc(int value) {
+		return value*value;
 	}
+
 }
