@@ -96,6 +96,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	// ===========================================================
 
 	private OpenStreetMapView mOsmv;
+	private ZoomControls zoomControls;
 
 	private OpenStreetMapViewDirectedLocationOverlay mMyLocationOverlay;
 	protected OpenStreetMapViewRouteOverlay routeOverlay;
@@ -151,7 +152,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 		/* ZoomControls */
 		{
-			final ZoomControls zoomControls = new ZoomControls(this);
+			zoomControls = new ZoomControls(this);
 			// by default we are zoomed in to the max
 			zoomControls.setIsZoomInEnabled(false);
 			zoomControls.setOnZoomOutClickListener(new OnClickListener() {
@@ -208,7 +209,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				SatNavActivity.this.mRouteRecorder.add(newLocation);
 				refreshTracks();
 			}
-			Log.v(OpenSatNavConstants.LOG_TAG, "Accuracy: " + newLocation.getAccuracy());
+			Log.v(OpenSatNavConstants.LOG_TAG, "Accuracy: "
+					+ newLocation.getAccuracy());
 			currentLocation = newLocation;
 
 			/*
@@ -402,8 +404,12 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 					displayToast(R.string.contribute_error_no_traces);
 				} else {
 
-					ProgressDialog dialog = ProgressDialog.show(this, "",
-							getText(R.string.contribute_uploading_traces), true);
+					ProgressDialog dialog = ProgressDialog
+							.show(
+									this,
+									"",
+									getText(R.string.contribute_uploading_traces),
+									true);
 
 					dialog.show();
 
@@ -425,7 +431,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 									username, password, description);
 
 							String resultsTextFormat = getString(R.string.contribute_track_uploaded);
-							String resultsText = String.format(resultsTextFormat, description);
+							String resultsText = String.format(
+									resultsTextFormat, description);
 
 							displayToast(resultsText);
 							for (RecordedWayPoint wtp : mRouteRecorder
@@ -440,19 +447,20 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 							tracing = false;
 
 						} catch (IOException e) {
-							displayToast(getString(R.string.contribute_track_error_happened) + e); // i
-																			// think
-																			// this
-																			// is
-																			// never
-																			// called
-																			// because
-																			// expections
-																			// happen
-																			// earlier
-																			// in
-																			// the
-																			// code
+							displayToast(getString(R.string.contribute_track_error_happened)
+									+ e); // i
+							// think
+							// this
+							// is
+							// never
+							// called
+							// because
+							// expections
+							// happen
+							// earlier
+							// in
+							// the
+							// code
 							Log.e(OpenSatNavConstants.LOG_TAG,
 									"Error uploading route to openstreemaps.",
 									e);
@@ -483,7 +491,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 					String wayPointName = data.getStringExtra("wayPointName");
 					mRouteRecorder.addWayPoint(wayPointName);
 					String resultsTextFormat = getString(R.string.contribute_waypoint_added);
-					String resultsText = String.format(resultsTextFormat, wayPointName);
+					String resultsText = String.format(resultsTextFormat,
+							wayPointName);
 					displayToast(resultsText);
 				} else {
 					displayToast(R.string.contribute_waypoing_gps_fix_not_good);
@@ -510,8 +519,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 					SatNavActivity.this, mRouteRecorder);
 			SatNavActivity.this.mOsmv.getOverlays().add(
 					SatNavActivity.this.traceOverlay);
-			Log.v(OpenSatNavConstants.LOG_TAG, "Drew " + mRouteRecorder.getRecordedGeoPoints().size()
-					+ " points");
+			Log.v(OpenSatNavConstants.LOG_TAG, "Drew "
+					+ mRouteRecorder.getRecordedGeoPoints().size() + " points");
 			// tell the viewer that it should redraws
 			SatNavActivity.this.mOsmv.postInvalidate();
 		}
@@ -619,14 +628,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			this.routeOverlay = new OpenStreetMapViewRouteOverlay(this,
 					niceRoute);
 			this.mOsmv.getOverlays().add(this.routeOverlay);
-			autoFollowing = savedInstanceState.getBoolean("autoFollowing");
-			this.mOsmv.setZoomLevel(savedInstanceState.getInt("zoomLevel"));
-			this.mOsmv.setMapCenter(savedInstanceState.getInt("mLatitudeE6"),
-					savedInstanceState.getInt("mLongitudeE6"));
-			if (savedInstanceState.getInt("toLatitudeE6") == 0)
-				this.to = new GeoPoint(savedInstanceState
-						.getInt("toLatitudeE6"), savedInstanceState
-						.getInt("toLongitudeE6"));
+		
+		if (savedInstanceState.getInt("toLatitudeE6") == 0)
+			this.to = new GeoPoint(savedInstanceState.getInt("toLatitudeE6"),
+					savedInstanceState.getInt("toLongitudeE6"));
 		}
 		mRouteRecorder = new RouteRecorder(savedInstanceState
 				.getBundle("trace"));
@@ -634,6 +639,11 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		tracing = savedInstanceState.getBoolean("tracing");
 		autoFollowing = savedInstanceState.getBoolean("autoFollowing");
 		this.mOsmv.setZoomLevel(savedInstanceState.getInt("zoomLevel"));
+		if (this.mOsmv.canZoomIn()) {
+			zoomControls.setIsZoomInEnabled(true);
+			if (!this.mOsmv.canZoomOut())
+				zoomControls.setIsZoomOutEnabled(false);
+		}
 		this.mOsmv.setMapCenter(savedInstanceState.getInt("mLatitudeE6"),
 				savedInstanceState.getInt("mLongitudeE6"));
 
