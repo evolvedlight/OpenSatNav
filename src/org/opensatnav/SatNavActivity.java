@@ -36,7 +36,6 @@ import org.andnav.osm.views.util.OpenStreetMapRendererInfo;
 import org.opensatnav.services.Router;
 import org.opensatnav.services.YOURSRouter;
 import org.opensatnav.util.BugReportExceptionHandler;
-import org.opensatnav.util.BugReportHelper;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -619,8 +618,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		route = savedInstanceState.getStringArrayList("route");
-		if (route.size() > 0) {
+		route = savedInstanceState.getStringArrayList("route");		
+		if (route != null && route.size() > 0) {
 			ArrayList<GeoPoint> niceRoute = new ArrayList<GeoPoint>();
 			for (int i = 0; i < route.size(); i++) {
 				GeoPoint nextPoint = GeoPoint.fromIntString(this.route.get(i));
