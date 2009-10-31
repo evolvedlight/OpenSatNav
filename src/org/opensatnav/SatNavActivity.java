@@ -466,7 +466,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 									e);
 						}
 					}
-					dialog.dismiss();
+					if (dialog.isShowing())
+						dialog.dismiss();
 				}
 
 			}

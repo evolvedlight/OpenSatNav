@@ -111,7 +111,8 @@ public class GetDirectionsActivity extends Activity {
 				// threading stuff - this actually handles the stuff after the
 				// thread has completed (code below)
 				public void handleMessage(Message msg) {
-					progress.dismiss();
+					if (progress.isShowing())
+						progress.dismiss();
 					if (locations != null) {
 						Intent intent = new Intent(GetDirectionsActivity.this,
 								org.opensatnav.ChooseLocationActivity.class);

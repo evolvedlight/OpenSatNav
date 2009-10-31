@@ -140,7 +140,8 @@ public class SelectPOIActivity extends ListActivity {
 				// threading stuff - this is run after the
 				// thread has completed (code below)
 				public void handleMessage(Message msg) {
-					progress.dismiss();
+					if (progress.isShowing())
+						progress.dismiss();
 					if ((locations != null) && (locations.getStringArray("names").length != 0)) {
 						Intent intent = new Intent(SelectPOIActivity.this, org.opensatnav.ChooseLocationActivity.class);
 						intent.putExtra("fromLocation", from.toDoubleString());
