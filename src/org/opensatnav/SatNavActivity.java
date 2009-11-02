@@ -51,6 +51,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -127,7 +128,18 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		final RelativeLayout rl = new RelativeLayout(this);
 
 		this.mOsmv = new OpenStreetMapView(this,
-				OpenStreetMapRendererInfo.MAPNIK);
+				OpenStreetMapRendererInfo.MAPNIK) {
+			@Override
+			public boolean onTouchEvent(MotionEvent event) {
+				// switches to 'planning mode' as soon as you scroll anywhere
+				if (event.getAction()==MotionEvent.ACTION_MOVE
+						&& SatNavActivity.this.autoFollowing==true) {
+					SatNavActivity.this.autoFollowing = false;
+					SatNavActivity.this.displayToast(R.string.planning_mode_on);
+				}
+				return super.onTouchEvent(event);
+			}
+		};
 		rl.addView(this.mOsmv, new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
