@@ -22,7 +22,11 @@
 		<activity android:name="org.opensatnav.ChooseLocationActivity"></activity>
 		<activity android:name="org.openintents.about.About"></activity>
 		<activity android:name="org.opensatnav.ConfigurationActivity"></activity>
-		<activity android:name="ContributeActivity"></activity>
+		<activity android:name="org.opensatnav.ContributeActivity"
+				android:finishOnTaskLaunch="true"></activity>
+
+
+		<service android:name="org.opensatnav.TraceRecorderService"></service>
 
 		<!-- values used in the About screen -->
 		<meta-data android:name="org.openintents.metadata.COMMENTS"

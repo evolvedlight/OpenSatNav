@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ContributeActivity extends Activity {
 	Bundle gpsTracks = new Bundle();
@@ -34,7 +36,7 @@ public class ContributeActivity extends Activity {
 		if (!(prefs.contains(String.valueOf(R.string.pref_username_key))) && prefs.contains(String.valueOf(R.string.pref_password_key))); 
 		TextView textInfo = (TextView) findViewById(R.id.textInfo);
 		textInfo.setText(getText(R.string.prefs_contribute_osm_username) + " : " + prefs.getString(getString(R.string.pref_username_key), getString(R.string.contribute_username_not_entered)));
-		Boolean tracing = Boolean.valueOf(getIntent().getDataString());
+		final Boolean tracing = TraceRecorderService.isTracing();
 		Button startButton = (Button) findViewById(R.id.startRecord);
 		if (tracing == true) {
 			startButton.setText(this.getResources().getText(
@@ -55,8 +57,13 @@ public class ContributeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				setResult(TRACE_TOGGLE);
+				if (tracing == true) {
+					TraceRecorderService.stop(ContributeActivity.this);
+					displayToast(R.string.contribute_gps_off);
+				} else {
+					TraceRecorderService.start(ContributeActivity.this);
+					displayToast(R.string.contribute_gps_on);
+				}
 				finish();
 			}
 		});
@@ -67,7 +74,8 @@ public class ContributeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				setResult(DELETE_TRACKS);
+				TraceRecorderService.resetTrace();
+				displayToast(R.string.contribute_track_cleared);
 				finish();
 			}
 		});
@@ -120,7 +128,9 @@ public class ContributeActivity extends Activity {
 				String description = input.getText().toString();
 				Intent data = getIntent();
 				data.putExtra("description", description);
+				Log.v("OpenSatNav", "Setting Result");
 				setResult(UPLOAD_NOW, data);
+				Log.v("OpenSatNav", "Finishing");
 				finish();
 			}
 		});
@@ -184,5 +194,13 @@ public class ContributeActivity extends Activity {
 		if (savedInstanceState.getBoolean("inEditDescription")) {
 			askForDescription();
 		}
+	}
+
+	private void displayToast(String msg) {
+		Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
+	}
+
+	private void displayToast(int stringReference) {
+		displayToast((String) getText(stringReference));
 	}
 }

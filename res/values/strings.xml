@@ -14,6 +14,8 @@
 	</string>
 	<string name="get_directions">Directions</string>
 	<string name="navigation_mode">Navigation mode</string>
+	<string name="start_trace_ticker">OpenSatNav starting trace recording...</string>
+	<string name="tracing_notification_text">A trace is being recorded...</string>
 	<!--
 		Padded with nbsp's so the menu doesn't rearrange itself when the
 		button toggles
@@ -151,4 +153,5 @@
 	
 	<string name="contribute_track_error_happened">Sorry, an error happened: </string>
 	<string name="contribute_waypoing_gps_fix_not_good">GPS fix not good enough to add waypoint, try again</string>
+<string name="tracing_paused_notification_text">Recording is paused</string>
 </resources>

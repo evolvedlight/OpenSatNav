@@ -107,11 +107,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	protected GeoPoint to;
 	protected String vehicle;
 
-	private boolean tracing = false;
-
 	protected ArrayList<String> route = new ArrayList<String>();
 
-	private RouteRecorder mRouteRecorder = new RouteRecorder();
 	private RouteRecorder mOldRoutes = new RouteRecorder();
 
 	// ===========================================================
@@ -123,8 +120,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		BugReportExceptionHandler.register(this);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState, true); // Pass true here to actually
-		// contribute to OSM!
+		super.onCreate(savedInstanceState);
 		final RelativeLayout rl = new RelativeLayout(this);
 
 		this.mOsmv = new OpenStreetMapView(this,
@@ -145,9 +141,9 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 		this.mOsmv.setZoomLevel(19);
 
-		if (firstLocation != null)
+		if (mLocationHandler.getFirstLocation() != null)
 			this.mOsmv.setMapCenter(TypeConverter
-					.locationToGeoPoint(firstLocation));
+					.locationToGeoPoint(mLocationHandler.getFirstLocation()));
 
 		/* SingleLocation-Overlay */
 		{
@@ -216,8 +212,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			if (this.autoFollowing)
 				this.mOsmv.setMapCenter(TypeConverter
 						.locationToGeoPoint(newLocation));
-			if (tracing == true) {
-				SatNavActivity.this.mRouteRecorder.add(newLocation);
+			if (TraceRecorderService.isTracing()){
 				refreshTracks();
 			}
 			Log.v(OpenSatNavConstants.LOG_TAG, "Accuracy: "
@@ -320,8 +315,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			if (currentLocation != null) {
 				Intent intent = new Intent(this,
 						org.opensatnav.GetDirectionsActivity.class);
-				intent.setData(Uri.parse(currentLocation.getLatitude() + ","
-						+ currentLocation.getLongitude()));
+                intent.setData(Uri.parse(currentLocation.getLatitude() + "," + currentLocation.getLongitude()));
+
 				startActivityForResult(intent, DIRECTIONS_OPTIONS);
 			} else
 				Toast.makeText(this, R.string.start_directions_failed,
@@ -331,7 +326,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 			Intent intentContribute = new Intent(this,
 					org.opensatnav.ContributeActivity.class);
-			intentContribute.setData(Uri.parse(String.valueOf(tracing)));
 			startActivityForResult(intentContribute, CONTRIBUTE);
 
 			return true;
@@ -398,6 +392,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
 		if ((requestCode == DIRECTIONS_OPTIONS) || (requestCode == SELECT_POI)) {
 			if (resultCode == RESULT_OK) {
 				to = GeoPoint.fromIntString(data.getStringExtra("to"));
@@ -408,10 +403,11 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			}
 		}
 		if (requestCode == CONTRIBUTE) {
-			Log.v(OpenSatNavConstants.LOG_TAG, "Result code is " + resultCode);
+			Log.v(OpenSatNavConstants.LOG_TAG, "Called contribute");
+			RouteRecorder mRouteRecorder = TraceRecorderService.getRouteRecorder();
 			if (resultCode == UPLOAD_NOW) {
 				// Check actually got some traces:
-				if (mRouteRecorder.getRecordedGeoPoints().size() == 0) {
+				if (mRouteRecorder == null || mRouteRecorder.getRecordedGeoPoints().size() == 0) {
 					displayToast(R.string.contribute_error_no_traces);
 				} else {
 
@@ -434,11 +430,12 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 					if (username == null || password == null) {
 						displayToast(R.string.contribute_error_enter_osm_login_details);
 					} else {
+						TraceRecorderService.stop(this);
 						try {
 
 							String description = data
 									.getStringExtra("description");
-							OSMUploader.uploadAsync(this.mRouteRecorder,
+							OSMUploader.uploadAsync(TraceRecorderService.getRouteRecorder(),
 									username, password, description);
 
 							String resultsTextFormat = getString(R.string.contribute_track_uploaded);
@@ -454,8 +451,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 									.getRecordedGeoPoints()) {
 								mOldRoutes.add(gpt);
 							}
-							mRouteRecorder = new RouteRecorder();
-							tracing = false;
+							TraceRecorderService.resetTrace();
 
 						} catch (IOException e) {
 							displayToast(getString(R.string.contribute_track_error_happened)
@@ -482,24 +478,13 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				}
 
 			}
-			if (resultCode == TRACE_TOGGLE) {
-				if (tracing == true) {
-					tracing = false;
-					displayToast(R.string.contribute_gps_off);
-				} else {
-					tracing = true;
-					displayToast(R.string.contribute_gps_on);
-				}
-
-			}
-
-			if (resultCode == DELETE_TRACKS) {
-				mRouteRecorder = new RouteRecorder();
-				displayToast(R.string.contribute_track_cleared);
-			}
 
 			if (resultCode == NEW_WAYPOINT) {
-				if (mRouteRecorder.getRecordedGeoPoints().size() != 0) {
+				if (mRouteRecorder == null) {
+					// it shouldn't be possible to get here... but regardless
+					displayToast(R.string. contribute_error_no_traces);
+					Log.v(OpenSatNavConstants.LOG_TAG, "Cannot add waypoint when not recording a trace!");
+				} else if (mRouteRecorder.getRecordedGeoPoints().size() != 0) {
 					String wayPointName = data.getStringExtra("wayPointName");
 					mRouteRecorder.addWayPoint(wayPointName);
 					String resultsTextFormat = getString(R.string.contribute_waypoint_added);
@@ -520,19 +505,19 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	}
 
 	public void refreshTracks() {
-
-		if (mRouteRecorder.getRecordedGeoPoints() != null) {
+		RouteRecorder routeRecorder = getRouteRecorder();
+		if (routeRecorder != null && routeRecorder.getRecordedGeoPoints() != null) {
 			if (SatNavActivity.this.mOsmv.getOverlays().contains(
 					SatNavActivity.this.traceOverlay)) {
 				SatNavActivity.this.mOsmv.getOverlays().remove(
 						SatNavActivity.this.traceOverlay);
 			}
 			SatNavActivity.this.traceOverlay = new OpenStreetMapViewTraceOverlay(
-					SatNavActivity.this, mRouteRecorder);
+					SatNavActivity.this, routeRecorder);
 			SatNavActivity.this.mOsmv.getOverlays().add(
 					SatNavActivity.this.traceOverlay);
 			Log.v(OpenSatNavConstants.LOG_TAG, "Drew "
-					+ mRouteRecorder.getRecordedGeoPoints().size() + " points");
+					+ routeRecorder.getRecordedGeoPoints().size() + " points");
 			// tell the viewer that it should redraws
 			SatNavActivity.this.mOsmv.postInvalidate();
 		}
@@ -610,14 +595,12 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		savedInstanceState.putStringArrayList("route", route);
 
-		savedInstanceState.putBoolean("tracing", tracing);
 		savedInstanceState.putInt("zoomLevel", this.mOsmv.getZoomLevel());
 		savedInstanceState.putBoolean("autoFollowing", autoFollowing);
 		savedInstanceState.putInt("mLatitudeE6", this.mOsmv
 				.getMapCenterLatitudeE6());
 		savedInstanceState.putInt("mLongitudeE6", this.mOsmv
 				.getMapCenterLongitudeE6());
-		savedInstanceState.putBundle("trace", mRouteRecorder.getBundle());
 		savedInstanceState.putBundle("oldtrace", mOldRoutes.getBundle());
 
 		if (to != null) {
@@ -645,10 +628,9 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			this.to = new GeoPoint(savedInstanceState.getInt("toLatitudeE6"),
 					savedInstanceState.getInt("toLongitudeE6"));
 		}
-		mRouteRecorder = new RouteRecorder(savedInstanceState
-				.getBundle("trace"));
+		
 		mOldRoutes = new RouteRecorder(savedInstanceState.getBundle("oldtrace"));
-		tracing = savedInstanceState.getBoolean("tracing");
+		
 		autoFollowing = savedInstanceState.getBoolean("autoFollowing");
 		this.mOsmv.setZoomLevel(savedInstanceState.getInt("zoomLevel"));
 		if (this.mOsmv.canZoomIn()) {
@@ -667,6 +649,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 	private void displayToast(int stringReference) {
 		displayToast((String) getText(stringReference));
+	}
+
+	protected RouteRecorder getRouteRecorder() {
+		return TraceRecorderService.getRouteRecorder();
 	}
 
 }
