@@ -107,19 +107,15 @@ public class OpenStreetMapTileDownloader implements OpenStreetMapConstants, Open
 
 					final Message successMessage = Message.obtain(callback, MAPTILEDOWNLOADER_SUCCESS_ID);
 					successMessage.sendToTarget();
-					OpenStreetMapTileDownloader.this.mPending.remove(aURLString);
 				} catch (Exception e) {
 					final Message failMessage = Message.obtain(callback, MAPTILEDOWNLOADER_FAIL_ID);
 					failMessage.sendToTarget();
 					if(DEBUGMODE)
 						Log.e(DEBUGTAG, "Error Downloading MapTile. Exception: " + e.getClass().getSimpleName(), e);
-					/* TODO What to do when downloading tile caused an error?
-					 * Also remove it from the mPending?
-					 * Doing not blocks it for the whole existence of this TileDownloder.
-					 */
 				} finally {
 					StreamUtils.closeStream(in);
 					StreamUtils.closeStream(out);
+					OpenStreetMapTileDownloader.this.mPending.remove(aURLString);
 				}
 			}
 		});
