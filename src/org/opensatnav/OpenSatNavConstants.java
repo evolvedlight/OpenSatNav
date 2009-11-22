@@ -43,6 +43,9 @@ public interface OpenSatNavConstants {
 	
 	// metadata key used to retrieve SVN revision in Manifest.xml
 	public static final String REVISION_METADATA = "org.opensatnav.metadata.REVISION";
+	
+	//When recording traces in the contribute activity, drop points if the GPS fix is worse than this value.
+	public static final int GPS_TRACE_MIN_ACCURACY = 200;
 	// ===========================================================
 	// Methods
 	// ===========================================================

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.andnav.osm.util.GeoPoint;
+import org.opensatnav.OpenSatNavConstants;
 
 public class RouteRecorder {
 	// ===========================================================
@@ -48,7 +49,7 @@ public class RouteRecorder {
 
 	public void add(final Location aLocation){
 
-		if (aLocation.hasAccuracy() && aLocation.getAccuracy() < 10.0f)
+		if (aLocation.hasAccuracy() && aLocation.getAccuracy() <= OpenSatNavConstants.GPS_TRACE_MIN_ACCURACY)
 		{
 			this.mRecords.add(new RecordedGeoPoint(
 					(int)(aLocation.getLatitude() * 1E6), 
