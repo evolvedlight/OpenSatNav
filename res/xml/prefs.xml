@@ -11,11 +11,14 @@
 			android:summary="@string/prefs_cache_sdcard_summary"
 			android:persistent="true"
 			android:dialogMessage="@string/prefs_cache_sdcard_dialog"
-			android:text="@string/megabytes_abbreviation" android:max="4096" android:defaultValue="512"
+			android:text="@string/megabytes_abbreviation" android:max="512" android:defaultValue="32"
 			android:dialogTitle="@string/prefs_cache_sdcard_title" android:key="maxSdCardUsageMb" />
-		<Preference android:title="@string/prefs_cache_clear"
+		<org.opensatnav.ui.SDCardClearPreference android:title="@string/prefs_cache_clear"
 			android:summary="@string/prefs_cache_clear_summary"
-			android:persistent="false" />
+			android:dialogMessage="@string/prefs_cache_clear_confirm"
+			android:key="clear_cache"
+			android:persistent="true" 
+			 />
 	
 </PreferenceCategory><PreferenceCategory android:title="@string/prefs_contribute_section">
 <EditTextPreference android:dialogTitle="@string/prefs_contribute_osm_username" android:summary="@string/prefs_contribute_osm_username_summary" android:title="@string/prefs_contribute_osm_username" android:dialogMessage="@string/prefs_contribute_osm_username_summary" android:key="@string/pref_username_key"></EditTextPreference>

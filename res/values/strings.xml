@@ -29,7 +29,7 @@
 	</string>
 	<string name="place_not_found">"Sorry, couldn't find "</string>
 	<string name="unnamed_place">Unnamed</string>
-	<string name="directions_not_found">Sorry, couldn't get directions</string>
+	<string name="directions_not_found">Sorry, couldn\'t get directions</string>
 	<string name="please_wait">Please wait...</string>
 	<string name="searching">Searching</string>
 	<string name="getting_route">Getting route</string>
@@ -87,6 +87,7 @@
 	<string name="prefs_cache_sdcard_title">Select size</string>
 	<string name="prefs_cache_clear">Clear cache</string>
 	<string name="prefs_cache_clear_summary">Click here to empty the tiles cache</string>
+	<string name="prefs_cache_clear_confirm">Are you sure you want to clear the map tile cache?</string>
 	<string name="megabytes_abbreviation">Mb</string>
 	<string name="about">About</string>
 

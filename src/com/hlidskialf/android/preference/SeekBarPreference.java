@@ -55,6 +55,9 @@ public class SeekBarPreference extends DialogPreference implements
 			mSuffix = text;
 		mDefault = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
 		mMax = attrs.getAttributeIntValue(androidns, "max", 100);
+		
+		setPositiveButtonText("Close");
+		setNegativeButtonText(null);
 	}
 
 	@Override
@@ -186,7 +189,6 @@ public class SeekBarPreference extends DialogPreference implements
 		if (mValueText != null)
 			mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
 		mValue = value;
-		// callChangeListener(new Integer(value));
 
 		if (shouldPersist())
 			persistInt(value);

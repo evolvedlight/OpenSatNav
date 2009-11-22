@@ -16,6 +16,8 @@ This file is part of OpenSatNav.
  */
 package org.opensatnav.ui;
 
+import org.opensatnav.OpenSatNavConstants;
+
 import android.content.Context;
 import android.os.StatFs;
 import android.util.AttributeSet;
@@ -26,16 +28,16 @@ public class SDCardUsagePreference extends SeekBarPreference {
 
 	public SDCardUsagePreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
-
-		StatFs stat = new StatFs(android.os.Environment
-				.getExternalStorageDirectory().getAbsolutePath());
-		long blockSize = stat.getBlockSize();
-		int bytesInMb = 1048576;
-		long max = (blockSize * stat.getBlockCount()) / bytesInMb;
-		long current = max - (blockSize * stat.getAvailableBlocks())
-				/ bytesInMb;
-		setMax((int) max);
-		setProgress((int) current);
+		if (OpenSatNavConstants.DATA_ROOT_DEVICE.canWrite()) {
+			StatFs stat = new StatFs(android.os.Environment
+					.getExternalStorageDirectory().getAbsolutePath());
+			long blockSize = stat.getBlockSize();
+			int bytesInMb = 1048576;
+			long max = (blockSize * stat.getAvailableBlocks()) / bytesInMb;
+			setMax((int) max);
+		}
+		else
+			setEnabled(false);
 	}
 
 }

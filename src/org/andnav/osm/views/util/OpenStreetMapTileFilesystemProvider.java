@@ -56,7 +56,8 @@ import android.util.Log;
  * @author Nicolas Gramlich
  * 
  */
-public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstants, OpenStreetMapViewConstants {
+public class OpenStreetMapTileFilesystemProvider implements
+		OpenStreetMapConstants, OpenStreetMapViewConstants {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -76,13 +77,13 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 
 	protected final Context mCtx;
 	protected final OpenStreetMapTileFilesystemProviderDataBase mDatabase;
-	protected final int mMaxFSCacheByteSize;
+	protected int mMaxFSCacheByteSize;
 	protected int mCurrentFSCacheByteSize;
 	protected ExecutorService mThreadPool = Executors.newFixedThreadPool(2);
 	protected final OpenStreetMapTileCache mCache;
 	protected final String tileFolder = OpenSatNavConstants.TILE_CACHE_PATH;
-	protected Set<String> mPending = Collections.synchronizedSet(new HashSet<String>());
-
+	protected Set<String> mPending = Collections
+			.synchronizedSet(new HashSet<String>());
 
 	// ===========================================================
 	// Constructors
@@ -95,16 +96,18 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 	 * @param aCache
 	 *            to load fs-tiles to.
 	 */
-	public OpenStreetMapTileFilesystemProvider(final Context ctx, final int aMaxFSCacheByteSize,
-			final OpenStreetMapTileCache aCache) {
+	public OpenStreetMapTileFilesystemProvider(final Context ctx,
+			final int aMaxFSCacheByteSize, final OpenStreetMapTileCache aCache) {
 		this.mCtx = ctx;
 		this.mMaxFSCacheByteSize = aMaxFSCacheByteSize;
 		this.mDatabase = new OpenStreetMapTileFilesystemProviderDataBase(ctx);
-		this.mCurrentFSCacheByteSize = this.mDatabase.getCurrentFSCacheByteSize();
+		this.mCurrentFSCacheByteSize = this.mDatabase
+				.getCurrentFSCacheByteSize();
 		this.mCache = aCache;
 
 		if (DEBUGMODE)
-			Log.i(DEBUGTAG, "Currently used cache-size is: " + this.mCurrentFSCacheByteSize + " of "
+			Log.i(DEBUGTAG, "Currently used cache-size is: "
+					+ this.mCurrentFSCacheByteSize + " of "
 					+ this.mMaxFSCacheByteSize + " Bytes");
 	}
 
@@ -115,18 +118,28 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 	public int getCurrentFSCacheByteSize() {
 		return this.mCurrentFSCacheByteSize;
 	}
-	
-	public File getFileForURL(final String aTileURLString) {
-		return new File(OpenSatNavConstants.DATA_ROOT_DEVICE,
-				tileFolder + File.separator + aTileURLString.substring(7)+".osn");
+
+	public void setCurrentFSCacheByteSize(int newSize) {
+		if (newSize > mMaxFSCacheByteSize)
+			this.mMaxFSCacheByteSize = newSize;
+		else if (newSize < mMaxFSCacheByteSize) {
+			cutCurrentFSCacheBy(mMaxFSCacheByteSize - newSize);
+			mMaxFSCacheByteSize = newSize;
+		}
 	}
 
-	public void loadMapTileToMemCacheAsync(final String aTileURLString, final Handler callback)
-			throws FileNotFoundException {
+	public File getFileForURL(final String aTileURLString) {
+		return new File(OpenSatNavConstants.DATA_ROOT_DEVICE, tileFolder
+				+ File.separator + aTileURLString.substring(7) + ".osn");
+	}
+
+	public void loadMapTileToMemCacheAsync(final String aTileURLString,
+			final Handler callback) throws FileNotFoundException {
 		if (this.mPending.contains(aTileURLString))
 			return;
 
-		final String formattedTileURLString = OpenStreetMapTileNameFormatter.format(aTileURLString);
+		final String formattedTileURLString = OpenStreetMapTileNameFormatter
+				.format(aTileURLString);
 		final File tileFile = getFileForURL(aTileURLString);
 		FileInputStream fis = null;
 		final boolean onSD = tileFile.canRead();
@@ -135,8 +148,8 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 		} else {
 			fis = this.mCtx.openFileInput(formattedTileURLString);
 		}
-		final BufferedInputStream bis = new BufferedInputStream(fis,4096);
-		
+		final BufferedInputStream bis = new BufferedInputStream(fis, 4096);
+
 		this.mPending.add(aTileURLString);
 
 		this.mThreadPool.execute(new Runnable() {
@@ -146,63 +159,82 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 				try {
 					// File exists, otherwise a FileNotFoundException would have
 					// been thrown
-					OpenStreetMapTileFilesystemProvider.this.mDatabase.incrementUse(formattedTileURLString);
+					OpenStreetMapTileFilesystemProvider.this.mDatabase
+							.incrementUse(formattedTileURLString);
 
 					final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-					out = new BufferedOutputStream(dataStream, StreamUtils.IO_BUFFER_SIZE);
+					out = new BufferedOutputStream(dataStream,
+							StreamUtils.IO_BUFFER_SIZE);
 					StreamUtils.copy(bis, out);
 					out.flush();
 
 					final byte[] data = dataStream.toByteArray();
-					final Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length); // ,
+					final Bitmap bmp = BitmapFactory.decodeByteArray(data, 0,
+							data.length); // ,
 					// BITMAPLOADOPTIONS);
 
 					if (bmp == null) {
-						// image file is obvously corrupted - remove it.
+						// image file is obviously corrupted - remove it.
 						if (onSD) {
 							tileFile.delete();
 						} else {
-							OpenStreetMapTileFilesystemProvider.this.mCtx.deleteFile(formattedTileURLString);
+							OpenStreetMapTileFilesystemProvider.this.mCtx
+									.deleteFile(formattedTileURLString);
 						}
-						throw new IOException("Image file was not decodable: " + tileFile);
+						throw new IOException("Image file was not decodable: "
+								+ tileFile);
 					}
 
-					OpenStreetMapTileFilesystemProvider.this.mCache.putTile(aTileURLString, bmp);
+					OpenStreetMapTileFilesystemProvider.this.mCache.putTile(
+							aTileURLString, bmp);
 
-					final Message successMessage = Message.obtain(callback, MAPTILEFSLOADER_SUCCESS_ID);
+					final Message successMessage = Message.obtain(callback,
+							MAPTILEFSLOADER_SUCCESS_ID);
 					successMessage.sendToTarget();
 
 					if (DEBUGMODE)
-						Log.d(DEBUGTAG, "Loaded: " + aTileURLString + " to MemCache.");
+						Log.d(DEBUGTAG, "Loaded: " + aTileURLString
+								+ " to MemCache.");
 				} catch (IOException e) {
-					final Message failMessage = Message.obtain(callback, MAPTILEFSLOADER_FAIL_ID);
+					final Message failMessage = Message.obtain(callback,
+							MAPTILEFSLOADER_FAIL_ID);
 					failMessage.sendToTarget();
 					if (DEBUGMODE)
-						Log.e(DEBUGTAG, "Error Loading MapTile from FS. Exception: " + e.getClass().getSimpleName(), e);
+						Log.e(DEBUGTAG,
+								"Error Loading MapTile from FS. Exception: "
+										+ e.getClass().getSimpleName(), e);
 				} finally {
 					StreamUtils.closeStream(bis);
 					StreamUtils.closeStream(out);
 				}
 
-				OpenStreetMapTileFilesystemProvider.this.mPending.remove(aTileURLString);
+				OpenStreetMapTileFilesystemProvider.this.mPending
+						.remove(aTileURLString);
 			}
 		});
 	}
 
-	public void saveFile(final String aTileURLString, final byte[] someData) throws IOException {
+	public void saveFile(final String aTileURLString, final byte[] someData)
+			throws IOException {
 		if (someData.length == 0) {
-			throw new IOException("Cannot save file of zero length: " + aTileURLString);
+			throw new IOException("Cannot save file of zero length: "
+					+ aTileURLString);
 		}
-		final String formattedTileURLString = OpenStreetMapTileNameFormatter.format(aTileURLString);
+		final String formattedTileURLString = OpenStreetMapTileNameFormatter
+				.format(aTileURLString);
 		final File tileFile = getFileForURL(aTileURLString);
 		final File folderPath = tileFile.getParentFile();
+		String chosenPath;
 
 		FileOutputStream fos = null;
 		if (OpenSatNavConstants.DATA_ROOT_DEVICE.canWrite()) {
 			folderPath.mkdirs();
 			fos = new FileOutputStream(tileFile);
+			chosenPath = tileFile.getAbsolutePath();
 		} else {
-			fos = this.mCtx.openFileOutput(formattedTileURLString, Context.MODE_WORLD_READABLE);
+			fos = this.mCtx.openFileOutput(formattedTileURLString,
+					Context.MODE_WORLD_READABLE);
+			chosenPath = formattedTileURLString;
 		}
 		final BufferedOutputStream bos = new BufferedOutputStream(fos, 4096);
 		bos.write(someData);
@@ -210,11 +242,13 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 		bos.close();
 
 		synchronized (this) {
-			final int bytesGrown = this.mDatabase.addTileOrIncrement(formattedTileURLString, someData.length);
+			final int bytesGrown = this.mDatabase.addTileOrIncrement(
+					chosenPath, someData.length);
 			this.mCurrentFSCacheByteSize += bytesGrown;
 
 			if (DEBUGMODE)
-				Log.i(DEBUGTAG, "FSCache Size is now: " + this.mCurrentFSCacheByteSize + " Bytes");
+				Log.i(DEBUGTAG, "FSCache Size is now: "
+						+ this.mCurrentFSCacheByteSize + " Bytes");
 
 			/* If Cache is full... */
 			try {
@@ -241,8 +275,7 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 
 	public void cutCurrentFSCacheBy(final int bytesToCut) {
 		try {
-			this.mDatabase.deleteOldest(Integer.MAX_VALUE); // Delete all
-			this.mCurrentFSCacheByteSize = 0;
+			this.mDatabase.deleteOldest(bytesToCut);
 		} catch (EmptyCacheException e) {
 			if (DEBUGMODE)
 				Log.e(DEBUGTAG, "Cache empty", e);
@@ -271,27 +304,41 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 		public static final String T_FSCACHE_USAGECOUNT = "countused";
 		public static final String T_FSCACHE_FILESIZE = "filesize";
 
-		public static final String T_FSCACHE_CREATE_COMMAND = "CREATE TABLE IF NOT EXISTS " + T_FSCACHE + " ("
-				+ T_FSCACHE_NAME + " VARCHAR(255)," + T_FSCACHE_TIMESTAMP + " DATE NOT NULL," + T_FSCACHE_USAGECOUNT
-				+ " INTEGER NOT NULL DEFAULT 1," + T_FSCACHE_FILESIZE + " INTEGER NOT NULL," + " PRIMARY KEY("
+		public static final String T_FSCACHE_CREATE_COMMAND = "CREATE TABLE IF NOT EXISTS "
+				+ T_FSCACHE
+				+ " ("
+				+ T_FSCACHE_NAME
+				+ " VARCHAR(255),"
+				+ T_FSCACHE_TIMESTAMP
+				+ " DATE NOT NULL,"
+				+ T_FSCACHE_USAGECOUNT
+				+ " INTEGER NOT NULL DEFAULT 1,"
+				+ T_FSCACHE_FILESIZE
+				+ " INTEGER NOT NULL,"
+				+ " PRIMARY KEY("
 				+ T_FSCACHE_NAME + ")" + ");";
 
-		public static final String T_FSCACHE_SELECT_LEAST_USED = "SELECT " + T_FSCACHE_NAME + "," + T_FSCACHE_FILESIZE
-				+ " FROM " + T_FSCACHE + " WHERE " + T_FSCACHE_USAGECOUNT + " = (SELECT MIN(" + T_FSCACHE_USAGECOUNT
-				+ ") FROM " + T_FSCACHE + ")";
-		public static final String T_FSCACHE_SELECT_OLDEST = "SELECT " + T_FSCACHE_NAME + "," + T_FSCACHE_FILESIZE
-				+ " FROM " + T_FSCACHE + " ORDER BY " + T_FSCACHE_TIMESTAMP + " ASC";
+		public static final String T_FSCACHE_SELECT_LEAST_USED = "SELECT "
+				+ T_FSCACHE_NAME + "," + T_FSCACHE_FILESIZE + " FROM "
+				+ T_FSCACHE + " WHERE " + T_FSCACHE_USAGECOUNT
+				+ " = (SELECT MIN(" + T_FSCACHE_USAGECOUNT + ") FROM "
+				+ T_FSCACHE + ")";
+		public static final String T_FSCACHE_SELECT_OLDEST = "SELECT "
+				+ T_FSCACHE_NAME + "," + T_FSCACHE_FILESIZE + " FROM "
+				+ T_FSCACHE + " ORDER BY " + T_FSCACHE_TIMESTAMP + " ASC";
 	}
 
 	private class OpenStreetMapTileFilesystemProviderDataBase implements
-			OpenStreetMapTileFilesystemProviderDataBaseConstants, OpenStreetMapViewConstants {
+			OpenStreetMapTileFilesystemProviderDataBaseConstants,
+			OpenStreetMapViewConstants {
 		// ===========================================================
 		// Fields
 		// ===========================================================
 
 		protected final Context mCtx;
 		protected final SQLiteDatabase mDatabase;
-		protected final SimpleDateFormat DATE_FORMAT_ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+		protected final SimpleDateFormat DATE_FORMAT_ISO8601 = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss.SSS");
 
 		// ===========================================================
 		// Constructors
@@ -299,40 +346,47 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 
 		public OpenStreetMapTileFilesystemProviderDataBase(final Context context) {
 			this.mCtx = context;
-			this.mDatabase = new AndNavDatabaseHelper(context).getWritableDatabase();
+			this.mDatabase = new AndNavDatabaseHelper(context)
+					.getWritableDatabase();
 		}
+
 		@Override
 		protected void finalize() throws Throwable {
 			super.finalize();
-			// ensure the SqlLite db is closed 
+			// ensure the SqlLite db is closed
 			if (this.mDatabase != null)
 				this.mDatabase.close();
-		}		
-		
+		}
+
 		public void incrementUse(final String aFormattedTileURLString) {
-			final Cursor c = this.mDatabase.rawQuery("UPDATE " + T_FSCACHE + " SET " + T_FSCACHE_USAGECOUNT + " = "
-					+ T_FSCACHE_USAGECOUNT + " + 1 , " + T_FSCACHE_TIMESTAMP + " = '" + getNowAsIso8601() + "' WHERE "
-					+ T_FSCACHE_NAME + " = '" + aFormattedTileURLString + "'", null);
+			final Cursor c = this.mDatabase.rawQuery("UPDATE " + T_FSCACHE
+					+ " SET " + T_FSCACHE_USAGECOUNT + " = "
+					+ T_FSCACHE_USAGECOUNT + " + 1 , " + T_FSCACHE_TIMESTAMP
+					+ " = '" + getNowAsIso8601() + "' WHERE " + T_FSCACHE_NAME
+					+ " = '" + aFormattedTileURLString + "'", null);
 			c.close();
 		}
 
-		public int addTileOrIncrement(final String aFormattedTileURLString, final int aByteFilesize) {
-			final Cursor c = this.mDatabase.rawQuery("SELECT * FROM " + T_FSCACHE + " WHERE " + T_FSCACHE_NAME + " = '"
-					+ aFormattedTileURLString + "'", null);
+		public int addTileOrIncrement(final String tileURLString,
+				final int aByteFilesize) {
+			final Cursor c = this.mDatabase.rawQuery("SELECT * FROM "
+					+ T_FSCACHE + " WHERE " + T_FSCACHE_NAME + " = '"
+					+ tileURLString + "'", null);
 			final boolean existed = c.getCount() > 0;
 			c.close();
 			if (DEBUGMODE)
 				Log.d(DEBUGTAG, "Tile existed=" + existed);
 			if (existed) {
-				incrementUse(aFormattedTileURLString);
+				incrementUse(tileURLString);
 				return 0;
 			} else {
-				insertNewTileInfo(aFormattedTileURLString, aByteFilesize);
+				insertNewTileInfo(tileURLString, aByteFilesize);
 				return aByteFilesize;
 			}
 		}
 
-		private void insertNewTileInfo(final String aFormattedTileURLString, final int aByteFilesize) {
+		private void insertNewTileInfo(final String aFormattedTileURLString,
+				final int aByteFilesize) {
 			final ContentValues cv = new ContentValues();
 			cv.put(T_FSCACHE_NAME, aFormattedTileURLString);
 			cv.put(T_FSCACHE_TIMESTAMP, getNowAsIso8601());
@@ -340,23 +394,36 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 			this.mDatabase.insert(T_FSCACHE, null, cv);
 		}
 
-		private int deleteOldest(final int pSizeNeeded) throws EmptyCacheException {
-			final Cursor c = this.mDatabase.rawQuery(T_FSCACHE_SELECT_OLDEST, null);
+		private int deleteOldest(final int pSizeNeeded)
+				throws EmptyCacheException {
+			final Cursor c = this.mDatabase.rawQuery(T_FSCACHE_SELECT_OLDEST,
+					null);
 			final ArrayList<String> deleteFromDB = new ArrayList<String>();
 			int sizeGained = 0;
 			if (c != null) {
 				String fileNameOfDeleted;
 				if (c.moveToFirst()) {
 					do {
-						final int sizeItem = c.getInt(c.getColumnIndexOrThrow(T_FSCACHE_FILESIZE));
+						final int sizeItem = c.getInt(c
+								.getColumnIndexOrThrow(T_FSCACHE_FILESIZE));
 						sizeGained += sizeItem;
-						fileNameOfDeleted = c.getString(c.getColumnIndexOrThrow(T_FSCACHE_NAME));
-
-						deleteFromDB.add(fileNameOfDeleted);
-						this.mCtx.deleteFile(fileNameOfDeleted);
+						fileNameOfDeleted = c.getString(c
+								.getColumnIndexOrThrow(T_FSCACHE_NAME));
+						// if the file is in the internal memory it will not
+						// have a slash in it
+						// so this is how we test where we should delete from
+						boolean success = false;
+						if (fileNameOfDeleted.indexOf("/") == -1)
+							success = this.mCtx.deleteFile(fileNameOfDeleted);
+						else
+							success = new File(fileNameOfDeleted).delete();
+						if (success)
+							deleteFromDB.add(fileNameOfDeleted);
 
 						if (DEBUGMODE)
-							Log.i(DEBUGTAG, "Deleted from FS: " + fileNameOfDeleted + " for " + sizeItem + " Bytes");
+							Log.i(DEBUGTAG, "Deleted from FS: "
+									+ fileNameOfDeleted + " for " + sizeItem
+									+ " Bytes");
 					} while (c.moveToNext() && sizeGained < pSizeNeeded);
 				} else {
 					c.close();
@@ -365,7 +432,8 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 				c.close();
 
 				for (String fn : deleteFromDB)
-					this.mDatabase.delete(T_FSCACHE, T_FSCACHE_NAME + "='" + fn + "'", null);
+					this.mDatabase.delete(T_FSCACHE, T_FSCACHE_NAME + "='" + fn
+							+ "'", null);
 			}
 			return sizeGained;
 		}
@@ -376,8 +444,9 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 		private String TMP_COLUMN = "tmp";
 
 		public int getCurrentFSCacheByteSize() {
-			final Cursor c = this.mDatabase.rawQuery("SELECT SUM(" + T_FSCACHE_FILESIZE + ") AS " + TMP_COLUMN
-					+ " FROM " + T_FSCACHE, null);
+			final Cursor c = this.mDatabase.rawQuery("SELECT SUM("
+					+ T_FSCACHE_FILESIZE + ") AS " + TMP_COLUMN + " FROM "
+					+ T_FSCACHE, null);
 			final int ret;
 			if (c != null) {
 				if (c.moveToFirst()) {
@@ -399,7 +468,8 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 		 * @return Date and time in ISO8601 format.
 		 */
 		private String getNowAsIso8601() {
-			return DATE_FORMAT_ISO8601.format(new Date(System.currentTimeMillis()));
+			return DATE_FORMAT_ISO8601.format(new Date(System
+					.currentTimeMillis()));
 		}
 
 		// ===========================================================
@@ -417,9 +487,11 @@ public class OpenStreetMapTileFilesystemProvider implements OpenStreetMapConstan
 			}
 
 			@Override
-			public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			public void onUpgrade(SQLiteDatabase db, int oldVersion,
+					int newVersion) {
 				if (DEBUGMODE)
-					Log.w(DEBUGTAG, "Upgrading database from version " + oldVersion + " to " + newVersion
+					Log.w(DEBUGTAG, "Upgrading database from version "
+							+ oldVersion + " to " + newVersion
 							+ ", which will destroy all old data");
 
 				db.execSQL("DROP TABLE IF EXISTS " + T_FSCACHE);
