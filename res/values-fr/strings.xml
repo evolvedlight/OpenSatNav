@@ -85,6 +85,7 @@
 	<string name="prefs_cache_clear">Videz le cache</string>
 	<string name="prefs_cache_clear_summary">Cliquez ici pour vider complètement le cache
 	</string>
+	<string name="prefs_cache_clear_confirm">Êtes-vous sûrs de vouloir vider le cache des tuiles ?</string>	
 	<string name="megabytes_abbreviation">Mo</string>
 	<string name="about">À propos</string>
 
