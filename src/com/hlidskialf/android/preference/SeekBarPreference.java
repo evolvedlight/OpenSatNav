@@ -9,6 +9,7 @@
 package com.hlidskialf.android.preference;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.preference.DialogPreference;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -143,12 +144,15 @@ public class SeekBarPreference extends DialogPreference implements
 		setProgress(v.getText());
 		return true;
 	}
+	
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		setProgress(mValueText.getText());
+	}
 
 	private void setProgress(CharSequence text) {
-		if (!TextUtils.isEmpty(text)) {
-			if (TextUtils.isDigitsOnly(text))
+		if ((!TextUtils.isEmpty(text))&&(TextUtils.isDigitsOnly(text)))
 				setProgress(Integer.parseInt(text.toString()));
-		}
 	}
 
 	// set the Progress bar to a given value.
