@@ -26,6 +26,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.andnav.osm.util.GeoPoint;
+import org.opensatnav.OpenSatNavConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
@@ -63,8 +64,7 @@ public class OSMGeoCoder implements GeoCoder {
 			url = new URL("http://gazetteer.openstreetmap.org/namefinder/search.xml?find="
 					+ URLEncoder.encode(locationName) + "&max=" + maxResults);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(OpenSatNavConstants.LOG_TAG, e.getMessage(), e);
 		}
 		try {
 			URLConnection urlConn = url.openConnection();

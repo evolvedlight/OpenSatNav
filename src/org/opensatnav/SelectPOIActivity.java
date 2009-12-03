@@ -103,19 +103,16 @@ public class SelectPOIActivity extends ListActivity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return pois.length;
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return (pois[position][0]);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
 
@@ -188,7 +185,6 @@ public class SelectPOIActivity extends ListActivity {
 		 */
 		@Override
 		public int compare(String[] object1, String[] object2) {
-			// TODO Auto-generated method stub
 			return object1[1].compareTo(object2[1]);
 		}
 		

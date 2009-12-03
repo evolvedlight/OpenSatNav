@@ -27,11 +27,13 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.andnav.osm.util.GeoPoint;
+import org.opensatnav.OpenSatNavConstants;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.util.Log;
 
 /**
  * 
@@ -58,8 +60,7 @@ public class YOURSRouter implements Router {
 					+ (to.getLatitudeE6() / 1000000.0) + "&" + "tlon=" + (to.getLongitudeE6() / 1000000.0) + "&" + "v="
 					+ vehicle + "&" + "fast=1&layer=mapnik");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(OpenSatNavConstants.LOG_TAG, e.getMessage(), e);
 		}
 		try {
 			URLConnection conn = url.openConnection();
