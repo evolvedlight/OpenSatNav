@@ -17,12 +17,10 @@ This file is part of OpenSatNav.
 // Created by plusminus on 21:46:22 - 25.09.2008
 package org.andnav.osm.views.util;
 
-import org.opensatnav.OpenSatNavConstants;
-import org.opensatnav.R;
 import org.andnav.osm.util.constants.OpenStreetMapConstants;
 import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
+import org.opensatnav.R;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -30,9 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
 
 /**
@@ -77,7 +73,8 @@ public class OpenStreetMapTileProvider implements OpenStreetMapConstants,
 		this.mFSTileProvider = new OpenStreetMapTileFilesystemProvider(ctx,
 				MbsAllocated * 1024 * 1024, this.mTileCache);
 		this.mTileDownloader = new OpenStreetMapTileDownloader(ctx,
-				this.mFSTileProvider);
+				this.mFSTileProvider, this.mTileCache);
+		this.mFSTileProvider.setTileDownloader(mTileDownloader);
 		this.mDownloadFinishedListenerHander = aDownloadFinishedListener;
 	}
 
@@ -97,13 +94,15 @@ public class OpenStreetMapTileProvider implements OpenStreetMapConstants,
 		Bitmap ret = this.mTileCache.getMapTile(aTileURLString);
 		if (ret != null) {
 			if (DEBUGMODE)
-				Log.i(DEBUGTAG, "MapTileCache succeded for: " + aTileURLString);
+				Log.i(DEBUGTAG, "MapTileCache succeeded for: " + aTileURLString);
 		} else {
 			if (DEBUGMODE)
-				Log.i(DEBUGTAG, "Cache failed, trying from FS.");
+				Log.i(DEBUGTAG, "Cache failed, trying from FS for " + aTileURLString);
 			try {
 				this.mFSTileProvider.loadMapTileToMemCacheAsync(aTileURLString,
 						this.mLoadCallbackHandler);
+				// if no file is found, an exception will be thrown by the line above 
+				// and ret will stay null, which will start an async download below after the catch block
 				ret = this.mLoadingMapTile;
 			} catch (Exception e) {
 				if (DEBUGMODE)
@@ -122,7 +121,7 @@ public class OpenStreetMapTileProvider implements OpenStreetMapConstants,
 				ret = this.mLoadingMapTile;
 
 				this.mTileDownloader.requestMapTileAsync(aTileURLString,
-						this.mLoadCallbackHandler);
+						this.mLoadCallbackHandler, null);
 			}
 		}
 		return ret;
@@ -134,7 +133,7 @@ public class OpenStreetMapTileProvider implements OpenStreetMapConstants,
 	private class LoadCallbackHandler extends Handler {
 		@Override
 		public void handleMessage(final Message msg) {
-			final int what = msg.what;
+			final int what = msg.what;			
 			switch (what) {
 			case OpenStreetMapTileDownloader.MAPTILEDOWNLOADER_SUCCESS_ID:
 				OpenStreetMapTileProvider.this.mDownloadFinishedListenerHander
@@ -144,7 +143,7 @@ public class OpenStreetMapTileProvider implements OpenStreetMapConstants,
 				break;
 			case OpenStreetMapTileDownloader.MAPTILEDOWNLOADER_FAIL_ID:
 				if (DEBUGMODE)
-					Log.e(DEBUGTAG, "MapTile download error.");
+					Log.e(DEBUGTAG, "MapTile download error.");					
 				break;
 
 			case OpenStreetMapTileFilesystemProvider.MAPTILEFSLOADER_SUCCESS_ID:

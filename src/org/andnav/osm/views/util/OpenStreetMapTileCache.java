@@ -17,8 +17,6 @@ This file is part of OpenSatNav.
 // Created by plusminus on 17:58:57 - 25.09.2008
 package org.andnav.osm.views.util;
 
-import java.util.HashMap;
-
 import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
 
 import android.graphics.Bitmap;
@@ -64,6 +62,10 @@ public class OpenStreetMapTileCache implements OpenStreetMapViewConstants{
 
 	public synchronized void putTile(final String aTileURLString, final Bitmap aTile) {
 		this.mCachedTiles.put(aTileURLString, aTile);
+	}
+
+	public synchronized void clearTile(final String aTileURLString) {
+		this.mCachedTiles.remove(aTileURLString);
 	}
 
 	// ===========================================================
