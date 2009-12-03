@@ -21,7 +21,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.anddev.openstreetmap.contributor.util.RecordedGeoPoint;
 import org.anddev.openstreetmap.contributor.util.RecordedWayPoint;
 import org.anddev.openstreetmap.contributor.util.RouteRecorder;

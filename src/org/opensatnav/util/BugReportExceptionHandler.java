@@ -85,8 +85,7 @@ public class BugReportExceptionHandler {
 							new File(ERROR_PATH + "/" +stacktraceFile).delete();
 
 						} catch (IOException e) {
-							Log.e(OpenSatNavConstants.LOG_TAG, e.getMessage());
-							e.printStackTrace();
+							Log.e(OpenSatNavConstants.LOG_TAG, e.getMessage(), e);
 						}
 
 						new BugReportSender(parent).sendBugReportAtRestart(contents.toString());
@@ -133,9 +132,7 @@ public class BugReportExceptionHandler {
 			bos.close();
 		} catch (Exception ebos) {
 			// Nothing much we can do about this - the game is over
-			Log.e(OpenSatNavConstants.LOG_TAG, ebos.getMessage());
-			ebos.printStackTrace();
-			
+			Log.e(OpenSatNavConstants.LOG_TAG, ebos.getMessage(), ebos);			
 		}
 
 	}

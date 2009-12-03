@@ -16,23 +16,22 @@ This file is part of OpenSatNav.
  */
 package org.opensatnav;
 
+import org.anddev.openstreetmap.contributor.util.RouteRecorder;
+import org.andnav.osm.util.constants.OpenStreetMapConstants;
+import org.opensatnav.services.LocationHandler;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.os.Bundle;
-import android.content.Intent;
-import android.app.PendingIntent;
 import android.os.IBinder;
 import android.util.Log;
-
-import org.andnav.osm.util.constants.OpenStreetMapConstants;
-import org.anddev.openstreetmap.contributor.util.RouteRecorder;
-import org.opensatnav.services.LocationHandler;
 
 public class TraceRecorderService extends Service implements OpenStreetMapConstants,
 			OpenSatNavConstants, LocationListener {

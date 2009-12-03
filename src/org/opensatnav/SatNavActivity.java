@@ -215,7 +215,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			if (TraceRecorderService.isTracing()){
 				refreshTracks();
 			}
-			Log.v(OpenSatNavConstants.LOG_TAG, "Accuracy: "
+			if (OpenSatNavConstants.DEBUGMODE)
+				Log.v(OpenSatNavConstants.LOG_TAG, "Accuracy: "
 					+ newLocation.getAccuracy());
 			currentLocation = newLocation;
 
@@ -403,7 +404,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			}
 		}
 		if (requestCode == CONTRIBUTE) {
-			Log.v(OpenSatNavConstants.LOG_TAG, "Called contribute");
+			if (OpenSatNavConstants.DEBUGMODE)
+				Log.v(OpenSatNavConstants.LOG_TAG, "Called contribute");
 			RouteRecorder mRouteRecorder = TraceRecorderService.getRouteRecorder();
 			if (resultCode == UPLOAD_NOW) {
 				// Check actually got some traces:
@@ -516,7 +518,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 					SatNavActivity.this, routeRecorder);
 			SatNavActivity.this.mOsmv.getOverlays().add(
 					SatNavActivity.this.traceOverlay);
-			Log.v(OpenSatNavConstants.LOG_TAG, "Drew "
+			if (OpenSatNavConstants.DEBUGMODE)
+				Log.v(OpenSatNavConstants.LOG_TAG, "Drew "
 					+ routeRecorder.getRecordedGeoPoints().size() + " points");
 			// tell the viewer that it should redraws
 			SatNavActivity.this.mOsmv.postInvalidate();

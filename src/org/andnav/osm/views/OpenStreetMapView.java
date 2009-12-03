@@ -561,8 +561,10 @@ public class OpenStreetMapView extends View implements OpenStreetMapConstants, O
 		if (this.mMaxiMap != null) // If this is a MiniMap
 			c.drawRect(0, 0, viewWidth - 1, viewHeight - 1, this.mPaint);
 
-		final long endMs = System.currentTimeMillis();
-		Log.d(DEBUGTAG, "Rendering overall: " + (endMs - startMs) + "ms");
+		if (DEBUGMODE) {
+			final long endMs = System.currentTimeMillis();
+			Log.d(DEBUGTAG, "Rendering overall: " + (endMs - startMs) + "ms");
+		}
 	}
 
 	// ===========================================================

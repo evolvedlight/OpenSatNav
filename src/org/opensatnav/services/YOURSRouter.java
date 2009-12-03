@@ -28,17 +28,10 @@ import java.util.StringTokenizer;
 
 import org.andnav.osm.util.GeoPoint;
 
-/**
- * 
- * @author Kieran Fleming
- *
- */
-
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.util.Log;
 
 /**
  * 

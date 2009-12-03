@@ -17,10 +17,10 @@ This file is part of OpenSatNav.
 // Created by plusminus on 22:01:11 - 29.09.2008
 package org.andnav.osm.views.overlay;
 
-import org.opensatnav.R;
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.views.OpenStreetMapView;
 import org.andnav.osm.views.OpenStreetMapView.OpenStreetMapViewProjection;
+import org.opensatnav.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -31,7 +31,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Paint.Style;
-import android.util.Log;
 
 /**
  * 

@@ -3,12 +3,11 @@ package org.anddev.openstreetmap.contributor.util;
 
 import java.util.ArrayList;
 
-import android.location.Location;
-import android.os.Bundle;
-import android.util.Log;
-
 import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.OpenSatNavConstants;
+
+import android.location.Location;
+import android.os.Bundle;
 
 public class RouteRecorder {
 	// ===========================================================

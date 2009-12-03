@@ -24,7 +24,6 @@ import org.anddev.openstreetmap.contributor.util.constants.Constants;
 import org.anddev.openstreetmap.contributor.util.constants.OSMConstants;
 
 import android.util.Log;
-import android.widget.Toast;
 
 
 /**

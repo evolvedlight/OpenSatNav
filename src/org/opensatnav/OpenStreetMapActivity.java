@@ -21,10 +21,7 @@ import org.andnav.osm.util.constants.OpenStreetMapConstants;
 import org.opensatnav.services.LocationHandler;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -32,7 +29,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.util.Log;
 import android.widget.Toast;
 
 /**

@@ -1,20 +1,19 @@
 package org.opensatnav.services;
 
+import org.andnav.osm.util.constants.OpenStreetMapConstants;
+import org.opensatnav.OpenSatNavConstants;
+import org.opensatnav.R;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.widget.Toast;
-import android.content.Intent;
-
-import org.opensatnav.OpenSatNavConstants;
-import org.andnav.osm.util.constants.OpenStreetMapConstants;
-import org.opensatnav.R;
 
 public class LocationHandler implements OpenSatNavConstants, OpenStreetMapConstants {
 
@@ -35,7 +34,8 @@ public class LocationHandler implements OpenSatNavConstants, OpenStreetMapConsta
 	protected int mNumSatellites = NOT_SET;
 
 	public LocationHandler(LocationManager lm, LocationListener dest, Context ctx) {
-		Log.v(OpenSatNavConstants.LOG_TAG, "LocationHandler construtor.  Context: " + ctx.getClass());
+		if (OpenSatNavConstants.DEBUGMODE)
+			Log.v(OpenSatNavConstants.LOG_TAG, "LocationHandler construtor.  Context: " + ctx.getClass());
 		mLocationManager = lm;
 		mLocationReceiver = dest;
 		mContext = ctx;
@@ -46,7 +46,8 @@ public class LocationHandler implements OpenSatNavConstants, OpenStreetMapConsta
 	}
 
 	public synchronized void start() {
-		Log.v(OpenSatNavConstants.LOG_TAG, "LocationHandler start()");
+		if (OpenSatNavConstants.DEBUGMODE)
+			Log.v(OpenSatNavConstants.LOG_TAG, "LocationHandler start()");
 		// initialize state of location providers and launch location listeners
 		if (!networkLocationActivated &&
 				mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -69,7 +70,7 @@ public class LocationHandler implements OpenSatNavConstants, OpenStreetMapConsta
 			firstLocation = mLocationManager.getLastKnownLocation(
 					bestProvider());
 		} catch (Exception e) {
-			Log.d(OpenSatNavConstants.LOG_TAG, "Error getting the first location");
+			Log.e(OpenSatNavConstants.LOG_TAG, "Error getting the first location");
 		}
 
 		// test to see which location services are available
@@ -113,13 +114,14 @@ public class LocationHandler implements OpenSatNavConstants, OpenStreetMapConsta
 	}
 	
 	public synchronized void stop() {
-		Log.v(OpenSatNavConstants.LOG_TAG, "LocationHandler Stop");
+		if (OpenSatNavConstants.DEBUGMODE)
+			Log.v(OpenSatNavConstants.LOG_TAG, "LocationHandler Stop");
 		try {
 			mLocationManager.removeUpdates(mGpsLocationListener);
 			networkLocationActivated = false;
 			mGpsLocationListener = null;
 		} catch (IllegalArgumentException e) {
-			Log.v(OpenSatNavConstants.LOG_TAG, "Ignoring: " + e);
+			Log.d(OpenSatNavConstants.LOG_TAG, "Ignoring: " + e);
 			// there's no gps location listener to disable
 		}
 		try {

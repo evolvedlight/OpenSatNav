@@ -4,7 +4,6 @@ import org.anddev.openstreetmap.contributor.util.RouteRecorder;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 
 public class OpenStreetMapViewOldTraceOverlay extends OpenStreetMapViewTraceOverlay {
 	public OpenStreetMapViewOldTraceOverlay(final Context ctx, RouteRecorder mRouteRecorder) {

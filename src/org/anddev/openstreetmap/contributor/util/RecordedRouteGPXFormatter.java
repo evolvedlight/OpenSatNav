@@ -7,11 +7,6 @@ import java.util.Date;
 import java.util.Formatter;
 
 import org.anddev.openstreetmap.contributor.util.constants.OSMConstants;
-import org.opensatnav.R;
-
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.widget.TextView;
 
 
 public class RecordedRouteGPXFormatter implements OSMConstants{
