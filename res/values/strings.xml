@@ -27,7 +27,7 @@
 		unknown. Please try again when you have a GPS signal.&quot;</string>
 	<string name="unspecified_directions_failed">Getting directions failed, please try again.
 	</string>
-	<string name="place_not_found">"Sorry, couldn't find "</string>
+	<string name="place_not_found">"Sorry, couldn't find \"%1$s\""</string>
 	<string name="unnamed_place">Unnamed</string>
 	<string name="directions_not_found">Sorry, couldn\'t get directions</string>
 	<string name="please_wait">Please wait...</string>

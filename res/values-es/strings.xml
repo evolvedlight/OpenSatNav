@@ -17,7 +17,7 @@
 	<string name="planning_mode_on">"Modo de Navegación desactivado"</string>
 	<string name="start_directions_failed">"&quot;No se pudo obtener la dirección porque la localización es desconocida. Pruebe de nuevo cuando tenga señal GPS.&quot;"</string>
 	<string name="unspecified_directions_failed">"Falló al obtener la dirección, por favor, inténtelo de nuevo."</string>
-	<string name="place_not_found">"Perdón, no se pudo encontrar "</string>
+	<string name="place_not_found">"Perdón, no se pudo encontrar \"%1$s\""</string>
 	<string name="unnamed_place">Sin nombre</string>
 	<string name="directions_not_found">"Perdón, no se ha podido obtener la dirección"</string>
 	<string name="please_wait">Por favor, espere...</string>

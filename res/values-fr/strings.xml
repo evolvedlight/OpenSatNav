@@ -23,7 +23,7 @@
 		sera meilleur."</string>
 	<string name="unspecified_directions_failed">"Résolution de l'itinéraire impossible, veuillez
 		réessayer."</string>
-	<string name="place_not_found">"Désolé, impossible de trouver "</string>
+	<string name="place_not_found">"Désolé, impossible de trouver \"%1$s\""</string>
 	<string name="unnamed_place">Sans nom</string>
 	<string name="directions_not_found">"Désolé, impossible de déterminer l'itinéraire"
 	</string>

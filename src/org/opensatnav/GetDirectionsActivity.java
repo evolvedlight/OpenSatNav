@@ -120,10 +120,12 @@ public class GetDirectionsActivity extends Activity {
 						intent.putExtra("locations", locations);
 						startActivityForResult(intent, CHOOSE_LOCATION);
 					} else {
-						Toast.makeText(
-								GetDirectionsActivity.this,
-								GetDirectionsActivity.this.getResources().getText(R.string.place_not_found) + " "
-										+ toText, Toast.LENGTH_LONG).show();
+						String text = String.format(GetDirectionsActivity.this
+								.getResources().getText(
+										R.string.place_not_found).toString(), toText);
+						Toast.makeText(GetDirectionsActivity.this, text,
+								Toast.LENGTH_LONG).show();
+
 					}
 				}
 			};
