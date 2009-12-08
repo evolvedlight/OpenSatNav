@@ -392,16 +392,14 @@ public class OpenStreetMapTileFilesystemProvider implements
 
 		public void incrementUse(final String aFormattedTileURLString,
 				boolean update_added_timestamp, final TileMetaData metadata) {
-			String now = "'" + getNowAsIso8601() + "'";
-			String query = "UPDATE " + T_FSCACHE + " SET "
-					+ T_FSCACHE_USAGECOUNT + " = " + T_FSCACHE_USAGECOUNT
-					+ " + 1 , " + T_FSCACHE_U_TIMESTAMP + " = " + now;
+			StringBuilder query = new StringBuilder("UPDATE ").append(T_FSCACHE).append(" SET ")
+									.append(T_FSCACHE_USAGECOUNT).append(" = ").append(T_FSCACHE_USAGECOUNT).append(" + 1 , ")
+									.append(T_FSCACHE_U_TIMESTAMP).append(" = datetime('now')");
 			if (update_added_timestamp)
-				query += ", " + T_FSCACHE_A_TIMESTAMP + " = " + now;
+				query.append(", ").append(T_FSCACHE_A_TIMESTAMP).append(" = datetime('now')");
 			if (metadata != null) 
-				query +=  ", " + T_FSCACHE_ETAG +" = '" + metadata.getEtag() +"'";
-			this.mDatabase.execSQL(query + " WHERE "
-					+ T_FSCACHE_NAME + " = '" + aFormattedTileURLString + "'");			
+				query.append(", ").append(T_FSCACHE_ETAG).append(" = '").append(metadata.getEtag()).append("'");
+			this.mDatabase.execSQL(query.append(" WHERE ").append(T_FSCACHE_NAME).append(" = '").append(aFormattedTileURLString).append("'").toString());
 		}
 
 		public int addTileOrIncrement(final String tileURLString,
