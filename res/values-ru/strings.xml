@@ -30,7 +30,7 @@
 	<string name="please_wait">Пожалуйста, ждите...</string>
 	<string name="searching">Поиск</string>
 	<string name="getting_route">Получить маршрут</string>
-	<string name="enter_destination">Введите место назначения?</string>
+	<string name="enter_destination">Введите место назначения</string>
 	<string name="transport_type">Тип транспорта</string>
 	<!--
 		use a space before the abbreviation if your language uses one between
@@ -102,7 +102,7 @@
 	<string name="error_email_message">Dear All,\n\nI encountered the following issue
 		while using OpenSatNav, could you please have a look at it?\n\n
 	</string>
-	<string name="error_email_chooser_title">Send Mail via:</string>
+	<string name="error_email_chooser_title">Отправить почту с помощью:</string>
 	<string name="bug_report_ask_user">Только что произошла неожиданная ошибка. Отправить отчет разработчикам?</string>
 	<string name="bug_report_not_sent_ask_user">Неожиданная ошибка произошла при последнем запуске 
 		OpenSatNav. Отправить отчет разработчикам?</string>
