@@ -18,18 +18,17 @@
 	<string name="navigation_mode_on">Mode Navigation activé</string>
 	<string name="planning_mode_on">Mode Planning activé</string>
 
-	<string name="start_directions_failed">"Impossible de déterminer l'itinéraire parce que
+	<string name="start_directions_failed">Impossible de déterminer l\'itinéraire parce que
 		votre location est inconnue. Veuillez réessayer lorsque le signal GPS
-		sera meilleur."</string>
-	<string name="unspecified_directions_failed">"Résolution de l'itinéraire impossible, veuillez
-		réessayer."</string>
+		sera meilleur.</string>
+	<string name="unspecified_directions_failed">Résolution de l\'itinéraire impossible, veuillez
+		réessayer.</string>
 	<string name="place_not_found">"Désolé, impossible de trouver \"%1$s\""</string>
 	<string name="unnamed_place">Sans nom</string>
-	<string name="directions_not_found">"Désolé, impossible de déterminer l'itinéraire"
-	</string>
+	<string name="directions_not_found">Désolé, impossible de déterminer l\'itinéraire</string>
 	<string name="please_wait">Veuillez patienter...</string>
 	<string name="searching">Recherche en cours</string>
-	<string name="getting_route">"Chargement de l'itinéraire"</string>
+	<string name="getting_route">Chargement de l\'itinéraire</string>
 	<string name="enter_destination">Où voulez-vous vous rendre ?</string>
 	<string name="transport_type">Moyen de transport</string>
 	<string name="away">de distance</string>
