@@ -8,6 +8,8 @@
 	<string name="getting_gps_fix">"Tratando de obtener su ubicación a través del GPS..."</string>
 	<string name="get_directions">Direcciones</string>
 	<string name="navigation_mode">"Modo de navegación"</string>
+	<string name="start_trace_ticker">"OpenSatNav comenzando la grabación de trazas..."</string>
+	<string name="tracing_notification_text">"Una traza está siendo grabada..."</string>
 	<!--
 		Padded with nbsp's so the menu doesn't rearrange itself when the
 		button toggles
@@ -15,7 +17,7 @@
 	<string name="planning_mode">  "Modo de planificación"  </string>
 	<string name="navigation_mode_on">"Modo de Navegación activado"</string>
 	<string name="planning_mode_on">"Modo de Navegación desactivado"</string>
-	<string name="start_directions_failed">"&quot;No se pudo obtener la dirección porque la localización es desconocida. Pruebe de nuevo cuando tenga señal GPS.&quot;"</string>
+	<string name="start_directions_failed">"No se pudo obtener la dirección porque su localización es desconocida. Pruebe de nuevo cuando tenga señal GPS."</string>
 	<string name="unspecified_directions_failed">"Falló al obtener la dirección, por favor, inténtelo de nuevo."</string>
 	<string name="place_not_found">"Perdón, no se pudo encontrar \"%1$s\""</string>
 	<string name="unnamed_place">Sin nombre</string>
@@ -75,6 +77,7 @@
 	<string name="prefs_cache_sdcard_title">"Tamaño seleccionado"</string>
 	<string name="prefs_cache_clear">"Vaciar caché"</string>
 	<string name="prefs_cache_clear_summary">"Haga click aquí para vaciar el caché de mapas"</string>
+	<string name="prefs_cache_clear_confirm">"¿Está seguro que desea eliminar el caché de mapas?"</string>
 	<string name="megabytes_abbreviation">Mb</string>
 	<string name="about">A cerca de</string>
 
@@ -87,7 +90,7 @@
 	<string name="l_authors">Escrito por</string>
 	<string name="l_documenters">Documentado por</string>
 	<string name="l_translators">Traducido por</string>
-	<string name="l_artists">Artwork por</string>
+	<string name="l_artists">Arte por</string>
 	<string name="l_credits">"Créditos"</string>
 	<string name="l_license">Licencia</string>
 	<string name="l_info">Información General</string>
@@ -97,7 +100,7 @@
 	<string name="error_email_message">"Hola a todos,\n\nHe encontrado el siguiente error mientras usaba OpenSatNav.¿le podrian echar un vistazo?\n\n"</string>
 	<string name="error_email_chooser_title">Enviar correo via:</string>
 	<string name="bug_report_ask_user">"Ha ocurrido un error inesperado. ¿Desea enviarnos un informe de error?"</string>
-	<string name="bug_report_not_sent_ask_user">"Un error inesperado ocurrio la anterior vez que abrió OpenSatNav. ¿Quiere enviarnos un informe de error?"</string>
+	<string name="bug_report_not_sent_ask_user">"Un error inesperado ocurrió la anterior vez que abrió OpenSatNav. ¿Quiere enviarnos un informe de error?"</string>
 	<string name="bug_report_ask_user_title">Error inesperado</string>
 	
 	<!--  Contributions -->
@@ -115,6 +118,7 @@
 	<string name="contribute_stop_recording">Grabacion parada</string>
 	<string name="contribute_upload">Subir trazas a OSM</string>
 	<string name="contribute_delete_traces">Eliminar trazas</string>
+	<string name="contribute_delete_old_traces">Eliminar trazas antiguas</string>
 	<string name="contribute_new_waypoint">Nueva Coordenada</string>
 	<string name="contribute_dialogue_trace_description">"Descripción de la traza"</string>
 	<string name="contribute_dialogue_trace_message">"Por favor, introduzca una descripción para la traza"</string>
@@ -134,6 +138,7 @@
 	<string name="contribute_track_uploaded">"Traza con descripción \"%1$s\" subida a OSM. Traza limpiada y trazado GPS desactivado"</string>
 	<string name="contribute_waypoint_added">"Punto de interés \"%1$s\" añadido"</string>
 	
-	<string name="contribute_track_error_happened">"Perdone, un error ocurrió: "</string>
+	<string name="contribute_track_error_happened">"Perdone, ocurrió un error: "</string>
 	<string name="contribute_waypoing_gps_fix_not_good">"No hay señal GPS lo suficientemente buena como para añadir un punto de interés, pruebe de nuevo."</string>
+	<string name="tracing_paused_notification_text">"La grabación está pausada"</string>
 </resources>
