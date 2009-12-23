@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">OpenSatNav</string>
+	<string name="app_desc">OpenSatNav是一个Android系统的导航系统，它是基于OpenStreetMap上的一个自由和开源项目。</string>
+	<string name="location_services_disabled">"没有定位服务被激活。您想现在激活其中一个吗？ \n\n激活后，你必须重新启动程序。"</string>
+	<string name="gps_disabled">您当前位置的精确度很低，因为GPS卫星定位系统还没有启动。</string>
+	<string name="network_unavailable">没有网络连接。请检查您的网络参数，并重新连接。</string>
+	<string name="getting_gps_fix">正在使用GPS寻找您的位置...</string>
+	<string name="get_directions">路线</string>
+	<string name="navigation_mode">导航模式</string>
+	<!--
+		Padded with nbsp's so the menu doesn't rearrange itself when the
+		button toggles
+	-->
+	<string name="planning_mode"> 规划模式  </string>
+	<string name="navigation_mode_on">启动导航模式</string>
+	<string name="planning_mode_on">启动规划模式</string>
+
+	<string name="start_directions_failed">无法确定路线，因为您的位置无法确定。请在GPS信号更强一些的时候，再试一次。</string>
+	<string name="unspecified_directions_failed">查找路线失败，请稍候再试。</string>
+	<string name="place_not_found">"对不起，我发找到 \"%1$s\""</string>
+	<string name="unnamed_place">无名</string>
+	<string name="directions_not_found">对不起，无法确定路线。</string>
+	<string name="please_wait">请稍候...</string>
+	<string name="searching">正在寻找...</string>
+	<string name="getting_route">正在查找路线</string>
+	<string name="enter_destination">您想去哪里？</string>
+	<string name="transport_type">交通工具</string>
+	<string name="away">距离</string>
+	<string name="could_not_find_poi">没有找到相应的地方。</string>
+	<string name="car">汽车</string>
+	<string name="bicycle">自行车</string>
+	<string name="walking">步行</string>
+	<string-array name="mode_of_transport_types">
+		<item>@string/car</item>
+		<item>@string/bicycle</item>
+		<item>@string/walking</item>
+	</string-array>
+	<!--
+		These are the POI types that would be nice to have, but not all are in
+		OSM namefinder yet
+	-->
+	<!-- Use the OSM tag name for the name attribute if possible -->
+	<string name="atm">自动取款机</string>
+	<string name="cafe">咖啡厅</string>
+	<string name="cinema">电影院</string>
+	<string name="fuel">加油站</string>
+	<string name="hospital">医院</string>
+	<string name="hotel">旅馆</string>
+	<string name="night_club">夜总会</string>
+	<string name="parking">停车场</string>
+	<string name="police">警察局</string>
+	<string name="pub">酒吧</string>
+	<string name="restaurant">餐厅</string>
+	<string name="taxi_rank">出租车站</string>
+	<string-array name="poi_types">
+		<item>@string/atm</item>
+		<item>@string/cafe</item>
+		<item>@string/cinema</item>
+		<item>@string/fuel</item>
+		<item>@string/hospital</item>
+		<item>@string/hotel</item>
+		<item>@string/police</item>
+		<item>@string/pub</item>
+		<item>@string/restaurant</item>
+	</string-array>
+	<string name="find_nearest">查找最近的...</string>
+	<string name="choose_location">选一个地方...</string>
+
+	<string name="touch_screen">"请触摸屏幕继续..."</string>
+	<string name="preferences">偏好设置</string>
+	<string name="prefs_cache_section">缓存</string>
+	<string name="prefs_cache_sdcard">使用SD卡</string>
+	<string name="prefs_cache_sdcard_summary">用于缓存的最大SD卡容量</string>
+	<string name="prefs_cache_sdcard_dialog">用于缓存的最大SD卡容量是</string>
+	<string name="prefs_cache_sdcard_title">请选择容量</string>
+	<string name="prefs_cache_clear">清空缓存</string>
+	<string name="prefs_cache_clear_summary">点击这里完全清空缓存</string>
+	<string name="prefs_cache_clear_confirm">您想清空缓存吗？</string>	
+	<string name="megabytes_abbreviation">Mo</string>
+	<string name="about">关于</string>
+
+	<!--  OI About inclusion -->
+	<string name="about_website_label">OpenSatNav.org</string>
+	<string name="about_website_url">http://www.opensatnav.org/</string>
+	<string name="menu_preferences">偏好设置</string>
+	<string name="menu_about">关于 IO</string>
+	<string name="l_leaders">创始人</string>
+	<string name="l_authors">开发人员</string>
+	<string name="l_documenters">收集材料人员</string>
+	<string name="l_translators">翻译人员</string>
+	<string name="l_artists">绘图人员</string>
+	<string name="l_credits">Crédits</string>
+	<string name="l_license">许可</string>
+	<string name="l_info">一般信息</string>
+
+	<string name="no_information_available">没有可用信息</string>
+	<!-- / -->
+	<string name="error_email_message">"你们好，\n\n我使用OpenSatNav时，遇到以下问题，你们能够解决一下吗？\n\n"</string>
+	<string name="error_email_chooser_title">发送邮件给 :</string>
+	<string name="bug_report_not_sent_ask_user">"在您最后一次使用OpenSatNav时，发生意外错误。您想给我们发送错误报告吗？</string>
+	<string name="bug_report_ask_user_title">意外错误</string>
+	
+	<string name="menu_contribute">贡献</string>
+	<string name="contribute_title">帮助OSM</string>
+	<string name="prefs_contribute_section">贡献</string>
+	<string name="prefs_contribute_osm_username">用户名</string>
+	<string name="prefs_contribute_osm_username_summary">请输入OSM用户名</string>
+	<string name="prefs_contribute_osm_password">密码</string>
+	<string name="prefs_contribute_osm_password_summary">请输入OSM密码</string>
+	<string name="pref_username_key">pref_username_key</string>
+	<string name="pref_password_key">pref_password_key</string>
+	<string name="contribute_introduction">您可以通过给Open Street Map项目发送GPS路线信息来帮助OpenSatNav</string>
+	<string name="contribute_start_recording">开始录制</string>
+	<string name="contribute_stop_recording">停止录制</string>	
+	<string name="contribute_upload">发送GPS路线信息给OSM</string>
+	<string name="contribute_delete_traces">删除GPS路线信息</string>
+	<string name="contribute_delete_old_traces">删除旧的GPS路线信息</string>	
+	<string name="contribute_new_waypoint">新的Waypoint</string>
+	<string name="contribute_dialogue_trace_description">路线描述</string>
+	<string name="contribute_dialogue_trace_message">请描述这条路线</string>
+	<string name="contribute_dialogue_new_waypoint">新的Waypoint</string>
+	<string name="contribute_dialogue_new_waypoint_message">请输入Waypoint的名字</string>
+	<string name="contribute_username_not_entered">还未输入</string>
+	<string name="contribute_error_enter_osm_login_details">请输入必要的认证信息</string>
+	<string name="contribute_gps_on">GPS已启动</string>
+	<string name="contribute_gps_off">GPS已关闭</string>
+	<string name="contribute_track_cleared">初始化路线</string>
+	<string name="contribute_error_no_traces">目前没有路线信息</string>
+	<string name="contribute_uploading_traces">正在发送路线信息</string>
+	<!--
+		%1$s will be replaced at runtime by track description, keep it
+		unchanged in translations
+	-->
+	<string name="contribute_track_uploaded">路线 \"%1$s\" 已经发送给OSM。初始化路线</string>
+	<string name="contribute_waypoint_added">已添加Waypoint \"%1$s\"</string>
+	
+	<string name="contribute_track_error_happened">很抱歉，发生错误： </string>
+	<string name="contribute_waypoing_gps_fix_not_good">您现在的GPS信号还不足以添加一个waypoint，请稍候再试。</string>
+</resources>
