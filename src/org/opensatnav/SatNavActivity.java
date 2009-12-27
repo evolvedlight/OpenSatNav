@@ -18,7 +18,6 @@ package org.opensatnav;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.anddev.openstreetmap.contributor.util.OSMUploader;
 import org.anddev.openstreetmap.contributor.util.RecordedGeoPoint;
@@ -217,9 +216,14 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			this.mMyLocationOverlay.setBearing(newLocation.getBearing());
 			this.mMyLocationOverlay.setSpeed(newLocation.getSpeed());
 			this.mMyLocationOverlay.setAccuracy(newLocation.getAccuracy());
-			if (this.autoFollowing)
-				this.mOsmv.setMapCenter(TypeConverter
-						.locationToGeoPoint(newLocation));
+
+			if( autoFollowing ) {
+				this.mOsmv.setMapCenter(TypeConverter.locationToGeoPoint(newLocation));
+			} else {
+				// tell the viewer that it should redraw
+				SatNavActivity.this.mOsmv.postInvalidate();
+			}
+			
 			if (TraceRecorderService.isTracing()) {
 				refreshTracks();
 			}
