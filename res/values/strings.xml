@@ -48,11 +48,6 @@
 	<string name="car">Car</string>
 	<string name="bicycle">Bicycle</string>
 	<string name="walking">Walking</string>
-	<string-array name="mode_of_transport_types">
-		<item>@string/car</item>
-		<item>@string/bicycle</item>
-		<item>@string/walking</item>
-	</string-array>
 	<!--
 		These are the POI types that would be nice to have, but not all are in
 		OSM namefinder yet

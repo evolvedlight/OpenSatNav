@@ -296,9 +296,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		MenuItem contributeMenuItem = pMenu.add(0, MENU_CONTRIBUTE, Menu.NONE,
 				R.string.menu_contribute);
 		contributeMenuItem.setIcon(android.R.drawable.ic_menu_edit);
-		MenuItem poisMenuItem = pMenu.add(0, MENU_FIND_POIS, Menu.NONE, this
-				.getResources().getText(R.string.find_nearest));
-		poisMenuItem.setIcon(android.R.drawable.ic_menu_search);
 		MenuItem toggleAutoFollowMenuItem = pMenu.add(0,
 				MENU_TOGGLE_FOLLOW_MODE, Menu.NONE, R.string.planning_mode);
 		toggleAutoFollowMenuItem.setIcon(android.R.drawable.ic_menu_mapmode);
@@ -342,17 +339,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 					org.opensatnav.ContributeActivity.class);
 			startActivityForResult(intentContribute, CONTRIBUTE);
 
-			return true;
-		case MENU_FIND_POIS:
-			if (currentLocation != null) {
-				Intent intent1 = new Intent(this,
-						org.opensatnav.SelectPOIActivity.class);
-				intent1.setData(Uri.parse(currentLocation.getLatitude() + ","
-						+ currentLocation.getLongitude()));
-				startActivityForResult(intent1, SELECT_POI);
-			} else
-				Toast.makeText(this, R.string.start_directions_failed,
-						Toast.LENGTH_LONG).show();
 			return true;
 		case MENU_RENDERER_ID:
 			this.mOsmv.invalidate();

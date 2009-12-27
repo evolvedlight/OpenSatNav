@@ -31,14 +31,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 /**
  * 
@@ -58,6 +64,23 @@ public class GetDirectionsActivity extends Activity {
 	protected Spinner vehicleSpinner;
 	protected String vehicle;
 	protected Boolean backgroundThreadComplete;
+	private RadioButton radio_text;
+	private RadioButton radio_poi;
+
+	OnClickListener radio_listener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			// Perform action on clicks
+			RadioButton rb = (RadioButton) v;
+			RadioButton radio_text = (RadioButton) findViewById(R.id.radio_text_search);
+			RadioButton radio_poi = (RadioButton) findViewById(R.id.radio_poi_search);
+			if (rb.getId() == R.id.radio_poi_search) {
+				radio_text.setChecked(false);
+			} else if (rb.getId() == R.id.radio_text_search) {
+				radio_poi.setChecked(false);
+			}
+		}
+	};
 
 	public void onCreate(Bundle savedInstanceState) {
 		data = new Intent();
@@ -66,21 +89,87 @@ public class GetDirectionsActivity extends Activity {
 		setTitle(R.string.get_directions);
 		setContentView(R.layout.getdirections);
 
+		radio_text = (RadioButton) findViewById(R.id.radio_text_search);
+		radio_poi = (RadioButton) findViewById(R.id.radio_poi_search);
+		radio_text.setOnClickListener(radio_listener);
+		radio_poi.setOnClickListener(radio_listener);
+
+		final Spinner s_poi = (Spinner) findViewById(R.id.list_of_pois);
+		ArrayAdapter<?> adapter_poi = ArrayAdapter.createFromResource(this,
+				R.array.poi_types, android.R.layout.simple_spinner_item);
+		adapter_poi
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		s_poi.setAdapter(adapter_poi);
+		s_poi.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				s_poi.requestFocusFromTouch();
+				radio_text.setChecked(false);
+				radio_poi.setChecked(true);
+				return false;
+			}
+		});
+		s_poi.setOnItemSelectedListener(new OnItemSelectedListener() {
+			boolean s_poi_selected_on_creation = false;
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				if (s_poi_selected_on_creation == false) {
+					s_poi_selected_on_creation = true;
+				} else {
+					radio_text.setChecked(false);
+					radio_poi.setChecked(true);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		Spinner s = (Spinner) findViewById(R.id.modeoftransport);
-		ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.mode_of_transport_types,
-				android.R.layout.simple_spinner_item);
+		ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this, 
+				R.array.mode_of_transport_types, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		s.setAdapter(adapter);
 		s.setPrompt((CharSequence) findViewById(R.string.transport_type));
 
 		vehicleSpinner = (Spinner) findViewById(R.id.modeoftransport);
+		final String[] AMENITIES = new String[] { "atm", "cafe", "cinema",
+				"fuel", "hospital", "hotel", "parking", "police", "pub",
+				"restaurant" };
 		toField = (EditText) findViewById(R.id.to_text_field);
+		toField.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				radio_text.setChecked(true);
+				radio_poi.setChecked(false);
+				return false;
+			}
+		});
+		toField.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				radio_text.setChecked(true);
+				radio_poi.setChecked(false);
+			}
+		});
 		toField.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+				if (keyCode != KeyEvent.KEYCODE_DPAD_DOWN
+						&& keyCode != KeyEvent.KEYCODE_DPAD_LEFT
+						&& keyCode != KeyEvent.KEYCODE_DPAD_UP
+						&& keyCode != KeyEvent.KEYCODE_DPAD_RIGHT) {
+					radio_text.setChecked(true);
+					radio_poi.setChecked(false);
+				}
+				if ((event.getAction() == KeyEvent.ACTION_DOWN)
+						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					// Perform action on enter key press
-					getLocations(toField.getText().toString());
+					getLocations(toField.getText().toString(), -1);
 					return true;
 				}
 				return false;
@@ -90,7 +179,17 @@ public class GetDirectionsActivity extends Activity {
 		Button goButton = (Button) findViewById(R.id.go_button);
 		goButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				getLocations(toField.getText().toString());
+				if (radio_text.isChecked()) { // text search
+					getLocations(toField.getText().toString(), -1);
+				} else if (radio_poi.isChecked()) { // poi search
+					int selectedPoi = (int) s_poi.getSelectedItemId();
+					String osmvalue = getResources().getStringArray(
+							R.array.poi_types_osmvalue)[selectedPoi];
+					from = GeoPoint.fromDoubleString(getIntent()
+							.getDataString(), ',');
+					getLocations(osmvalue + " , " + from.toDoubleString(),
+							selectedPoi);
+				}
 			}
 		});
 		Button cancelButton = (Button) findViewById(R.id.cancel_button);
@@ -103,10 +202,12 @@ public class GetDirectionsActivity extends Activity {
 		// TODO: save and restore vehicle type
 	}
 
-	public void getLocations(final String toText) {
+	public void getLocations(final String toText, final int selectedPoi) {
 		if (toText.length() != 0) {
-			final ProgressDialog progress = ProgressDialog.show(GetDirectionsActivity.this, this.getResources()
-					.getText(R.string.please_wait), this.getResources().getText(R.string.searching), true, true);
+			final ProgressDialog progress = ProgressDialog.show(
+					GetDirectionsActivity.this, this.getResources().getText(
+							R.string.please_wait), this.getResources().getText(
+							R.string.searching), true, true);
 			final Handler handler = new Handler() {
 				// threading stuff - this actually handles the stuff after the
 				// thread has completed (code below)
@@ -123,9 +224,26 @@ public class GetDirectionsActivity extends Activity {
 						String text = String.format(GetDirectionsActivity.this
 								.getResources().getText(
 										R.string.place_not_found).toString(), toText);
-						Toast.makeText(GetDirectionsActivity.this, text,
-								Toast.LENGTH_LONG).show();
-
+						if (selectedPoi == -1) { // text search
+							Toast.makeText(
+									GetDirectionsActivity.this,
+									GetDirectionsActivity.this.getResources()
+											.getText(R.string.place_not_found)
+											+ " " + toText, Toast.LENGTH_LONG)
+									.show();
+						} else { // poi search
+							String stringValue = getResources().getStringArray(
+									R.array.poi_types)[selectedPoi];
+							Toast
+									.makeText(
+											GetDirectionsActivity.this,
+											GetDirectionsActivity.this
+													.getResources()
+													.getText(
+															R.string.could_not_find_poi)
+													+ " " + stringValue,
+											Toast.LENGTH_LONG).show();
+						}
 					}
 				}
 			};
@@ -145,21 +263,9 @@ public class GetDirectionsActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CHOOSE_LOCATION) {
 			if (resultCode == RESULT_OK) {
-				String selectedVehicle = (String) vehicleSpinner.getSelectedItem();
-				// TODO: make this less wasteful and dumb :)
-				// the point is to support i18n by not hardcoding the text
-				// selected
-				String car = (String) this.getResources().getText(R.string.car);
-				String bicycle = (String) this.getResources().getText(R.string.bicycle);
-				String walking = (String) this.getResources().getText(R.string.walking);
-
-				if (selectedVehicle.compareTo(car) == 0) {
-					vehicle = Router.CAR;
-				} else if (selectedVehicle.compareTo(bicycle) == 0) {
-					vehicle = Router.BICYCLE;
-				} else if (selectedVehicle.compareTo(walking) == 0) {
-					vehicle = Router.WALKING;
-				}
+				int selectedVehicle = (int) vehicleSpinner.getSelectedItemId();
+				vehicle = getResources().getStringArray(
+						R.array.mode_of_transport_types_osmvalue)[selectedVehicle];
 				Bundle bundle = new Bundle();
 				bundle.putString("vehicle", vehicle);
 				bundle.putString("to", data.getStringExtra("location"));

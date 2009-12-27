@@ -51,4 +51,48 @@
     <string-array name="about_artists"><!-- Add your name here if you helped out -->
         <item>Kizza</item>
     </string-array>
+    
+    <!--
+    	These 2 arrays needs to be synchronized (corresponding item at the same place).
+    	Be careful if you add or remove anything. 
+     -->
+    <string-array name="mode_of_transport_types">
+		<item>@string/car</item>
+		<item>@string/bicycle</item>
+		<item>@string/walking</item>
+	</string-array>
+	<string-array name="mode_of_transport_types_osmvalue">
+		<item>motorcar</item>
+		<item>bicycle</item>
+		<item>foot</item>
+	</string-array>
+    
+    <!--
+    	These 2 arrays needs to be synchronized (corresponding item at the same place)
+    	Be careful if you add or remove anything. 
+     -->
+    <string-array name="poi_types">
+        <item>@string/atm</item>
+        <item>@string/cafe</item>
+        <item>@string/cinema</item>
+        <item>@string/fuel</item>
+        <item>@string/hospital</item>
+        <item>@string/hotel</item>
+        <item>@string/parking</item>
+        <item>@string/police</item>
+        <item>@string/pub</item>
+        <item>@string/restaurant</item>
+    </string-array>
+    <string-array name="poi_types_osmvalue">
+        <item>atm</item>
+        <item>cafe</item>
+        <item>cinema</item>
+        <item>fuel</item>
+        <item>hospital</item>
+        <item>hotel</item>
+        <item>parking</item>
+        <item>police</item>
+        <item>pub</item>
+        <item>restaurant</item>
+    </string-array>
 </resources>
