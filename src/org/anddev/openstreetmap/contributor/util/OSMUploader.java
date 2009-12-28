@@ -22,7 +22,9 @@ import java.util.GregorianCalendar;
 
 import org.anddev.openstreetmap.contributor.util.constants.Constants;
 import org.anddev.openstreetmap.contributor.util.constants.OSMConstants;
+import org.andnav.osm.views.util.HttpUserAgentHelper;
 
+import android.content.Context;
 import android.util.Log;
 
 
@@ -64,12 +66,12 @@ public class OSMUploader implements Constants, OSMConstants{
 	 * @param gpxInputStream the InputStream containing the gpx-data.
 	 * @throws IOException
 	 */
-	public static void uploadAsync(final RouteRecorder mRouteRecorder, String username, String password, String description) throws IOException{
-		uploadAsync(new ByteArrayInputStream(RecordedRouteGPXFormatter.create(mRouteRecorder.getRecordedGeoPoints(), mRouteRecorder.getRecordedWayPoints(), username).getBytes()), username, password, description);
+	public static void uploadAsync(final Context context, final RouteRecorder mRouteRecorder, String username, String password, String description) throws IOException{
+		uploadAsync(context, new ByteArrayInputStream(RecordedRouteGPXFormatter.create(mRouteRecorder.getRecordedGeoPoints(), mRouteRecorder.getRecordedWayPoints(), username).getBytes()), username, password, description);
 	}
 	
-	public static void uploadAsync(final InputStream gpxInputStream, String username, String password, String description) throws IOException{
-		uploadAsync(description, DEFAULT_TAGS, true, gpxInputStream, username, password);
+	public static void uploadAsync(final Context context, final InputStream gpxInputStream, String username, String password, String description) throws IOException{
+		uploadAsync(context, description, DEFAULT_TAGS, true, gpxInputStream, username, password);
 	}
 	
 	/*public static void uploadAsync(final ArrayList<RecordedGeoPoint> recordedGeoPoints, String username, String password, String description) throws IOException{
@@ -86,12 +88,12 @@ public class OSMUploader implements Constants, OSMConstants{
 	 * @param gpxInputStreaman the InputStream containing the gpx-data.
 	 * @throws IOException
 	 */
-	public static void uploadAsync(final String description, final String tags, final boolean addDateTags, final InputStream gpxInputStream, String username, String password) throws IOException {
-		uploadAsync(username, password, description, tags, true, gpxInputStream, pseudoFileNameFormat.format(new GregorianCalendar().getTime()) + "_" + username + ".gpx");
+	public static void uploadAsync(final Context context, final String description, final String tags, final boolean addDateTags, final InputStream gpxInputStream, String username, String password) throws IOException {
+		uploadAsync(context, username, password, description, tags, true, gpxInputStream, pseudoFileNameFormat.format(new GregorianCalendar().getTime()) + "_" + username + ".gpx");
 	}
 	
-	public static void uploadAsync(final String description, final String tags, final boolean addDateTags, final ArrayList<RecordedGeoPoint> recordedGeoPoints, String username, String password) throws IOException{
-		uploadAsync(description, tags, addDateTags, new ByteArrayInputStream(RecordedRouteGPXFormatter.create(recordedGeoPoints, username).getBytes()), username, password);
+	public static void uploadAsync(final Context context, final String description, final String tags, final boolean addDateTags, final ArrayList<RecordedGeoPoint> recordedGeoPoints, String username, String password) throws IOException{
+		uploadAsync(context, description, tags, addDateTags, new ByteArrayInputStream(RecordedRouteGPXFormatter.create(recordedGeoPoints, username).getBytes()), username, password);
 	}
 
 
@@ -106,7 +108,7 @@ public class OSMUploader implements Constants, OSMConstants{
 	 * @param pseudoFileName ending with "<code>.gpx</code>"
 	 * @throws IOException
 	 */
-	public static void uploadAsync(final String username, final String password, final String description, final String tags, final boolean addDateTags, final InputStream gpxInputStream, final String pseudoFileName) {
+	public static void uploadAsync(final Context context, final String username, final String password, final String description, final String tags, final boolean addDateTags, final InputStream gpxInputStream, final String pseudoFileName) {
 		assert(username != null && username.length() > 0);
 		assert(password != null && password.length() > 0);
 		assert(description == null || description.length() > 0);
@@ -133,6 +135,9 @@ public class OSMUploader implements Constants, OSMConstants{
 					//final URL url = new URL("http://192.168.10.210:3000/gpstracks");
 					Log.d(DEBUGTAG, "Destination Url: " + url);
 					final HttpURLConnection con = (HttpURLConnection) url.openConnection();
+					String userAgent = HttpUserAgentHelper.getUserAgent(context);
+					if (userAgent != null)
+						con.setRequestProperty("User-Agent", userAgent);					
 					con.setConnectTimeout(15000);
 					con.setRequestMethod("POST");
 					con.setDoOutput(true);
@@ -175,8 +180,8 @@ public class OSMUploader implements Constants, OSMConstants{
 		}, "OSMUpload-Thread").start();
 	}
 	
-	public static void upload(final String username, final String password, final String description, final String tags, final boolean addDateTags, final ArrayList<RecordedGeoPoint> recordedGeoPoints, final String pseudoFileName) throws IOException{
-		uploadAsync(username, password, description, tags, addDateTags, new ByteArrayInputStream(RecordedRouteGPXFormatter.create(recordedGeoPoints, username).getBytes()), pseudoFileName);
+	public static void upload(final Context context, final String username, final String password, final String description, final String tags, final boolean addDateTags, final ArrayList<RecordedGeoPoint> recordedGeoPoints, final String pseudoFileName) throws IOException{
+		uploadAsync(context, username, password, description, tags, addDateTags, new ByteArrayInputStream(RecordedRouteGPXFormatter.create(recordedGeoPoints, username).getBytes()), pseudoFileName);
 	}
 
 	/**

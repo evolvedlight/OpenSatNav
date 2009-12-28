@@ -1,4 +1,4 @@
-package org.opensatnav.util;
+package org.andnav.osm.views.util;
 
 import org.opensatnav.OpenSatNavConstants;
 
@@ -8,7 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
-public class OSNHttpAgent {
+public class HttpUserAgentHelper {
 	
 	private static String ua = null;
 	

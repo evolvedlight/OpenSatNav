@@ -438,7 +438,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 							String description = data
 									.getStringExtra("description");
-							OSMUploader.uploadAsync(TraceRecorderService
+							OSMUploader.uploadAsync(this, TraceRecorderService
 									.getRouteRecorder(), username, password,
 									description);
 

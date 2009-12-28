@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.andnav.osm.util.GeoPoint;
+import org.andnav.osm.views.util.HttpUserAgentHelper;
 import org.opensatnav.OpenSatNavConstants;
-import org.opensatnav.util.OSNHttpAgent;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -65,7 +65,7 @@ public class YOURSRouter implements Router {
 		}
 		try {
 			URLConnection conn = url.openConnection();
-			String userAgent = OSNHttpAgent.getUserAgent(context);
+			String userAgent = HttpUserAgentHelper.getUserAgent(context);
 			if (userAgent != null)
 				conn.setRequestProperty("User-Agent", userAgent);
 			conn.setReadTimeout(30000);

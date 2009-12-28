@@ -103,6 +103,9 @@ public class OpenStreetMapTileDownloader implements OpenStreetMapConstants, Open
 					URL url = new URL(aURLString);
 
 					HttpURLConnection conn = (HttpURLConnection)url.openConnection();	// doesn't actually open connection?
+					String userAgent = HttpUserAgentHelper.getUserAgent(mCtx);
+					if (userAgent != null)
+						conn.setRequestProperty("User-Agent", userAgent);						
 					if (tileMetaData != null) {
 						Date ifModifiedSince = tileMetaData.getDateAdded();
 						if (ifModifiedSince != null) {
