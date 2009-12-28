@@ -28,6 +28,7 @@ import java.util.StringTokenizer;
 
 import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.OpenSatNavConstants;
+import org.opensatnav.util.OSNHttpAgent;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -64,7 +65,7 @@ public class YOURSRouter implements Router {
 		}
 		try {
 			URLConnection conn = url.openConnection();
-			String userAgent = getUserAgent(context);
+			String userAgent = OSNHttpAgent.getUserAgent(context);
 			if (userAgent != null)
 				conn.setRequestProperty("User-Agent", userAgent);
 			conn.setReadTimeout(30000);
@@ -104,15 +105,4 @@ public class YOURSRouter implements Router {
 
 	}
 
-	public static String getUserAgent(Context context) {
-		try {
-			// Read package name and version number from manifest
-			PackageManager manager = context.getPackageManager();
-			PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
-			return info.packageName + " " + info.versionName;
-
-		} catch (NameNotFoundException e) {
-			return null;
-		}
-	}
 }

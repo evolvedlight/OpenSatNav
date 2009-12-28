@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.OpenSatNavConstants;
+import org.opensatnav.util.OSNHttpAgent;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
@@ -46,7 +47,7 @@ public class NominatimGeoCoder implements GeoCoder {
 		}
 		try {
 			URLConnection urlConn = url.openConnection();
-			String userAgent = OSMGeoCoder.getUserAgent(context);
+			String userAgent = OSNHttpAgent.getUserAgent(context);
 			if (userAgent != null)
 				urlConn.setRequestProperty("User-Agent", userAgent);
 			urlConn.setReadTimeout(60000);

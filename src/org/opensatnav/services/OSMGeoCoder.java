@@ -27,6 +27,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.OpenSatNavConstants;
+import org.opensatnav.util.OSNHttpAgent;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
@@ -68,7 +69,7 @@ public class OSMGeoCoder implements GeoCoder {
 		}
 		try {
 			URLConnection urlConn = url.openConnection();
-			String userAgent = getUserAgent(context);
+			String userAgent = OSNHttpAgent.getUserAgent(context);
 			if (userAgent != null)
 				urlConn.setRequestProperty("User-Agent", userAgent);
 			urlConn.setReadTimeout(60000);
@@ -126,18 +127,6 @@ public class OSMGeoCoder implements GeoCoder {
 		bundle.putStringArray("info", infoArray);
 		return bundle;
 
-	}
-
-	public static String getUserAgent(Context context) {
-		try {
-			// Read package name and version number from manifest
-			PackageManager manager = context.getPackageManager();
-			PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
-			return info.packageName + " " + info.versionName;
-
-		} catch (NameNotFoundException e) {
-			return null;
-		}
 	}
 
 }
