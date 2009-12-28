@@ -74,6 +74,7 @@ public abstract class OpenStreetMapActivity extends Activity implements
 		}
 
 		mLocationHandler = new LocationHandler((LocationManager) getSystemService(Context.LOCATION_SERVICE), this, this);
+		mLocationHandler.start();
 	}
 
 	@Override
