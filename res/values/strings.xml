@@ -156,5 +156,7 @@
 	
 	<string name="contribute_track_error_happened">Sorry, an error happened: </string>
 	<string name="contribute_waypoing_gps_fix_not_good">GPS fix not good enough to add waypoint, try again</string>
-<string name="tracing_paused_notification_text">Recording is paused</string>
+	<string name="tracing_paused_notification_text">Recording is paused</string>
+	
+	<string name="namefinder_service_label">Name Finder service</string>
 </resources>

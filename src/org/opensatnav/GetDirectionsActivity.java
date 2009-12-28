@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.services.GeoCoder;
+import org.opensatnav.services.NominatimGeoCoder;
 import org.opensatnav.services.OSMGeoCoder;
-import org.opensatnav.services.Router;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -38,7 +38,6 @@ import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -54,6 +53,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class GetDirectionsActivity extends Activity {
 	protected static final int CHOOSE_LOCATION = 0;
+	private static final int NAMEFINDER = 0;
+	private static final int NOMINATIM = NAMEFINDER + 1;
 	protected Intent data;
 	// protected ProgressDialog progress;
 	protected Bundle locations;
@@ -129,17 +130,19 @@ public class GetDirectionsActivity extends Activity {
 			}
 		});
 		
-		Spinner s = (Spinner) findViewById(R.id.modeoftransport);
+		vehicleSpinner = (Spinner) findViewById(R.id.modeoftransport);
 		ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this, 
 				R.array.mode_of_transport_types, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		s.setAdapter(adapter);
-		s.setPrompt((CharSequence) findViewById(R.string.transport_type));
+		vehicleSpinner.setAdapter(adapter);
+		vehicleSpinner.setPrompt((CharSequence) findViewById(R.string.transport_type));
 
-		vehicleSpinner = (Spinner) findViewById(R.id.modeoftransport);
-		final String[] AMENITIES = new String[] { "atm", "cafe", "cinema",
-				"fuel", "hospital", "hotel", "parking", "police", "pub",
-				"restaurant" };
+		final Spinner nameFinderSpinner = (Spinner) findViewById(R.id.nameFinderSpinner);
+		adapter = ArrayAdapter.createFromResource(this, 
+				R.array.namefinder_service, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		nameFinderSpinner.setAdapter(adapter);
+		
 		toField = (EditText) findViewById(R.id.to_text_field);
 		toField.setOnTouchListener(new OnTouchListener() {
 			@Override
@@ -168,8 +171,9 @@ public class GetDirectionsActivity extends Activity {
 				}
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
+					
 					// Perform action on enter key press
-					getLocations(toField.getText().toString(), -1);
+					getLocations(toField.getText().toString(), -1, nameFinderSpinner.getSelectedItemPosition());
 					return true;
 				}
 				return false;
@@ -180,7 +184,7 @@ public class GetDirectionsActivity extends Activity {
 		goButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (radio_text.isChecked()) { // text search
-					getLocations(toField.getText().toString(), -1);
+					getLocations(toField.getText().toString(), -1, nameFinderSpinner.getSelectedItemPosition());
 				} else if (radio_poi.isChecked()) { // poi search
 					int selectedPoi = (int) s_poi.getSelectedItemId();
 					String osmvalue = getResources().getStringArray(
@@ -188,7 +192,7 @@ public class GetDirectionsActivity extends Activity {
 					from = GeoPoint.fromDoubleString(getIntent()
 							.getDataString(), ',');
 					getLocations(osmvalue + " , " + from.toDoubleString(),
-							selectedPoi);
+							selectedPoi, nameFinderSpinner.getSelectedItemPosition());
 				}
 			}
 		});
@@ -202,7 +206,7 @@ public class GetDirectionsActivity extends Activity {
 		// TODO: save and restore vehicle type
 	}
 
-	public void getLocations(final String toText, final int selectedPoi) {
+	public void getLocations(final String toText, final int selectedPoi, final int namefinder) {
 		if (toText.length() != 0) {
 			final ProgressDialog progress = ProgressDialog.show(
 					GetDirectionsActivity.this, this.getResources().getText(
@@ -250,7 +254,17 @@ public class GetDirectionsActivity extends Activity {
 			new Thread(new Runnable() {
 				public void run() {
 					// put long running operations here
-					GeoCoder geoCoder = new OSMGeoCoder();
+					GeoCoder geoCoder = null;
+
+					switch (namefinder) {
+					case NOMINATIM:
+						geoCoder = new NominatimGeoCoder();
+						break;
+					case NAMEFINDER:
+					default:
+						geoCoder = new OSMGeoCoder();
+					}
+					
 					locations = geoCoder.getFromLocationName(toText, 15, GetDirectionsActivity.this);
 					// ok, we are done
 					handler.sendEmptyMessage(0);
