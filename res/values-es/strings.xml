@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">OpenSatNav</string>
 	<string name="app_desc">"Aplicación libre y de código abierto para Android basada en OpenStreetMap"</string>
+	<!-- used in LocationHandler.java because android is buggy for android.R.strings.yes and no
+	see 
+	http://code.google.com/p/android/issues/detail?id=3713&q=android.R.string.yes&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
+	-->
+	<string name="yes">Si</string>
+	<string name="no">No</string>
+	
 	<string name="location_services_disabled">"Ningún servicio de localización está activo. ¿Quiere activarlo ahora? \n\nDespués de aplicar los cambios, pulse el botón de Volver para regresar a éste programa."</string>
 	<string name="gps_disabled">"La precisión de su ubicación puede no ser precisa porque el GPS no está activado."</string>
 	<string name="network_unavailable">"No hay conexión de datos. Por favor, compruebe su configuración y pruebe de nuevo."</string>

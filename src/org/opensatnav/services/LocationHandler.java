@@ -82,7 +82,8 @@ public class LocationHandler implements OpenSatNavConstants, OpenStreetMapConsta
 				builder.setCancelable(true);
 				builder.setMessage(R.string.location_services_disabled)
 						.setCancelable(false).setPositiveButton(
-								android.R.string.yes,
+							//FIXME ZeroG - 2009/12/28 replace by android.R.string.yes once it's fixed upstream
+								R.string.yes,
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int id) {
@@ -90,7 +91,9 @@ public class LocationHandler implements OpenSatNavConstants, OpenStreetMapConsta
 										mContext.startActivity(new Intent(
 												android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 									}
-								}).setNegativeButton(android.R.string.no,
+								}).setNegativeButton(
+										//FIXME ZeroG - 2009/12/28 replace by android.R.string.no once it's fixed upstream
+										R.string.no,
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int id) {

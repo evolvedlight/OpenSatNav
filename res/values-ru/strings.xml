@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">OpenSatNav</string>
 	<string name="app_desc">Открытое приложение для просмотра карт OpenStreetMap для платформы
 		Android.</string>
+	<!-- used in LocationHandler.java because android is buggy for android.R.strings.yes and no
+	see 
+	http://code.google.com/p/android/issues/detail?id=3713&q=android.R.string.yes&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
+	  -->
+	<string name="yes">Да</string>
+	<string name="no">нет</string>		
+
 	<string name="location_services_disabled">Сервисы обнаружения местоположения отключены. Вы хотите изменить настройки сейчас? \n\nПосле изменений нажмите кнопку \'Назад'
 		чтобы вернуться в программу.</string>
 	<string name="gps_disabled">Низкая точность обнаружения местоположения, так как GPS отключен.</string>

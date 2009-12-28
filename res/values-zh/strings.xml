@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">OpenSatNav</string>
 	<string name="app_desc">OpenSatNav是一个Android系统的导航系统，它是基于OpenStreetMap上的一个自由和开源项目。</string>
+	<!-- used in LocationHandler.java because android is buggy for android.R.strings.yes and no
+	see 
+	http://code.google.com/p/android/issues/detail?id=3713&q=android.R.string.yes&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
+	-->
+	<string name="yes">是</string>
+	<string name="no">否</string>
+
 	<string name="location_services_disabled">"没有定位服务被激活。您想现在激活其中一个吗？ \n\n激活后，你必须重新启动程序。"</string>
 	<string name="gps_disabled">您当前位置的精确度很低，因为GPS卫星定位系统还没有启动。</string>
 	<string name="network_unavailable">没有网络连接。请检查您的网络参数，并重新连接。</string>

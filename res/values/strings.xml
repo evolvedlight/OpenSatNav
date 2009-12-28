@@ -3,6 +3,13 @@
 	<string name="app_name">OpenSatNav</string>
 	<string name="app_desc">A free and open source OpenStreetMap application
 		for Android.</string>
+	<!-- used in LocationHandler.java because android is buggy for android.R.strings.yes and no
+	see 
+	http://code.google.com/p/android/issues/detail?id=3713&q=android.R.string.yes&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
+	  -->
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+
 	<string name="location_services_disabled">No location services are enabled. Do you want to
 		change this setting now? \n\nAfter making the change press the Back
 		button to return to this program.</string>

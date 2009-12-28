@@ -2,13 +2,18 @@
 <resources>
 	<string name="app_desc">Eine freie, quelloffene OpenStreetMap-Anwendung
 		für Android.</string>
-	<string name="location_services_disabled">Die Standortbestimmung ist ausgeschaltet. Möchtest Du das ändern? \n\n
-	Drücke Zurück, um zu diesem Program zurückzukommen, nachdem Du die Einstellungen geändert hast.</string>
+	<!-- used in LocationHandler.java because android is buggy for android.R.strings.yes and no
+	see 
+	http://code.google.com/p/android/issues/detail?id=3713&q=android.R.string.yes&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
+	  -->
+	<string name="yes">Ja</string>
+	<string name="no">Nein</string>
+			
+	<string name="location_services_disabled">Die Standortbestimmung ist ausgeschaltet. Möchtest Du das ändern?\n\nDrücke Zurück, um zu diesem Program zurückzukommen, nachdem Du die Einstellungen geändert hast.</string>
 	<string name="gps_disabled">Die Genauigkeit der Standortbestimmung ist schlecht, da GPS ausgeschaltet ist.</string>
 	<string name="network_unavailable">Keine Datenverbindung. Bitte überprüfe die Einstellungen und versuche es noch einmal.</string>
-	<string name="getting_gps_fix">Deine Position wird mittels GPS bestimmt...
-	</string>
-	<string name="get_directions">Wegbeschreibung</string>
+	<string name="getting_gps_fix">Positionsbestimmung per GPS...</string>
+	<string name="get_directions">Route</string>
 	<string name="navigation_mode">Navigationsmodus</string>
 	<string name="start_trace_ticker">OpenSatNav startet Aufnahme von GPS-Trace...</string>
 	<string name="tracing_notification_text">Ein GPS-Trace wird aufgenommen...</string>
@@ -19,12 +24,12 @@
 	<string name="planning_mode">  Planungsmodus  </string>
 	<string name="navigation_mode_on">Navigationsmodus an</string>
 	<string name="planning_mode_on">Planungsmodus an</string>
-	<string name="start_directions_failed">&quot;Es kann keine Wegbeschreibung gegeben werden, da die momentane Position nicht bekannt ist. Versuche es erneut, wenn ein GPS-Signal verfügbar ist.&quot;</string>
-	<string name="unspecified_directions_failed">Wegbeschreibung nicht empfangen, bitte versuche es noch einmal.
+	<string name="start_directions_failed">&quot;Es kann keine Wegbeschreibung abgerufen werden, da die momentane Position nicht bekannt ist. Versuche es erneut, wenn ein GPS-Signal verfügbar ist.&quot;</string>
+	<string name="unspecified_directions_failed">Konnte Wegbeschreibung nicht abrufen, bitte versuche es noch einmal.
 	</string>
 	<string name="place_not_found">"Sorry, \"%1$s\" nicht gefunden"</string>
-	<string name="unnamed_place">Ohne Namen</string>
-	<string name="directions_not_found">Sorry, es kann keine Wegbeschreibung gegeben werden</string>
+	<string name="unnamed_place">Name nicht bekannt</string>
+	<string name="directions_not_found">Sorry, keine Route gefunden</string>
 	<string name="please_wait">Bitte warten...</string>
 	<string name="searching">Suche wird durchgeführt</string>
 	<string name="getting_route">Route wird empfangen</string>
@@ -60,7 +65,7 @@
 	<string name="pub">Kneipe</string>
 	<string name="restaurant">Restaurant</string>
 	<string name="taxi_rank">Taxistand</string>
-	<string name="find_nearest">In der Nähe</string>
+	<string name="find_nearest">Suchen</string>
 	<string name="choose_location">Wähle Ort...</string>
 	<string name="touch_screen">Berühre den Bildschirm, um fortzufahren...</string>
 
@@ -73,7 +78,7 @@
 	<string name="prefs_cache_sdcard_summary">Maximaler zur Zwischenspeicherung von Kacheln verwendeter Speicher</string>
 	<string name="prefs_cache_sdcard_dialog">Der SD-Kartenspeicher wird maximal belegt mit</string>
 	<string name="prefs_cache_sdcard_title">Größe wählen</string>
-	<string name="prefs_cache_clear">Kachel-Zwischenspeicher leeren</string>
+	<string name="prefs_cache_clear">Zwischenspeicher leeren</string>
 	<string name="prefs_cache_clear_summary">Drücke hier, um den Kachel-Zwischenspeicher zu leeren</string>
 	<string name="prefs_cache_clear_confirm">Bist Du sicher, dass Du den Kachel-Zwischenspeicher löschen möchtest?</string>
 	<string name="megabytes_abbreviation">MB</string>
