@@ -15,7 +15,7 @@ import android.net.Uri;
 import android.widget.ScrollView;
 
 public class UKPostCodeValidator {
-	private final static String postCodePattern = ".*[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}.*";
+	private final static String postCodePattern = ".*[A-Z]{1,2}[0-9R][0-9A-Z]? ?[0-9][ABD-HJLNP-UW-Z]{2}.*";
 	private final static Pattern pattern = Pattern.compile(postCodePattern,
 			Pattern.CASE_INSENSITIVE);
 	private final static String freeThePostCodeUpdateURI = "http://market.android.com/search?q=pname:org.freethepostcode.android";
