@@ -159,4 +159,9 @@
 	<string name="tracing_paused_notification_text">Recording is paused</string>
 	
 	<string name="namefinder_service_label">Name Finder service</string>
+	<!-- only displayed for GB user, no need to be translated in other languages -->
+	<string name="uk_postcode_not_recognised_title">UK Postcode not recognized</string>
+	<string name="uk_postcode_not_recognised">The postcode is not recognised, the most likely reason for this is that it has not been entered into the \'Free The Postcode\' database (www.freethepostcode.org).\n\n 
+	As you are using the Android platform, you can download an open-source (GPLv3) application from Android Market, it will allow you to easily submit new postcodes.\n\n
+	Would you like to use it?</string>
 </resources>

@@ -23,9 +23,11 @@ import org.andnav.osm.util.GeoPoint;
 import org.opensatnav.services.GeoCoder;
 import org.opensatnav.services.NominatimGeoCoder;
 import org.opensatnav.services.OSMGeoCoder;
+import org.opensatnav.util.UKPostCodeValidator;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -112,6 +114,7 @@ public class GetDirectionsActivity extends Activity {
 		});
 		s_poi.setOnItemSelectedListener(new OnItemSelectedListener() {
 			boolean s_poi_selected_on_creation = false;
+
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
@@ -126,23 +129,28 @@ public class GetDirectionsActivity extends Activity {
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		vehicleSpinner = (Spinner) findViewById(R.id.modeoftransport);
-		ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this, 
-				R.array.mode_of_transport_types, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this,
+				R.array.mode_of_transport_types,
+				android.R.layout.simple_spinner_item);
+		adapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		vehicleSpinner.setAdapter(adapter);
-		vehicleSpinner.setPrompt((CharSequence) findViewById(R.string.transport_type));
+		vehicleSpinner
+				.setPrompt((CharSequence) findViewById(R.string.transport_type));
 
 		final Spinner nameFinderSpinner = (Spinner) findViewById(R.id.nameFinderSpinner);
-		adapter = ArrayAdapter.createFromResource(this, 
-				R.array.namefinder_service, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		adapter = ArrayAdapter.createFromResource(this,
+				R.array.namefinder_service,
+				android.R.layout.simple_spinner_item);
+		adapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		nameFinderSpinner.setAdapter(adapter);
-		
+
 		toField = (EditText) findViewById(R.id.to_text_field);
 		toField.setOnTouchListener(new OnTouchListener() {
 			@Override
@@ -171,9 +179,10 @@ public class GetDirectionsActivity extends Activity {
 				}
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
-					
+
 					// Perform action on enter key press
-					getLocations(toField.getText().toString(), -1, nameFinderSpinner.getSelectedItemPosition());
+					getLocations(toField.getText().toString(), -1,
+							nameFinderSpinner.getSelectedItemPosition());
 					return true;
 				}
 				return false;
@@ -184,7 +193,8 @@ public class GetDirectionsActivity extends Activity {
 		goButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (radio_text.isChecked()) { // text search
-					getLocations(toField.getText().toString(), -1, nameFinderSpinner.getSelectedItemPosition());
+					getLocations(toField.getText().toString(), -1,
+							nameFinderSpinner.getSelectedItemPosition());
 				} else if (radio_poi.isChecked()) { // poi search
 					int selectedPoi = (int) s_poi.getSelectedItemId();
 					String osmvalue = getResources().getStringArray(
@@ -192,7 +202,8 @@ public class GetDirectionsActivity extends Activity {
 					from = GeoPoint.fromDoubleString(getIntent()
 							.getDataString(), ',');
 					getLocations(osmvalue + " , " + from.toDoubleString(),
-							selectedPoi, nameFinderSpinner.getSelectedItemPosition());
+							selectedPoi, nameFinderSpinner
+									.getSelectedItemPosition());
 				}
 			}
 		});
@@ -206,7 +217,8 @@ public class GetDirectionsActivity extends Activity {
 		// TODO: save and restore vehicle type
 	}
 
-	public void getLocations(final String toText, final int selectedPoi, final int namefinder) {
+	public void getLocations(final String toText, final int selectedPoi,
+			final int namefinder) {
 		if (toText.length() != 0) {
 			final ProgressDialog progress = ProgressDialog.show(
 					GetDirectionsActivity.this, this.getResources().getText(
@@ -225,16 +237,22 @@ public class GetDirectionsActivity extends Activity {
 						intent.putExtra("locations", locations);
 						startActivityForResult(intent, CHOOSE_LOCATION);
 					} else {
-						String text = String.format(GetDirectionsActivity.this
-								.getResources().getText(
-										R.string.place_not_found).toString(), toText);
 						if (selectedPoi == -1) { // text search
-							Toast.makeText(
-									GetDirectionsActivity.this,
-									GetDirectionsActivity.this.getResources()
-											.getText(R.string.place_not_found)
-											+ " " + toText, Toast.LENGTH_LONG)
-									.show();
+							// specific case for UK postcodes
+							String currentLocale = GetDirectionsActivity.this.getResources().getConfiguration().locale.getCountry();
+							if ((currentLocale.compareTo("GB") == 0) && (UKPostCodeValidator.isPostCode(toText.trim()))) {
+								UKPostCodeValidator.showFreeThePostCodeDialog(GetDirectionsActivity.this);
+							} else {
+								String text = String
+										.format(
+												GetDirectionsActivity.this
+														.getResources()
+														.getText(
+																R.string.place_not_found)
+														.toString(), toText);
+								Toast.makeText(GetDirectionsActivity.this,
+										text, Toast.LENGTH_LONG).show();
+							}
 						} else { // poi search
 							String stringValue = getResources().getStringArray(
 									R.array.poi_types)[selectedPoi];
@@ -264,8 +282,9 @@ public class GetDirectionsActivity extends Activity {
 					default:
 						geoCoder = new OSMGeoCoder();
 					}
-					
-					locations = geoCoder.getFromLocationName(toText, 15, GetDirectionsActivity.this);
+
+					locations = geoCoder.getFromLocationName(toText, 15,
+							GetDirectionsActivity.this);
 					// ok, we are done
 					handler.sendEmptyMessage(0);
 				}
@@ -286,7 +305,6 @@ public class GetDirectionsActivity extends Activity {
 				data.putExtras(bundle);
 				setResult(RESULT_OK, data);
 				finish();
-
 			}
 		}
 

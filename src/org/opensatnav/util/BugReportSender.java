@@ -71,7 +71,7 @@ public class BugReportSender {
 	private Intent send(final String stackTrace) {
 		String[] addressee = { parent
 				.getString(R.string.bug_report_mail_address) };
-BugReportHelper helper = new BugReportHelper(parent);
+		BugReportHelper helper = new BugReportHelper(parent);
 		String subject = new StringBuilder(helper.getVersionName()).append(" [SVN Rev ").append(helper.getRevision()).append(
 				"] Error Report (Android: ").append(Build.VERSION.RELEASE)
 				.append(" - model: ").append(Build.MODEL).append(")")
