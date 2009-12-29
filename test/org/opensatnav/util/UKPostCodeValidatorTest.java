@@ -28,7 +28,7 @@ public class UKPostCodeValidatorTest {
 		// postcodes taken from http://www.freethepostcode.org/currentlist
 		String[] postcodes = { "AB10 6BB", "ZE2 9SF", "YO3 7BL", "YO31 0GW",
 				"WV10 7JR", "TQ11 0NH", "PE12 6EW", "OX4 2FW", "OX44 9LP",
-				"NE3 1UL", "N7 0JN", "  AB10 6BB "};
+				"NE3 1UL", "N7 0JN", "  AB10 6BB ", "AB106BB"};
 		for (String code : postcodes) {
 			assertTrue("code " + code + " not matched as a UK postcode",
 					UKPostCodeValidator.isPostCode(code));
