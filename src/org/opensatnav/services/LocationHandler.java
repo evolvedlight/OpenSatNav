@@ -87,7 +87,11 @@ public class LocationHandler implements OpenSatNavConstants, OpenStreetMapConsta
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int id) {
-										dialog.dismiss();
+										try {
+											dialog.dismiss();
+										} catch (IllegalArgumentException e) {
+											// if orientation change, thread continue but the dialog cannot be dismissed without exception
+										}
 										mContext.startActivity(new Intent(
 												android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 									}

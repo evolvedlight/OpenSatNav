@@ -27,7 +27,6 @@ import org.opensatnav.util.UKPostCodeValidator;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -229,7 +228,12 @@ public class GetDirectionsActivity extends Activity {
 				// thread has completed (code below)
 				public void handleMessage(Message msg) {
 					if (progress.isShowing())
-						progress.dismiss();
+						try {
+							progress.dismiss();
+						} catch (IllegalArgumentException e) {
+							// if orientation change, thread continue but the dialog cannot be dismissed without exception
+						}
+						
 					if (locations != null) {
 						Intent intent = new Intent(GetDirectionsActivity.this,
 								org.opensatnav.ChooseLocationActivity.class);

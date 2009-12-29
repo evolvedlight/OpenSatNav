@@ -459,26 +459,20 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 						} catch (IOException e) {
 							displayToast(getString(R.string.contribute_track_error_happened)
-									+ e); // i
-							// think
-							// this
-							// is
-							// never
-							// called
-							// because
-							// expections
-							// happen
-							// earlier
-							// in
-							// the
-							// code
+									+ e); 
+							// i think this is never called because expections happen
+							// earlier in the code
 							Log.e(OpenSatNavConstants.LOG_TAG,
 									"Error uploading route to openstreemaps.",
 									e);
 						}
 					}
 					if (dialog.isShowing())
-						dialog.dismiss();
+						try {
+							dialog.dismiss();
+						} catch (IllegalArgumentException e) {
+							// if orientation change, thread continue but the dialog cannot be dismissed without exception
+						}
 				}
 
 			}
@@ -595,7 +589,11 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 								Toast.LENGTH_LONG).show();
 					}
 					if (progress.isShowing())
-						progress.dismiss();
+						try {
+							progress.dismiss();
+						} catch (IllegalArgumentException e) {
+							// if orientation change, thread continue but the dialog cannot be dismissed without exception
+						}
 					gettingRoute = false;
 					latestRouteReceived.setToNow();
 				}
