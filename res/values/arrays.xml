@@ -34,7 +34,6 @@
 		<item>Guillaume Rosaire (ZeroG)</item>
 		<item>Piluso</item>
 		<item>Stephen Brown (evolvedlight)</item>
-
     </string-array>
     
     <string-array name="about_documenters"><!-- Add your name here if you helped out -->
@@ -46,6 +45,7 @@
         <item>Christian Soltenborn (German)</item>
         <item>Dmitry Pristromov (Russian)</item>
         <item>Lei Jiang (Chinese)</item>
+        <item>Zbigniew Czernik (Polish)</item>
     </string-array>
     
     <string-array name="about_artists"><!-- Add your name here if you helped out -->

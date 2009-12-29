@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_desc">Wolna i otwartoźródłowa aplikacja dla platformy Android bazująca na projekcie OpenStreetMap.</string>
+	<!-- used in LocationHandler.java because android is buggy for android.R.strings.yes and no
+	see 
+	http://code.google.com/p/android/issues/detail?id=3713&q=android.R.string.yes&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
+	  -->
+	<string name="yes">Tak</string>
+	<string name="no">Nie</string>
+
+	<string name="location_services_disabled">Brak włączonych usług lokalizacyjnych. Czy chcesz przejść do ustawień i włączyć? \n\nPo zmianie naciśnij przycisk Back, by wrócić do programu.</string>
+	<string name="gps_disabled">Dokładność pozycji może być niska z powodu wyłączonego odbiornika GPS.</string>
+	<string name="network_unavailable">Brak połączenia z siecią. Sprawdź ustawienia i spróbuj ponownie.</string>
+	<string name="getting_gps_fix">Wyszukiwanie pozycji przy użyciu GPS...</string>
+	<string name="get_directions">Trasy</string>
+	<string name="navigation_mode">Tryb nawigacji</string>
+	<string name="start_trace_ticker">OpenSatNav zaczyna rejestrować ślad...</string>
+	<string name="tracing_notification_text">Ślad jest zapisywany...</string>
+	<!--
+		Padded with nbsp's so the menu doesn't rearrange itself when the
+		button toggles
+	-->
+	<string name="planning_mode">  Tryb przeglądania  </string>
+	<string name="navigation_mode_on">Tryb nawigacji włączony</string>
+	<string name="planning_mode_on">Tryb przeglądania włączony</string>
+	<string name="start_directions_failed">&quot;Nie można wyznaczyć trasy, ponieważ twoja pozycja jest nieznana. Spróbuj ponownie, gdy złapiesz sygnał GPS.&quot;</string>
+	<string name="unspecified_directions_failed">Nie udało się wyznaczyć trasy, spróbuj ponownie.</string>
+	<string name="place_not_found">"Nie można znaleźć \"%1$s\""</string>
+	<string name="unnamed_place">Nienazwane</string>
+	<string name="directions_not_found">Nie udało się wyznaczyć trasy</string>
+	<string name="please_wait">Proszę czekać...</string>
+	<string name="searching">Szukanie</string>
+	<string name="getting_route">Wyznaczanie trasy</string>
+	<string name="enter_destination">Gdzie chcesz podążać?</string>
+	<string name="transport_type">Rodzaj transportu</string>
+	<!--
+		use a space before the abbreviation if your language uses one between
+		the number and unit
+	-->
+	<string name="kilometres_abbreviation"> km</string>
+	<string name="metres_abbreviation"> m</string>
+	<string name="miles_abbreviation"> mi</string>
+	<string name="yards_abbreviation"> yd</string>
+	<string name="away">stąd</string>
+	<string name="could_not_find_poi">Nie znaleziono żadnych miejsc pasujących do </string>
+	<string name="car">Samochód</string>
+	<string name="bicycle">Rower</string>
+	<string name="walking">Pieszo</string>
+	<!--
+		These are the POI types that would be nice to have, but not all are in
+		OSM namefinder yet
+	-->
+	<!-- Use the OSM tag name for the name attribute if possible -->
+	<string name="atm">Bankomat</string>
+	<string name="cafe">Kawiarnia</string>
+	<string name="cinema">Kino</string>
+	<string name="fuel">Stacja paliw</string>
+	<string name="hospital">Szpital</string>
+	<string name="hotel">Hotel</string>
+	
+	<string name="parking">Parking</string>
+	<string name="police">Policja</string>
+	
+	<string name="restaurant">Restauracja</string>
+	<string name="taxi_rank">Postój Taxi</string>
+	<string name="find_nearest">Znajdź najbliższe...</string>
+	<string name="choose_location">Wybierz lokalizację...</string>
+	<string name="touch_screen">Dotknij ekranu, by kontynuować...</string>
+
+	<string name="preferences">Preferencje</string>
+	<string name="prefs_cache_section">Cache mapy (tiles cache)</string>
+	<string name="prefs_cache_sdcard">Wykorzystanie karty SD</string>
+	<string name="prefs_cache_sdcard_summary">Maksymalny rozmiar miejsca przeznaczonego na cache mapy</string>
+	<string name="prefs_cache_sdcard_dialog">"Będzie użyta następująca wielkość cache'u:"</string>
+	<string name="prefs_cache_sdcard_title">Ustaw rozmiar</string>
+	<string name="prefs_cache_clear">Wyczyść cache</string>
+	<string name="prefs_cache_clear_summary">Kliknij tutaj, by wyczyścić cache mapy</string>
+	<string name="prefs_cache_clear_confirm">Czy na pewno wyczyścić cache mapy?</string>
+	<string name="megabytes_abbreviation">MB</string>
+	<string name="about">O programie...</string>
+
+	<!--  OI About inclusion -->
+
+	<string name="menu_preferences">Preferencje</string>
+	
+	<string name="l_leaders">Założyciel projektu</string>
+	<string name="l_authors">Autorzy</string>
+	<string name="l_documenters">Dokumentacja</string>
+	<string name="l_translators">Tłumaczenie</string>
+	<string name="l_artists">Artwork by</string>
+	<string name="l_credits">Credits</string>
+	<string name="l_license">Licencja</string>
+	<string name="l_info">Informacje</string>
+
+	<string name="no_information_available">Brak informacji.</string>
+	<!-- / -->
+	
+	<string name="error_email_chooser_title">Wyślij e-mail przez:</string>
+	<string name="bug_report_ask_user">Wystąpił niespodziewany błąd. Czy chcesz nam zgłosić błąd?</string>
+	<string name="bug_report_not_sent_ask_user">Ostatnio podczas korzystania z OpenSatNav wystąpił niespodziewany błąd. Czy chcesz nam zgłosić błąd?</string>
+	<string name="bug_report_ask_user_title">Niespodziewany błąd</string>
+	<string name="menu_contribute">Współpraca</string>
+	<string name="contribute_title">Contribute to OSM</string>
+	<string name="prefs_contribute_section">Contribute</string>
+	<string name="prefs_contribute_osm_username">Nazwa użytkownika</string>
+	<string name="prefs_contribute_osm_username_summary">Wprowadź tutaj swoją nazwę użytkownika</string>
+	<string name="prefs_contribute_osm_password">Hasło</string>
+	<string name="prefs_contribute_osm_password_summary">Wprowadź tutaj swoje hasło</string>
+
+	<string name="contribute_introduction">Możesz wspomóc OpenSatNav wysyłając ślady GPS do projektu OpenStreetMap</string>
+	<string name="contribute_start_recording">Rozpoczęcie zapisywania</string>
+	<string name="contribute_stop_recording">Koniec zapisywania</string>
+	<string name="contribute_upload">Wyślij ślady do OSM</string>
+	<string name="contribute_delete_traces">Skasuj ślady</string>
+	<string name="contribute_delete_old_traces">Skasuj stare ślady</string>
+	<string name="contribute_new_waypoint">Nowy punkt drogi</string>
+	<string name="contribute_dialogue_trace_description">Opis śladu</string>
+	<string name="contribute_dialogue_trace_message">Wprowadź opis dla tego śladu</string>
+	<string name="contribute_dialogue_new_waypoint">Nowy punkt drogi</string>
+	<string name="contribute_dialogue_new_waypoint_message">Wprowadź nazwę punktu</string>
+	<string name="contribute_username_not_entered">Jeszcze nie wprowadzono</string>
+	<string name="contribute_error_enter_osm_login_details">Wprowadź najpierw swój login i hasło</string>
+	<string name="contribute_gps_on">Włączono zapis śladu GPS</string>
+	<string name="contribute_gps_off">Zatrzymano zapis śladu GPS</string>
+	<string name="contribute_track_cleared">Ślady GPS usunięte</string>
+	<string name="contribute_error_no_traces">Nie ma jeszcze śladów GPS</string>
+	<string name="contribute_uploading_traces">Wysyłanie śladów</string>
+	<!--
+		%1$s will be replaced at runtime by track description, keep it
+		unchanged in translations
+	-->
+	<string name="contribute_track_uploaded">Ślad z opisem \"%1$s\" został wysłany do OSM. Ślad został usunięty i wyłączono zapis śladu</string>
+	<string name="contribute_waypoint_added">Punkt \"%1$s\" został dodany</string>
+	
+	<string name="contribute_track_error_happened">Niestety, wystąpił błąd: </string>
+	<string name="contribute_waypoing_gps_fix_not_good">Pozycja GPS nie jest wystarczająco dobra, żeby dodać punkt drogi, spróbuj ponownie</string>
+	<string name="tracing_paused_notification_text">Zapisywanie zapauzowane</string>
+</resources>
