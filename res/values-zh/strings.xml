@@ -7,7 +7,7 @@
 	-->
 	<string name="yes">是</string>
 	<string name="no">否</string>
-
+	
 	<string name="location_services_disabled">"没有定位服务被激活。您想现在激活其中一个吗？ \n\n激活后，你必须重新启动程序。"</string>
 	<string name="gps_disabled">您当前位置的精确度很低，因为GPS卫星定位系统还没有启动。</string>
 	<string name="network_unavailable">没有网络连接。请检查您的网络参数，并重新连接。</string>
@@ -76,29 +76,29 @@
 	<string name="touch_screen">"请触摸屏幕继续..."</string>
 	<string name="preferences">偏好设置</string>
 	<string name="prefs_cache_section">缓存</string>
-	<string name="prefs_cache_sdcard">使用SD卡</string>
-	<string name="prefs_cache_sdcard_summary">用于缓存的最大SD卡容量</string>
-	<string name="prefs_cache_sdcard_dialog">用于缓存的最大SD卡容量是</string>
+	<string name="prefs_cache_sdcard">使用SD存储卡</string>
+	<string name="prefs_cache_sdcard_summary">用于缓存的存储卡空间</string>
+	<string name="prefs_cache_sdcard_dialog">用于缓存的存储卡空间是</string>
 	<string name="prefs_cache_sdcard_title">请选择容量</string>
-	<string name="prefs_cache_clear">清空缓存</string>
-	<string name="prefs_cache_clear_summary">点击这里完全清空缓存</string>
-	<string name="prefs_cache_clear_confirm">您想清空缓存吗？</string>	
-	<string name="megabytes_abbreviation">Mo</string>
+	<string name="prefs_cache_clear">删除缓存</string>
+	<string name="prefs_cache_clear_summary">点击这里删除缓存</string>
+	<string name="prefs_cache_clear_confirm">您想删除缓存吗？</string>	
+	<string name="megabytes_abbreviation">Mb</string>
 	<string name="about">关于</string>
 
 	<!--  OI About inclusion -->
 	<string name="about_website_label">OpenSatNav.org</string>
 	<string name="about_website_url">http://www.opensatnav.org/</string>
 	<string name="menu_preferences">偏好设置</string>
-	<string name="menu_about">关于 IO</string>
+	<string name="menu_about">关于 OpenSatNav</string>
 	<string name="l_leaders">创始人</string>
 	<string name="l_authors">开发人员</string>
 	<string name="l_documenters">收集材料人员</string>
 	<string name="l_translators">翻译人员</string>
 	<string name="l_artists">绘图人员</string>
-	<string name="l_credits">Crédits</string>
-	<string name="l_license">许可</string>
-	<string name="l_info">一般信息</string>
+	<string name="l_credits">贡献者</string>
+	<string name="l_license">版权信息</string>
+	<string name="l_info">常规信息</string>
 
 	<string name="no_information_available">没有可用信息</string>
 	<!-- / -->
@@ -107,7 +107,7 @@
 	<string name="bug_report_not_sent_ask_user">"在您最后一次使用OpenSatNav时，发生意外错误。您想给我们发送错误报告吗？</string>
 	<string name="bug_report_ask_user_title">意外错误</string>
 	
-	<string name="menu_contribute">贡献</string>
+	<string name="menu_contribute">录制路线</string>
 	<string name="contribute_title">帮助OSM</string>
 	<string name="prefs_contribute_section">贡献</string>
 	<string name="prefs_contribute_osm_username">用户名</string>
@@ -138,7 +138,7 @@
 		%1$s will be replaced at runtime by track description, keep it
 		unchanged in translations
 	-->
-	<string name="contribute_track_uploaded">路线 \"%1$s\" 已经发送给OSM。初始化路线</string>
+	<string name="contribute_track_uploaded">路线 \"%1$s\" 已经发送给OSM，重新初始化路线</string>
 	<string name="contribute_waypoint_added">已添加Waypoint \"%1$s\"</string>
 	
 	<string name="contribute_track_error_happened">很抱歉，发生错误： </string>
