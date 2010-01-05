@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_desc">Een vrije en open source OpenStreetMap applicatie 
+	    voor Android.</string>
+	<!-- used in LocationHandler.java because android is buggy for android.R.strings.yes and no
+	see 
+	http://code.google.com/p/android/issues/detail?id=3713&q=android.R.string.yes&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
+	  -->
+	<string name="yes">Ja</string>
+	<string name="no">Nee</string>
+			
+	<string name="location_services_disabled">Geen locatie services beschikbaar. Wil je 
+		de instelling nu veranderen? \n\nNa de wijziging druk Terug knop
+		om terug te keren naar dit programma.</string>
+	<string name="gps_disabled">Locatie nauwkeurigheid zal slecht zijn omdat GPS niet is ingeschakeld.</string>
+	<string name="network_unavailable">Geen data verbinding. Controleer de instellingen en probeer nogmaals.</string>
+	<string name="getting_gps_fix">GPS locatie bepalen...</string>
+	<string name="get_directions">Route</string>
+	<string name="navigation_mode">Navigatie mode</string>
+	<string name="start_trace_ticker">OpenSatNav start met opnemen van GPS traject...</string>
+	<string name="tracing_notification_text">Een GPS traject wordt opgenomen...</string>
+	<!--
+		Padded with nbsp's so the menu doesn't rearrange itself when the
+		button toggles
+	-->
+	<string name="planning_mode">  Planning mode  </string>
+	<string name="navigation_mode_on">Navigatie mode aan</string>
+	<string name="planning_mode_on">Planning mode aan</string>
+	<string name="start_directions_failed">&quot;Er kan geen route informatie verkregen worden, omdat de huidige positie niet bekend is. Probeer het opnieuw, wanneer een GPS signaal beschikbaar is.&quot;</string>
+	<string name="unspecified_directions_failed">Verkrijgen van wegbeschrijving is mislukt, probeer nogmaals.
+	</string>
+	<string name="place_not_found">"Sorry, \"%1$s\" niet gevonden"</string>
+	<string name="unnamed_place">Naam niet bekend</string>
+	<string name="directions_not_found">Sorry, geen route gevonden</string>
+	<string name="please_wait">Wachten aub...</string>
+	<string name="searching">Zoeken</string>
+	<string name="getting_route">Route wordt ontvangen</string>
+	<string name="enter_destination">Waar wil je naar toe?</string>
+	<string name="transport_type">Type transport</string>
+	<!--
+		use a space before the abbreviation if your language uses one between
+		the number and unit
+	-->
+	<string name="away">te gaan</string>
+	<string name="could_not_find_poi">Geen passende locaties gevonden </string>
+	<string name="car">Auto</string>
+	<string name="bicycle">Fiets</string>
+	<string name="walking">Te voet</string>
+	<!--
+		These are the POI types that would be nice to have, but not all are in
+		OSM namefinder yet
+	-->
+	<!-- Use the OSM tag name for the name attribute if possible -->
+	<string name="atm">Pinautomaat</string>
+	<string name="cafe">Café</string>
+	<string name="cinema">Bioscoop</string>
+	<string name="fuel">Tankstation</string>
+	<string name="hospital">Ziekenhuis</string>
+	<string name="hotel">Hotel</string>
+	<string name="night_club">Nachtclub</string>
+	<string name="parking">Parkeerplaats</string>
+	<string name="police">Politie</string>
+	<string name="pub">Bar</string>
+	<string name="restaurant">Restaurant</string>
+	<string name="taxi_rank">Taxi standplaats</string>
+	<string name="find_nearest">Zoeken</string>
+	<string name="choose_location">Kies locatie...</string>
+	<string name="touch_screen">Tik scherm om door te gaan...</string>
+
+	<string name="preferences">Instellingen</string>
+	<string name="prefs_cache_section">Kaart cache</string>
+	<string name="prefs_cache_sdcard">SD card gebruik</string>
+	<string name="prefs_cache_sdcard_summary">Maximaal gebruikte ruimte op de SD card voor kaart cache instellen</string>
+	<string name="prefs_cache_sdcard_dialog">De SD card cache zal maximaal bevatten</string>
+	<string name="prefs_cache_sdcard_title">Kies grootte</string>
+	<string name="prefs_cache_clear">Cache leegmaken</string>
+	<string name="prefs_cache_clear_summary">Tik hier om de kaart cache leeg te maken</string>
+	<string name="prefs_cache_clear_confirm">Weet je zeker dat je de kaart cache leeg wilt maken?</string>
+	<string name="megabytes_abbreviation">MB</string>
+	<string name="about">Over</string>
+
+	<!--  OI About inclusion -->
+	<string name="menu_preferences">Instellingen</string>
+	<string name="l_leaders">Oprichter van het project</string>
+	<string name="l_authors">Geschreven door</string>
+	<string name="l_documenters">Documentatie door</string>
+	<string name="l_translators">Vertaald door</string>
+	<string name="l_artists">Graphics en Design</string>
+	<string name="l_credits">Credits</string>
+	<string name="l_license">Licentie</string>
+	<string name="l_info">Algemene\n informatie</string>
+
+	<string name="no_information_available">Geen informatie beschikbaar.</string>
+	<!-- / -->
+	<string name="error_email_message">Dear All,\n\nI encountered the following issue
+		while using OpenSatNav, could you please have a look at it?\n\n
+	</string>
+	<string name="error_email_chooser_title">E-mail verzenden via:</string>
+
+	<string name="bug_report_ask_user">Er is een onverwachte fout opgetreden. Wil je ons een bugreport sturen?</string>
+	<string name="bug_report_not_sent_ask_user">Er is helaas bij het laatste gebruik van OpenSatNav een fout opgetreden. Wil je ons een bugreport sturen?</string>
+	<string name="bug_report_ask_user_title">Onverwachte fout</string>
+
+	<string name="menu_contribute">Bijdragen</string>
+	<string name="contribute_title">Aan OSM bijdragen</string>
+	<string name="prefs_contribute_section">Bijdragen</string>
+	<string name="prefs_contribute_osm_username">Gebruikersnaam</string>
+	<string name="prefs_contribute_osm_username_summary">Voer hier je OSM gebruikersnaam in</string>
+	<string name="prefs_contribute_osm_password">Password</string>
+	<string name="prefs_contribute_osm_password_summary">Voer hier je OSM password in</string>
+	<string name="contribute_introduction">Je kunt OpenSatNav helpen door je opgenomen GPS trajecten te uploaden bij het Open Street Map Project.</string>
+	<string name="contribute_start_recording">Opname starten</string>
+	<string name="contribute_stop_recording">Opname stoppen</string>
+	<string name="contribute_upload">GPS trajecten uploaden naar OSM</string>
+	<string name="contribute_delete_traces">GPS trajecten verwijderen</string>
+	<string name="contribute_delete_old_traces">Oude GPS trajecten verwijderen</string>
+	<string name="contribute_new_waypoint">Nieuw punt</string>
+	<string name="contribute_dialogue_trace_description">Beschrijving van het GPS traject</string>
+	<string name="contribute_dialogue_trace_message">Geef aub een beschrijving voor het GPS traject</string>
+	<string name="contribute_dialogue_new_waypoint">Nieuw waypoint</string>
+	<string name="contribute_dialogue_new_waypoint_message">Geef aub een naam voor het waypoint</string>
+	<string name="contribute_username_not_entered">Nog niet ingevuld</string>
+	<string name="contribute_error_enter_osm_login_details">Voer aub eerst je inloggegevens in</string>
+	<string name="contribute_gps_on">GPS tracking ingeschakeld</string>
+	<string name="contribute_gps_off">GPS tracking uitgeschakeld</string>
+	<string name="contribute_track_cleared">GPS traject verwijderd</string>
+	<string name="contribute_error_no_traces">Nog geen GPS trajecten opgenomen</string>
+	<string name="contribute_uploading_traces">Uploaden GPS trajecten</string>
+	<!--
+		%1$s will be replaced at runtime by track description, keep it
+		unchanged in translations
+	-->
+	<string name="contribute_track_uploaded">GPS traject met beschrijving \"%1$s\" is ge-upload naar OSM. GPS traject verwijderd, tracing uitgeschakeld</string>
+	<string name="contribute_waypoint_added">Waypoint \"%1$s\" toegevoegd</string>
+	
+	<string name="contribute_track_error_happened">Sorry, er is een fout opgetreden: </string>
+	<string name="contribute_waypoing_gps_fix_not_good">GPS fix is niet goed genoeg om een waypoint toe te voegen, probeer nogmaals</string>
+	<string name="tracing_paused_notification_text">Opname onderbroken</string>
+</resources>
