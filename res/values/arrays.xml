@@ -97,7 +97,7 @@
         <item>restaurant</item>
     </string-array>
 	<string-array name="namefinder_service">
-		<item>OSM Namefinder</item>
 		<item>Nominatim</item>
+		<item>OSM Namefinder</item>
 	</string-array> 
 </resources>
