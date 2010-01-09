@@ -54,8 +54,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class GetDirectionsActivity extends Activity {
 	protected static final int CHOOSE_LOCATION = 0;
-	private static final int NAMEFINDER = 0;
-	private static final int NOMINATIM = NAMEFINDER + 1;
+	private static final int NOMINATIM = 0;
+	private static final int NAMEFINDER = NOMINATIM + 1;	
 	protected Intent data;
 	// protected ProgressDialog progress;
 	protected Bundle locations;
