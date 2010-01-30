@@ -25,6 +25,7 @@
 
 
 		<service android:name="org.opensatnav.TraceRecorderService"></service>
+		<service android:name="org.opensatnav.TripStatisticsService"></service>
 
 		<!-- values used in the About screen -->
 		<meta-data android:name="org.openintents.metadata.COMMENTS"

@@ -34,6 +34,8 @@ import org.andnav.osm.views.overlay.OpenStreetMapViewRouteOverlay;
 import org.andnav.osm.views.overlay.OpenStreetMapViewTraceOverlay;
 import org.andnav.osm.views.util.OpenStreetMapRendererInfo;
 import org.opensatnav.services.Router;
+import org.opensatnav.services.TripStatistics;
+import org.opensatnav.services.TripStatisticsListener;
 import org.opensatnav.services.YOURSRouter;
 import org.opensatnav.util.BugReportExceptionHandler;
 
@@ -58,7 +60,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 import android.widget.RelativeLayout.LayoutParams;
@@ -85,6 +89,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	private static final int MENU_ABOUT = MENU_PREFERENCES + 1;
 	private static final int DIRECTIONS_OPTIONS = MENU_ABOUT + 1;
 	private static final int MENU_CONTRIBUTE = DIRECTIONS_OPTIONS + 1;
+	private static final int MENU_TRIP_STATS = MENU_CONTRIBUTE + 1;
 
 	private static final int SELECT_POI = 0;
 	private static final int CONTRIBUTE = SELECT_POI + 1;
@@ -100,12 +105,14 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 	private OpenStreetMapView mOsmv;
 	private ZoomControls zoomControls;
+	private TripStatisticsController mTripStatsController;
 
 	private OpenStreetMapViewDirectedLocationOverlay mMyLocationOverlay;
 	protected OpenStreetMapViewRouteOverlay routeOverlay;
 	protected OpenStreetMapViewTraceOverlay traceOverlay;
 	protected OpenStreetMapViewTraceOverlay oldTraceOverlay;
 	protected boolean autoFollowing = true;
+	protected boolean viewTripStatistics = false;
 	protected boolean gettingRoute = false;
 	protected Time latestRouteReceived;
 	protected Location currentLocation;
@@ -197,6 +204,20 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 		}
 
+		// Trip statistics
+		mTripStatsController = new TripStatisticsController(SatNavActivity.this);
+		mTripStatsController.addViewTo(rl);
+
+		// for after configuration change like keyboard open/close
+	    final TripStatistics.TripStatisticsStrings data = 
+	    	(TripStatistics.TripStatisticsStrings)getLastNonConfigurationInstance();
+	    
+	    // The activity is starting for the first time, load the photos from Flickr
+	    if (data != null) {
+	    	mTripStatsController.setAllStats(data);
+	    }
+		
+		
 		this.setContentView(rl);
 	}
 
@@ -299,6 +320,9 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		MenuItem toggleAutoFollowMenuItem = pMenu.add(0,
 				MENU_TOGGLE_FOLLOW_MODE, Menu.NONE, R.string.planning_mode);
 		toggleAutoFollowMenuItem.setIcon(android.R.drawable.ic_menu_mapmode);
+		MenuItem tripStatsMenuItem = pMenu.add(0,MENU_TRIP_STATS,Menu.NONE,
+				R.string.menu_show_trip_stats);
+		tripStatsMenuItem.setIcon(android.R.drawable.ic_menu_recent_history);
 		MenuItem prefsMenuItem = pMenu.add(0, MENU_PREFERENCES, Menu.NONE,
 				R.string.preferences);
 		prefsMenuItem.setIcon(android.R.drawable.ic_menu_preferences);
@@ -365,12 +389,30 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 			startActivityForResult(intent1, MENU_ABOUT);
 
 			return true;
+		case MENU_TRIP_STATS:
+			viewTripStatistics = true;
+			showTripStatistics(true);
 
+			return true;
+			
 		default:
 			this.mOsmv.setRenderer(OpenStreetMapRendererInfo.values()[item
 					.getItemId() - 1000]);
 		}
 		return false;
+	}
+
+	/** Display trip statistics */
+	public void showTripStatistics(boolean show) {
+		if( show ) {
+			mTripStatsController.setVisible(true);
+			mOsmv.setVisibility(View.GONE);
+			zoomControls.setVisibility(View.GONE);
+		} else {
+			mTripStatsController.setVisible(false);
+			mOsmv.setVisibility(View.VISIBLE);
+			zoomControls.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -622,6 +664,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		savedInstanceState.putInt("mLongitudeE6", this.mOsmv
 				.getMapCenterLongitudeE6());
 		savedInstanceState.putBundle("oldtrace", mOldRoutes.getBundle());
+		savedInstanceState.putBoolean("viewTripStatistics", viewTripStatistics);
 
 		if (to != null) {
 			savedInstanceState.putInt("toLatitudeE6", to.getLatitudeE6());
@@ -662,6 +705,10 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		this.mOsmv.setMapCenter(savedInstanceState.getInt("mLatitudeE6"),
 				savedInstanceState.getInt("mLongitudeE6"));
 
+		viewTripStatistics = savedInstanceState.getBoolean("viewTripStatistics");
+		if( viewTripStatistics ) {
+			showTripStatistics(true);
+		}
 	}
 
 	private void displayToast(String msg) {
@@ -676,4 +723,17 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		return TraceRecorderService.getRouteRecorder();
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		TripStatisticsService.stop(this);
+	}
+	
+	/** This works fine for opening/closing keyboard.
+	 * Still, is it better to use onSave/Restore inst state()?
+	 */
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		return mTripStatsController.getAllStatistics();
+	}
 }

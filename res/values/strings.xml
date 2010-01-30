@@ -157,6 +157,14 @@
 	<string name="contribute_track_error_happened">Sorry, an error happened: </string>
 	<string name="contribute_waypoing_gps_fix_not_good">GPS fix not good enough to add waypoint, try again</string>
 	<string name="tracing_paused_notification_text">Recording is paused</string>
+	<string name="menu_show_trip_stats">Trip Stats</string>
+ 	<string name="close_statistics_view">Show Map</string>
+ 	<string name="reset_trip_statistics">Reset Stats</string>
+ 	<string name="aver_trip_speed_label">Average Speed:</string>
+ 	<string name="current_speed_label">Current Speed:</string>
+ 	<string name="trip_distance_label">Distance:</string>
+ 	<string name="trip_duration_label">Trip Time:</string>
+ 	<string name="not_available_string">n/a</string>
 	
 	<string name="namefinder_service_label">Name Finder service</string>
 	<!-- only displayed for GB user, no need to be translated in other languages -->
