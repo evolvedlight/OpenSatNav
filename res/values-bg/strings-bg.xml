@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">OpenSatNav</string>
+	<string name="app_desc">Приложение с отворен код за OpenStreetMap.</string>
+	<string name="location_services_disabled">Няма позиционна информация. Искате ли да проверите настройките? \n\nСлед промените, натиснете \'Назад\'
+		за да се върнете към приложението.</string>
+	<string name="gps_disabled">Точността на местоположението ще е ниска защото GPS не е включен.</string>
+	<string name="network_unavailable">Няма интернет връзка. Моля проверете настройките и пробвайте отново.</string>
+	<string name="getting_gps_fix">Определяне на местоположението с GPS...
+	</string>
+	<string name="get_directions">Маршрут</string>
+	<string name="navigation_mode">Режим навигация</string>
+	<string name="start_trace_ticker">OpenSatNav започва запис на маршрут...</string>
+	<string name="tracing_notification_text">Маршрут записан...</string>
+	<!--
+		Padded with nbsp's so the menu doesn't rearrange itself when the
+		button toggles
+	-->
+	<string name="planning_mode"> Режим планиране  </string>
+	<string name="navigation_mode_on">Режим навигация включен</string>
+	<string name="planning_mode_on">Режим планиране включен</string>
+	<string name="start_directions_failed">Определяне на маршрут е невозможно заради неизвестно местоположение.
+	Моля опитайте пак след като имате достъп до GPS сигнал.</string>
+	<string name="unspecified_directions_failed">Неуспешно определяне на маршрут, моля пробвайте отново.
+	</string>
+	<string name="place_not_found">"\"%1$s\" незнайно"</string>
+	<string name="unnamed_place">Безимен</string>
+	<string name="directions_not_found">Невъзможно определяне на маршрут</string>
+	<string name="please_wait">Моля, почакайте...</string>
+	<string name="searching">Търсене</string>
+	<string name="getting_route">Изчисляване на маршрут</string>
+	<string name="enter_destination">Въведете крайна точка</string>
+	<string name="transport_type">Транспортно средство</string>
+	<!--
+		use a space before the abbreviation if your language uses one between
+		the number and unit
+	-->
+	<string name="kilometres_abbreviation"> км</string>
+	<string name="metres_abbreviation"> м</string>
+	<string name="miles_abbreviation"> мили</string>
+	<string name="yards_abbreviation"> ярд</string>
+	<string name="away">далеч</string>
+	<string name="could_not_find_poi">Няма попадения </string>
+	<string name="car">Кола</string>
+	<string name="bicycle">Велосипед</string>
+	<string name="walking">Пеш</string>
+	<string-array name="mode_of_transport_types">
+		<item>@string/car</item>
+		<item>@string/bicycle</item>
+		<item>@string/walking</item>
+	</string-array>
+	<!--
+		These are the POI types that would be nice to have, but not all are in
+		OSM namefinder yet
+	-->
+	<!-- Use the OSM tag name for the name attribute if possible -->
+	<string name="atm">Банкомат</string>
+	<string name="cafe">Кафе</string>
+	<string name="cinema">Кино</string>
+	<string name="fuel">Бензиностанция</string>
+	<string name="hospital">Болница</string>
+	<string name="hotel">Хотел</string>
+	<string name="night_club">Дискотека</string>
+	<string name="parking">Паркинг</string>
+	<string name="police">Полиция</string>
+	<string name="pub">Бар</string>
+	<string name="restaurant">Ресторант</string>
+	<string name="taxi_rank">Такси</string>
+	<string name="toilet">Тоалетна</string>
+	<string name="find_nearest">Намери близки...</string>
+	<string name="choose_location">Изберете местност...</string>
+	<string name="touch_screen">Натиснете екрана за да продължите...</string>
+
+	<string name="preferences">Настройки</string>
+	<string name="prefs_cache_section">Кеширане на карта</string>
+	<string name="prefs_cache_sdcard">Използване на SD карта</string>
+	<string name="prefs_cache_sdcard_summary">Максимален размер на памет за кеширане на карта</string>
+	<string name="prefs_cache_sdcard_dialog">Кеш на SD карта ще бъде най-много</string>
+	<string name="prefs_cache_sdcard_title">Изберете размер</string>
+	<string name="prefs_cache_clear">Изчисти кеш</string>
+	<string name="prefs_cache_clear_summary">Натиснете за изчистване на кеш</string>
+	<string name="prefs_cache_clear_confirm">Сигурни ли сте че искате да изчистите кеша?</string>
+	<string name="megabytes_abbreviation">Мб</string>
+	<string name="about">За приложението</string>
+
+	<!--  OI About inclusion -->
+	<string name="about_website_label">OpenSatNav.org</string>
+	<string name="about_website_url">http://www.opensatnav.org/</string>
+	<string name="menu_preferences">Настройки</string>
+	<string name="menu_about">За OI за себе си</string>
+	<string name="l_leaders">Основателя на проекта</string>
+	<string name="l_authors">Разработка:</string>
+	<string name="l_documenters">Документация:</string>
+	<string name="l_translators">Перевод:</string>
+	<string name="l_artists">Оформление</string>
+	<string name="l_credits">Благодарности</string>
+	<string name="l_license">Лиценз</string>
+	<string name="l_info">Обща информация</string>
+
+	<string name="no_information_available">Информацията недостъпна.</string>
+	<!-- / -->
+	<string name="error_email_message">Dear All,\n\nI encountered the following issue
+		while using OpenSatNav, could you please have a look at it?\n\n
+	</string>
+	<string name="error_email_chooser_title">Изпратете емайл през:</string>
+	<string name="bug_report_mail_address">bug-reports@opensatnav.org</string>
+	<string name="bug_report_ask_user">Грешка в програмата. Искате ли да изпратите доклад до програмиста?</string>
+	<string name="bug_report_not_sent_ask_user">Неочаквана грешка при последното пускане на  
+		OpenSatNav. Искате ли да изпратите доклад до програмиста?</string>
+	<string name="bug_report_ask_user_title">Неочаквана грешка</string>
+	<string name="menu_contribute">Доприносете</string>
+	<string name="contribute_title">Доприносете към OSM</string>
+	<string name="prefs_contribute_section">Доприносете</string>
+	<string name="prefs_contribute_osm_username">Логин</string>
+	<string name="prefs_contribute_osm_username_summary">Въведете вашия OSM логин</string>
+	<string name="prefs_contribute_osm_password">Пароль</string>
+	<string name="prefs_contribute_osm_password_summary">Въведете вашата OSM парола</string>
+	<string name="pref_username_key">pref_username_key</string>
+	<string name="pref_password_key">pref_password_key</string>
+	<string name="contribute_introduction">Можете да помогнете OpenSatNav като доприносите GPS маршрути към проекта</string>
+	<string name="contribute_start_recording">Започни запис</string>
+	<string name="contribute_stop_recording">Прекрати запис</string>
+	<string name="contribute_upload">Изпрати маршрут до OSM</string>
+	<string name="contribute_delete_traces">Изтрий маршрут</string>
+	<string name="contribute_delete_old_traces">Изчисти стари маршрути</string>
+	<string name="contribute_new_waypoint">Нова пътеводна точка</string>
+	<string name="contribute_dialogue_trace_description">Описание на маршрута</string>
+	<string name="contribute_dialogue_trace_message">Моля въведете описание за този маршрут</string>
+	<string name="contribute_dialogue_new_waypoint">Нова пътеводна точка</string>
+	<string name="contribute_dialogue_new_waypoint_message">Моля въведете име на пътеводната точка</string>
+	<string name="contribute_username_not_entered">Още не е въведено</string>
+	<string name="contribute_error_enter_osm_login_details">Моля въведете вашия OSM логин</string>
+	<string name="contribute_gps_on">Включен запис на GPS маршрут</string>
+	<string name="contribute_gps_off">Запис на GPS маршрут изключен</string>
+	<string name="contribute_track_cleared">Маршрут изчистен</string>
+	<string name="contribute_error_no_traces">Маршрут не намерен</string>
+	<string name="contribute_uploading_traces">Изпрати маршрут</string>
+	<!--
+		%1$s will be replaced at runtime by track description, keep it
+		unchanged in translations
+	-->
+	<string name="contribute_track_uploaded">Маршрут с описание \"%1$s\" изшратен до OSM. Маршрут изчистен и запис изключен</string>
+	<string name="contribute_waypoint_added">Пътеводна точка \"%1$s\" добавена</string>
+	
+	<string name="contribute_track_error_happened">Грешка: </string>
+	<string name="contribute_waypoing_gps_fix_not_good">Точността на GPS не е достатъчна за добавяне, опитайте отново</string>
+	<string name="tracing_paused_notification_text">Запис паузиран</string>
+</resources>
