@@ -56,7 +56,7 @@
 		OSM namefinder yet
 	-->
 	<!-- Use the OSM tag name for the name attribute if possible -->
-	<string name="atm">ATM</string>
+	<string name="atm">Cajero</string>
 	<string name="cafe">"Cafetería"</string>
 	<string name="cinema">Cine</string>
 	<string name="fuel">Gasolinera</string>
@@ -100,7 +100,7 @@
 	<string name="l_credits">"Créditos"</string>
 	<string name="l_license">Licencia</string>
 	<string name="l_info">Información General</string>
-	<string name="no_information_available">"No hay información disponible."</string>
+	<string name="no_information_available">"No hay ninguna información disponible."</string>
 	
 	<!-- / -->
 	<string name="error_email_message">"Hola a todos,\n\nHe encontrado el siguiente error mientras usaba OpenSatNav.¿le podrian echar un vistazo?\n\n"</string>
@@ -114,9 +114,9 @@
 	<string name="contribute_title">Contribuye a OSM</string>
 	<string name="prefs_contribute_section">Contribuye</string>
 	<string name="prefs_contribute_osm_username">Usuario</string>
-	<string name="prefs_contribute_osm_username_summary">"Por favor, introduzca su usuario OSM aquí"</string>
+	<string name="prefs_contribute_osm_username_summary">"Por favor, introduzca su usuario OSM"</string>
 	<string name="prefs_contribute_osm_password">"Contraseña"</string>
-	<string name="prefs_contribute_osm_password_summary">"Por favor, introduzca su contraseña OSM aquí"</string>
+	<string name="prefs_contribute_osm_password_summary">"Por favor, introduzca su contraseña OSM"</string>
 	<string name="pref_username_key">pref_username_key</string>
 	<string name="pref_password_key">pref_password_key</string>
 	<string name="contribute_introduction">"Puede ayudar a OpenSatNav contribuyendo con trazas GPS al proyecto Open Street Map"</string>
@@ -147,4 +147,14 @@
 	<string name="contribute_track_error_happened">"Perdone, ocurrió un error: "</string>
 	<string name="contribute_waypoing_gps_fix_not_good">"No hay señal GPS lo suficientemente buena como para añadir un punto de interés, pruebe de nuevo."</string>
 	<string name="tracing_paused_notification_text">"La grabación está pausada"</string>
+	<string name="menu_show_trip_stats">"Estadísticas del viaje"</string>
+ 	<string name="close_statistics_view">Mostrar mapa</string>
+ 	<string name="reset_trip_statistics">"Reiniciar estadísticas"</string>
+ 	<string name="aver_trip_speed_label">Velocidad media:</string>
+ 	<string name="current_speed_label">Velocidad actual:</string>
+ 	<string name="trip_distance_label">Distancia:</string>
+ 	<string name="trip_duration_label">Tiempo de viaje:</string>
+ 	<string name="not_available_string">No disponible</string>
+	
+	<string name="namefinder_service_label">Servicio buscador de nombres</string>
 </resources>
