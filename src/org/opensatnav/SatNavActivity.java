@@ -54,6 +54,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -212,7 +213,6 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	    final TripStatistics.TripStatisticsStrings data = 
 	    	(TripStatistics.TripStatisticsStrings)getLastNonConfigurationInstance();
 	    
-	    // The activity is starting for the first time, load the photos from Flickr
 	    if (data != null) {
 	    	mTripStatsController.setAllStats(data);
 	    }
@@ -736,4 +736,15 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	public Object onRetainNonConfigurationInstance() {
 		return mTripStatsController.getAllStatistics();
 	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if( keyCode == KeyEvent.KEYCODE_BACK ) {
+			showTripStatistics(false);
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	
 }

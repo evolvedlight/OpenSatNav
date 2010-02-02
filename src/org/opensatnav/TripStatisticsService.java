@@ -66,7 +66,7 @@ public class TripStatisticsService extends Service implements LocationListener {
 	public synchronized void onStart(Intent intent, int startId) {
 		Log.v(TAG, "onStart()");
 		super.onStart(intent, startId);
-		
+		setForeground(true);
 		mTripStatistiticsService = this;
 		mLocationHandler.start();
 

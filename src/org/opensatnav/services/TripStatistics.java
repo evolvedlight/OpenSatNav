@@ -111,63 +111,51 @@ public class TripStatistics {
 	}
 
 	public String getAverageTripSpeedString(int unitSystem) {
-		float averSpeed =  getAverageTripSpeed() * speedConvFactor(unitSystem);
-		formatter.applyLocalizedPattern("###.##");
-		return formatter.format(averSpeed);
-	}
-
-	private float speedConvFactor(int unitSystem) {
-		if( unitSystem == METRIC ) {
-			return 3600 / 1000f;
-		} else {
-			return -1;  // TODO do it
-		}
+		return getSpeedString(getAverageTripSpeed(),unitSystem);
 	}
 
 	public String getInstantSpeedString(int unitSystem) {
-		float instSpeed =  getInstantSpeed() * speedConvFactor(unitSystem);
-		formatter.applyLocalizedPattern("###.##");
-		return formatter.format(instSpeed);
+		return getSpeedString(getInstantSpeed(),unitSystem);
+	}
+
+	private String getSpeedString(float speed, int unitSystem) {
+		if( unitSystem == METRIC ) {
+			formatter.applyLocalizedPattern("###.##");
+			return formatter.format(speed * 3600f / 1000f) + " km/hr";
+		} else {
+			return "not implemented";  // TODO do it
+		}
 	}
 
 	public String getTripTimeString(int unitSystem) {
-		float tripTime = getTripTime() / 1000f / 60;
-		formatter.applyLocalizedPattern("###.#");
-		return formatter.format(tripTime);
+		int tripTimeSec = Math.round(getTripTime() / 1000f);
+		formatter.applyLocalizedPattern("#0");
+		int hr = tripTimeSec / 3600;
+		String hrStr = formatter.format(hr);
+		
+		formatter.applyLocalizedPattern("00");
+		int min = (tripTimeSec - hr * 3600) / 60;
+		String minStr = formatter.format(min);
+		
+		int sec = tripTimeSec % 60;
+		String secStr = formatter.format(sec);
+		return hrStr + ":" + minStr + ":" + secStr;
 	}
 
 	public String getTripDistanceString(int unitSystem) {
-		float dist = getTripDistance() * distanceConvFactor(unitSystem);
-		formatter.applyLocalizedPattern("##0.000");
-		return formatter.format(dist);
-	}
-
-	private float distanceConvFactor(int unitSystem) {
+		String dist = "";
 		if( unitSystem == METRIC ) {
-			return 1 / 1000f;
+			int distMeters = Math.round(getTripDistance());
+			int km = distMeters / 1000;
+			int m = distMeters % 1000;
+			if( km > 0 ) {
+				dist = km + " km "; 
+			}
+			dist += m + " m";
 		} else {
-			return -1;  // TODO do it
+			dist = "not implemented";  // TODO do it
 		}
-	}
-
-	public CharSequence getSpeedUnits(int unitSystem) {
-		if( unitSystem == METRIC ) {
-			return "km/hr";
-		} else {
-			return "mph";
-		}
-	}
-
-	public CharSequence getDistanceUnits(int unitSystem) {
-		if( unitSystem == METRIC ) {
-			return "km";
-		} else {
-			return "mi";
-		}
-	}
-
-	public CharSequence getElapsedTimeUnits(int unitSystem) {
-		return "min";
+		return dist;
 	}
 
 	public static class TripStatisticsStrings {

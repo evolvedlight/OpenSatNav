@@ -41,10 +41,12 @@ public class TripStatisticsController implements TripStatisticsListener {
 		tripDurationMsecView = (TextView)mStatsView.findViewById(R.id.trip_duration);
 		tripDistanceMetersView = (TextView)mStatsView.findViewById(R.id.trip_distance);
 		
+		/*
 		averSpeedUnitsView = (TextView)mStatsView.findViewById(R.id.aver_speed_units);
 		currentSpeedUnitsView = (TextView)mStatsView.findViewById(R.id.current_speed_units);
 		tripDistanceUnitsView = (TextView)mStatsView.findViewById(R.id.distance_units);
 		tripDurationUnitsView = (TextView)mStatsView.findViewById(R.id.trip_duration_units);
+		*/
 		
 		unitsToBeShown = true;
 		
@@ -73,6 +75,7 @@ public class TripStatisticsController implements TripStatisticsListener {
 		tripDistanceMetersView.setText(statistics.getTripDistanceString(TripStatistics.METRIC));
 		tripDurationMsecView.setText(statistics.getTripTimeString(TripStatistics.METRIC));
 		
+		/*
 		if( unitsToBeShown ) {
 			averSpeedUnitsView.setText(statistics.getSpeedUnits(TripStatistics.METRIC));
 			currentSpeedUnitsView.setText(statistics.getSpeedUnits(TripStatistics.METRIC));
@@ -80,6 +83,7 @@ public class TripStatisticsController implements TripStatisticsListener {
 			tripDurationUnitsView.setText(statistics.getElapsedTimeUnits(TripStatistics.METRIC));
 			unitsToBeShown = false;
 		}
+		*/
 	}
 
 	public View getView() {
@@ -111,9 +115,9 @@ public class TripStatisticsController implements TripStatisticsListener {
 		stats.instSpeed = currentSpeedView.getText() + "";
 		stats.tripDistance = tripDistanceMetersView.getText() + "";
 		stats.tripDuration = tripDurationMsecView.getText() + "";
-		stats.speedUnits = averSpeedUnitsView.getText() + "";
-		stats.distanceUnits = tripDistanceUnitsView.getText() + "";
-		stats.elapsedTimeUnits = tripDurationUnitsView.getText() + "";
+//		stats.speedUnits = averSpeedUnitsView.getText() + "";
+//		stats.distanceUnits = tripDistanceUnitsView.getText() + "";
+//		stats.elapsedTimeUnits = tripDurationUnitsView.getText() + "";
 		return stats;
 	}
 
@@ -122,8 +126,8 @@ public class TripStatisticsController implements TripStatisticsListener {
 		currentSpeedView.setText(stats.instSpeed);
 		tripDistanceMetersView.setText(stats.tripDistance);
 		tripDurationMsecView.setText(stats.tripDuration);
-		averSpeedUnitsView.setText(stats.speedUnits);
-		tripDistanceUnitsView.setText(stats.distanceUnits);
-		tripDurationUnitsView.setText(stats.elapsedTimeUnits);
+//		averSpeedUnitsView.setText(stats.speedUnits);
+//		tripDistanceUnitsView.setText(stats.distanceUnits);
+//		tripDurationUnitsView.setText(stats.elapsedTimeUnits);
 	}
 }
