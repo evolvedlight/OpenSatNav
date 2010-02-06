@@ -4,6 +4,7 @@ import org.opensatnav.services.TripStatistics;
 import org.opensatnav.services.TripStatisticsListener;
 import org.opensatnav.services.TripStatistics.TripStatisticsStrings;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -20,20 +21,16 @@ public class TripStatisticsController implements TripStatisticsListener {
 	private TextView currentSpeedView;
 	private TextView tripDistanceMetersView;
 	
-	private TextView tripDurationUnitsView;
-	private TextView averSpeedUnitsView;
-	private TextView currentSpeedUnitsView;
-	private TextView tripDistanceUnitsView;
+	public TripStatisticsController(final Context context) {
 
-	private boolean unitsToBeShown;
-	
-	public TripStatisticsController(final SatNavActivity satNavActivity) {
-
+		// pre-subscribe the controller as a listener
+		TripStatisticsService.setController(this);
+		
 		// service
-		TripStatisticsService.start(satNavActivity);
+		TripStatisticsService.start(context);
 
 		// view
-		mStatsView = View.inflate(satNavActivity,R.layout.tripstatistics, null );
+		mStatsView = View.inflate(context,R.layout.tripstatistics, null );
 		mStatsView.setVisibility(View.GONE);
 		
 		averTripSpeedView = (TextView)mStatsView.findViewById(R.id.aver_trip_speed);
@@ -48,14 +45,13 @@ public class TripStatisticsController implements TripStatisticsListener {
 		tripDurationUnitsView = (TextView)mStatsView.findViewById(R.id.trip_duration_units);
 		*/
 		
-		unitsToBeShown = true;
-		
 		Button closeStatsButton = (Button) mStatsView.findViewById(R.id.closeStatistics);
 		Button resetStatsButton = (Button) mStatsView.findViewById(R.id.resetStatistics);
 		
 		closeStatsButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				satNavActivity.showTripStatistics(false);
+				((SatNavActivity)context).setViewingTripStats(false);
+				((SatNavActivity)context).showTripStatistics(false);
 			}
 		});
 		
@@ -74,16 +70,6 @@ public class TripStatisticsController implements TripStatisticsListener {
 		currentSpeedView.setText(statistics.getInstantSpeedString(TripStatistics.METRIC));
 		tripDistanceMetersView.setText(statistics.getTripDistanceString(TripStatistics.METRIC));
 		tripDurationMsecView.setText(statistics.getTripTimeString(TripStatistics.METRIC));
-		
-		/*
-		if( unitsToBeShown ) {
-			averSpeedUnitsView.setText(statistics.getSpeedUnits(TripStatistics.METRIC));
-			currentSpeedUnitsView.setText(statistics.getSpeedUnits(TripStatistics.METRIC));
-			tripDistanceUnitsView.setText(statistics.getDistanceUnits(TripStatistics.METRIC));
-			tripDurationUnitsView.setText(statistics.getElapsedTimeUnits(TripStatistics.METRIC));
-			unitsToBeShown = false;
-		}
-		*/
 	}
 
 	public View getView() {
@@ -105,19 +91,12 @@ public class TripStatisticsController implements TripStatisticsListener {
 		}
 	}
 
-	public static TripStatisticsListener getInstance() {
-		return instance;
-	}
-
 	public Object getAllStatistics() {
 		final TripStatistics.TripStatisticsStrings stats = new TripStatistics.TripStatisticsStrings();
 		stats.averSpeed = averTripSpeedView.getText() + "";
 		stats.instSpeed = currentSpeedView.getText() + "";
 		stats.tripDistance = tripDistanceMetersView.getText() + "";
 		stats.tripDuration = tripDurationMsecView.getText() + "";
-//		stats.speedUnits = averSpeedUnitsView.getText() + "";
-//		stats.distanceUnits = tripDistanceUnitsView.getText() + "";
-//		stats.elapsedTimeUnits = tripDurationUnitsView.getText() + "";
 		return stats;
 	}
 
@@ -126,8 +105,5 @@ public class TripStatisticsController implements TripStatisticsListener {
 		currentSpeedView.setText(stats.instSpeed);
 		tripDistanceMetersView.setText(stats.tripDistance);
 		tripDurationMsecView.setText(stats.tripDuration);
-//		averSpeedUnitsView.setText(stats.speedUnits);
-//		tripDistanceUnitsView.setText(stats.distanceUnits);
-//		tripDurationUnitsView.setText(stats.elapsedTimeUnits);
 	}
 }

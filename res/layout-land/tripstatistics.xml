@@ -20,10 +20,6 @@
 			<TextView android:id="@+id/current_speed" android:text="@string/not_available_string"
 				android:textSize="30sp" android:textStyle="bold" android:textColor="#ffffff">
 			</TextView>
-<!--			<TextView android:id="@+id/current_speed_units" android:text="@string/not_available_string"-->
-<!--				android:textSize="20sp" android:textStyle="bold" android:textColor="#ffffff"-->
-<!--				android:padding="8sp">-->
-<!--			</TextView>-->
 		</TableRow>
 		<TableRow>
 			<TextView android:text="@string/aver_trip_speed_label"
@@ -33,10 +29,6 @@
 			<TextView android:id="@+id/aver_trip_speed" android:text="@string/not_available_string"
 				android:textSize="30sp" android:textStyle="bold" android:textColor="#ffffff">
 			</TextView>
-<!--			<TextView android:id="@+id/aver_speed_units" android:text="@string/not_available_string"-->
-<!--				android:textSize="20sp" android:textStyle="bold" android:textColor="#ffffff"-->
-<!--				android:padding="8sp">-->
-<!--			</TextView>-->
 		</TableRow>
 		<TableRow>
 			<TextView android:text="@string/trip_distance_label"
@@ -46,10 +38,6 @@
 			<TextView android:id="@+id/trip_distance" android:text="@string/not_available_string"
 				android:textSize="30sp" android:textStyle="bold" android:textColor="#ffffff">
 			</TextView>
-<!--			<TextView android:id="@+id/distance_units" android:text="@string/not_available_string"-->
-<!--				android:textSize="20sp" android:textStyle="bold" android:textColor="#ffffff"-->
-<!--				android:padding="8sp">-->
-<!--			</TextView>-->
 		</TableRow>
 		<TableRow>
 			<TextView android:text="@string/trip_duration_label"
@@ -59,10 +47,6 @@
 			<TextView android:id="@+id/trip_duration" android:text="@string/not_available_string"
 				android:textSize="30sp" android:textStyle="bold" android:textColor="#ffffff">
 			</TextView>
-<!--			<TextView android:id="@+id/trip_duration_units" android:text="@string/not_available_string"-->
-<!--				android:textSize="20sp" android:textStyle="bold" android:textColor="#ffffff"-->
-<!--				android:padding="8sp">-->
-<!--			</TextView>-->
 		</TableRow>
 	</TableLayout>
 	

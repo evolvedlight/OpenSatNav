@@ -113,7 +113,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	protected OpenStreetMapViewTraceOverlay traceOverlay;
 	protected OpenStreetMapViewTraceOverlay oldTraceOverlay;
 	protected boolean autoFollowing = true;
-	protected boolean viewTripStatistics = false;
+	protected boolean viewingTripStatistics = false;
 	protected boolean gettingRoute = false;
 	protected Time latestRouteReceived;
 	protected Location currentLocation;
@@ -390,7 +390,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 			return true;
 		case MENU_TRIP_STATS:
-			viewTripStatistics = true;
+			viewingTripStatistics = true;
 			showTripStatistics(true);
 
 			return true;
@@ -664,7 +664,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		savedInstanceState.putInt("mLongitudeE6", this.mOsmv
 				.getMapCenterLongitudeE6());
 		savedInstanceState.putBundle("oldtrace", mOldRoutes.getBundle());
-		savedInstanceState.putBoolean("viewTripStatistics", viewTripStatistics);
+		savedInstanceState.putBoolean("viewTripStatistics", viewingTripStatistics);
 
 		if (to != null) {
 			savedInstanceState.putInt("toLatitudeE6", to.getLatitudeE6());
@@ -705,8 +705,8 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 		this.mOsmv.setMapCenter(savedInstanceState.getInt("mLatitudeE6"),
 				savedInstanceState.getInt("mLongitudeE6"));
 
-		viewTripStatistics = savedInstanceState.getBoolean("viewTripStatistics");
-		if( viewTripStatistics ) {
+		viewingTripStatistics = savedInstanceState.getBoolean("viewTripStatistics");
+		if( viewingTripStatistics ) {
 			showTripStatistics(true);
 		}
 	}
@@ -726,9 +726,14 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
-		TripStatisticsService.stop(this);
 	}
 	
+	@Override
+	protected void onDestroy() {
+		Log.v(OpenSatNavConstants.LOG_TAG, "onDestroy()");
+		super.onDestroy();
+	}
+
 	/** This works fine for opening/closing keyboard.
 	 * Still, is it better to use onSave/Restore inst state()?
 	 */
@@ -740,11 +745,20 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if( keyCode == KeyEvent.KEYCODE_BACK ) {
-			showTripStatistics(false);
-			return true;
+			if( viewingTripStatistics ) {
+				viewingTripStatistics = false;
+				showTripStatistics(false);
+				return true;
+			} else {
+				TripStatisticsService.stop(this);
+				return super.onKeyDown(keyCode, event);
+			}
 		}
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	
+	void setViewingTripStats(boolean flag) {
+		viewingTripStatistics = flag;
+	}
+
 }

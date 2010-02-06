@@ -31,7 +31,7 @@ public class TripStatistics {
 	}
 	
 	public TripStatistics(TripStatisticsListener firstListener) {
-		initializeStats();
+		this();
 		
 		// Tried to do this from where the service is started, but 
 		// onCreate() doesn't run until after some time later. 
@@ -52,12 +52,18 @@ public class TripStatistics {
 			listeners = new ArrayList<TripStatisticsListener>();
 		}
 		listeners.add(listener);
+		
+		listener.tripStatisticsChanged(this);  
 	}
 	
 	public void removeTripStatsListener(TripStatisticsListener listener) {
 		if( listeners.contains(listener) ) {
 			listeners.remove(listener);
 		}
+	}
+
+	public void removeAllTripStatsListeners() {
+		listeners = null;
 	}
 
 	public void addNewLocationPoint(Location newLocatPoint) {
@@ -88,26 +94,43 @@ public class TripStatistics {
 
 	/** Returns the aver trip speed in m/s */
 	public float getAverageTripSpeed() {
-		return getTripDistance() / (getTripTime() / 1000);
+		if( pointsReceivedCount == 0 ) {
+			return 0f;
+		} else {
+			return getTripDistance() / (getTripTime() / 1000);
+		}
 	}
 
 	/** Return total trip time in milisec */
 	public long getTripTime() {
-		return lastPointTimeMilisec - tripStartTimeMilisec;
+		if( pointsReceivedCount == 0 ) {
+			return 0;
+		} else {
+			return lastPointTimeMilisec - tripStartTimeMilisec;
+		}
 	}
 
 	/** Returns total trip distance in meters */
 	public float getTripDistance() {
-		return tripDistanceMeters;
+		if( pointsReceivedCount == 0 ) {
+			return 0;
+		} else {
+			return tripDistanceMeters;
+		}
 	}
 
 	/* Note: the instantenous speed is newPoint.getSpeed()  */
 	public float getInstantSpeed() {
-		return lastLocatPoint.getSpeed();
+		if( pointsReceivedCount == 0 ) {
+			return 0;
+		} else {
+			return lastLocatPoint.getSpeed();
+		}
 	}
 
 	public void resetStatistics() {
 		initializeStats();
+		callAllListeners();
 	}
 
 	public String getAverageTripSpeedString(int unitSystem) {
@@ -121,7 +144,7 @@ public class TripStatistics {
 	private String getSpeedString(float speed, int unitSystem) {
 		if( unitSystem == METRIC ) {
 			formatter.applyLocalizedPattern("###.##");
-			return formatter.format(speed * 3600f / 1000f) + " km/hr";
+			return formatter.format(speed * 3600f / 1000f) + " km/h";
 		} else {
 			return "not implemented";  // TODO do it
 		}
@@ -163,9 +186,5 @@ public class TripStatistics {
 		public String instSpeed;
 		public String tripDistance;
 		public String tripDuration;
-
-		public String speedUnits;
-		public String distanceUnits;
-		public String elapsedTimeUnits;
 	}
 }

@@ -18,6 +18,7 @@ package org.opensatnav;
 
 import org.opensatnav.services.LocationHandler;
 import org.opensatnav.services.TripStatistics;
+import org.opensatnav.services.TripStatisticsListener;
 
 import android.app.Service;
 import android.content.Context;
@@ -35,6 +36,7 @@ public class TripStatisticsService extends Service implements LocationListener {
 	private static TripStatisticsService mTripStatistiticsService = null;
 	private TripStatistics mTripStatistics;
 	protected static LocationHandler mLocationHandler;
+	private static TripStatisticsListener tripStatsController;
 	
 	public static TripStatisticsService getService() {
 		return mTripStatistiticsService;
@@ -72,10 +74,11 @@ public class TripStatisticsService extends Service implements LocationListener {
 
 		// Tried to do this from where the service is started, but 
 		// onCreate() doesn't run until after some time later. 
-		mTripStatistics.addTripStatsListener(TripStatisticsController.getInstance());
+		mTripStatistics.addTripStatsListener(tripStatsController);
 	}
 	
 	public synchronized void onDestroy() {
+		Log.v(TAG, "onDestroy()");
 		super.onDestroy();
 		internalStop();
 	}
@@ -100,7 +103,7 @@ public class TripStatisticsService extends Service implements LocationListener {
 			mLocationHandler.stop();
 		}
 		
-		mTripStatistics.removeTripStatsListener(TripStatisticsController.getInstance());
+		mTripStatistics.removeAllTripStatsListeners();
 	}
 
 	public void resetStatistics() {
@@ -111,7 +114,9 @@ public class TripStatisticsService extends Service implements LocationListener {
 	public void onLocationChanged(Location pLoc) {
 		if (pLoc != null ) {
 			Log.v(TAG, "Accuracy: " + pLoc.getAccuracy());
-			mTripStatistics.addNewLocationPoint(pLoc);
+			if( pLoc.getAccuracy() < 200 ) {
+				mTripStatistics.addNewLocationPoint(pLoc);
+			}
 		}
 	}
 
@@ -131,6 +136,10 @@ public class TripStatisticsService extends Service implements LocationListener {
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public static void setController(TripStatisticsListener listener) {
+		tripStatsController = listener;
 	}
 	
 	
