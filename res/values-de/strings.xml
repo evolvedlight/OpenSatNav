@@ -11,7 +11,7 @@
 			
 	<string name="location_services_disabled">Die Standortbestimmung ist ausgeschaltet. Möchten Sie dies ändern?\n\nDrücken Sie Zurück, um nach der Einstellungsänderung zu diesem Program zurückzukehren.</string>
 	<string name="gps_disabled">Die Standortsbesttimmung ist ungenau, da der GPS Empfaenger ausgeschaltet ist.</string>
-	<string name="network_unavailable">Keine Datenverbindung. Bitte überprüfe Sie die Einstellungen und versuche Sie es noch einmal.</string>
+	<string name="network_unavailable">Keine Datenverbindung. Bitte überprüfen Sie die Einstellungen und versuchen Sie es noch einmal.</string>
 	<string name="getting_gps_fix">Positionsbestimmung per GPS...</string>
 	<string name="get_directions">Route</string>
 	<string name="navigation_mode">Navigationsmodus</string>
@@ -67,7 +67,7 @@
 	<string name="taxi_rank">Taxistand</string>
 	<string name="find_nearest">Suchen</string>
 	<string name="choose_location">Wähle Ort...</string>
-	<string name="touch_screen">Berühre Sie den Bildschirm, um fortzufahren...</string>
+	<string name="touch_screen">Berühren Sie den Bildschirm, um fortzufahren...</string>
 
 
 
