@@ -137,5 +137,14 @@
 	
 	<string name="contribute_track_error_happened">Ein Fehler ist aufgetreten: </string>
 	<string name="contribute_waypoing_gps_fix_not_good">GPS-Standortbestimmung zu ungenau um Wegpunkt hinzuzufügen. Versuchen Sie es noch einmal</string>
-<string name="tracing_paused_notification_text">Aufnahme unterbrochen</string>
+	<string name="tracing_paused_notification_text">Aufnahme unterbrochen</string>
+	<string name="menu_show_trip_stats">Tripstatistik</string> <!-- Trip in german "Reise" oder "Trip" ? -->
+ 	<string name="close_statistics_view">Zeige Karte</string>
+ 	<string name="reset_trip_statistics">Statistik zurücksetzen</string>
+ 	<string name="aver_trip_speed_label">Durchschnittsgeschwindigkeit:</string>
+ 	<string name="current_speed_label">Aktuelle Geschwindigkeit:</string>
+ 	<string name="trip_distance_label">Distanz:</string>
+ 	<string name="trip_duration_label">Tripdauer:</string>
+ 	<string name="not_available_string">n/a</string>
+	
 </resources>
