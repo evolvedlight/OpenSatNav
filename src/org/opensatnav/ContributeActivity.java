@@ -1,30 +1,35 @@
 package org.opensatnav;
 
-import android.app.Activity;
+import org.anddev.openstreetmap.contributor.util.DatabaseAdapter;
+import org.anddev.openstreetmap.contributor.util.constants.Constants;
+
 import android.app.AlertDialog;
+import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ContributeActivity extends Activity {
+public class ContributeActivity extends ListActivity {
 	Bundle gpsTracks = new Bundle();
 	
 	private static final int UPLOAD_NOW = 10;
 	private static final int TRACE_TOGGLE = UPLOAD_NOW + 1;
 	private static final int DELETE_TRACKS = TRACE_TOGGLE + 1;
 	private static final int NEW_WAYPOINT = DELETE_TRACKS + 1;
-	private static final int CLEAR_OLD_TRACES = NEW_WAYPOINT + 1;
 	
 	private Boolean inEditName = false;
 	private Boolean inEditDescription = false;
+	
 	
 	public void onCreate(Bundle onSavedInstance) {
 		super.onCreate(onSavedInstance);
@@ -34,25 +39,16 @@ public class ContributeActivity extends Activity {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		if (!(prefs.contains(String.valueOf(R.string.pref_username_key))) && prefs.contains(String.valueOf(R.string.pref_password_key))); 
-		TextView textInfo = (TextView) findViewById(R.id.textInfo);
+		TextView textInfo = (TextView) findViewById(R.route_id.textInfo);
 		textInfo.setText(getText(R.string.prefs_contribute_osm_username) + " : " + prefs.getString(getString(R.string.pref_username_key), getString(R.string.contribute_username_not_entered)));
+		
+		fillData();
 		final Boolean tracing = TraceRecorderService.isTracing();
 		Button startButton = (Button) findViewById(R.id.startRecord);
 		if (tracing == true) {
 			startButton.setText(this.getResources().getText(
 					R.string.contribute_stop_recording));
 		}
-		Button deleteButton = (Button) findViewById(R.id.deleteTracks);
-
-		Button deleteOldTracesButton = (Button) findViewById(R.id.clearOldTraces);
-		Button addWayPointButton = (Button) findViewById(R.id.newWayPoint);
-		if (tracing == false) {
-			addWayPointButton.setVisibility(Button.INVISIBLE);
-		} else {
-			addWayPointButton.setVisibility(Button.VISIBLE);
-		}
-		
-
 		startButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -67,51 +63,28 @@ public class ContributeActivity extends Activity {
 				finish();
 			}
 		});
-
-
-
-		deleteButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				TraceRecorderService.resetTrace();
-				displayToast(R.string.contribute_track_cleared);
-				finish();
-			}
-		});
-		
-		deleteOldTracesButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				setResult(CLEAR_OLD_TRACES);
-				finish();
-			}
-		});
-		
-		addWayPointButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				inEditName = true;
-				getWayPointInfo();
-			}
-		});
-
-		Button uploadButton = (Button) findViewById(R.id.uploadButton);
-		uploadButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				
-				inEditDescription = true;
-				askForDescription();
-
-			}
-		});
-
-
 	}
+	
+	private void fillData() {
+        // Get all of the notes from the database and create the item list
+		
+		
+		
+		DatabaseAdapter mDatabaseAdapter = new DatabaseAdapter(this);
+		mDatabaseAdapter.open();
+        Cursor c = mDatabaseAdapter.getJourneys();
+        startManagingCursor(c);
+
+        String[] from = new String[] { Constants.T_ROUTERECORDER_ID, Constants.T_ROUTERECORDER_JOURNEY_NAME };
+        int[] to = new int[] { R.route_id.id, R.route_id.route_name };
+        
+        // Now create an array adapter and set it to display using our row
+        SimpleCursorAdapter notes =
+            new SimpleCursorAdapter(this, R.layout.journey_row, c, from, to);
+        setListAdapter(notes);
+        mDatabaseAdapter.close();
+    }
+	
 	public void askForDescription() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
