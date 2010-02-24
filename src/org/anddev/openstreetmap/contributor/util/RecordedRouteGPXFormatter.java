@@ -3,6 +3,7 @@ package org.anddev.openstreetmap.contributor.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Formatter;
 
 import org.anddev.openstreetmap.contributor.util.constants.OSMConstants;
@@ -89,14 +90,14 @@ public class RecordedRouteGPXFormatter implements OSMConstants{
 		f.format(GPX_TAG_TIME, Util.convertTimestampToUTCString(System.currentTimeMillis()));
 		sb.append(GPX_TAG_TRACK);
 		f.format(GPX_TAG_TRACK_NAME, username + "--" 
-						+ formatterCompleteDateTime.format(someRecords.get(0).getTimeStamp().getTime())
+						+ formatterCompleteDateTime.format(new Date(someRecords.get(0).getTimeStamp()).getTime())
 						+ "-" 
-						+ formatterCompleteDateTime.format(someRecords.get(someRecords.size() - 1).getTimeStamp().getTime()));
+						+ formatterCompleteDateTime.format(new Date(someRecords.get(someRecords.size() - 1).getTimeStamp()).getTime()));
 		sb.append(GPX_TAG_TRACK_SEGMENT);
 
 		for (RecordedGeoPoint rgp : someRecords) {
 			f.format(GPX_TAG_TRACK_SEGMENT_POINT, rgp.getLatitudeAsDouble(), rgp.getLongitudeAsDouble());
-			f.format(GPX_TAG_TRACK_SEGMENT_POINT_TIME, rgp.getOSMTimeStamp());
+			f.format(GPX_TAG_TRACK_SEGMENT_POINT_TIME, Util.convertTimestampToUTCString(rgp.getTimeStamp()));
 			sb.append(GPX_TAG_TRACK_SEGMENT_POINT_CLOSE);
 		}
 		
@@ -122,21 +123,21 @@ public class RecordedRouteGPXFormatter implements OSMConstants{
 			f.format(GPX_TAG_WAYPOINT, wpt.getLatitudeAsDouble(),wpt.getLongitudeAsDouble());
 			f.format(GPX_TAG_WAYPOINT_NAME, wpt.getWayPointName());
 			f.format(GPX_TAG_WAYPOINT_DESCRIPTION, wpt.getWayPointDescription());
-			f.format(GPX_TAG_TIME, wpt.getOSMTimeStamp());
+			f.format(GPX_TAG_TIME, Util.convertTimestampToUTCString(wpt.getTimeStamp()));
 			sb.append(GPX_TAG_WAYPOINT_SYM);
 			sb.append(GPX_TAG_WAYPOINT_CLOSE);
 		}
 		
 		sb.append(GPX_TAG_TRACK);
 		f.format(GPX_TAG_TRACK_NAME, username + "--" 
-						+ formatterCompleteDateTime.format(someRecords.get(0).getTimeStamp().getTime())
+						+ formatterCompleteDateTime.format(new Date(someRecords.get(0).getTimeStamp()).getTime())
 						+ "-" 
-						+ formatterCompleteDateTime.format(someRecords.get(someRecords.size() - 1).getTimeStamp().getTime()));
+						+ formatterCompleteDateTime.format(new Date(someRecords.get(someRecords.size() - 1).getTimeStamp()).getTime()));
 		sb.append(GPX_TAG_TRACK_SEGMENT);
 
 		for (RecordedGeoPoint rgp : someRecords) {
 			f.format(GPX_TAG_TRACK_SEGMENT_POINT, rgp.getLatitudeAsDouble(), rgp.getLongitudeAsDouble());
-			f.format(GPX_TAG_TRACK_SEGMENT_POINT_TIME, rgp.getOSMTimeStamp());
+			f.format(GPX_TAG_TRACK_SEGMENT_POINT_TIME, Util.convertTimestampToUTCString(rgp.getTimeStamp()));
 			sb.append(GPX_TAG_TRACK_SEGMENT_POINT_CLOSE);
 		}
 		
