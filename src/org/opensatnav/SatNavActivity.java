@@ -19,6 +19,7 @@ package org.opensatnav;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.anddev.openstreetmap.contributor.util.GPXToFileWriter;
 import org.anddev.openstreetmap.contributor.util.OSMUploader;
 import org.anddev.openstreetmap.contributor.util.RecordedGeoPoint;
 import org.anddev.openstreetmap.contributor.util.RecordedWayPoint;
@@ -122,7 +123,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 
 	protected ArrayList<String> route = new ArrayList<String>();
 
-	private RouteRecorder mOldRoutes = new RouteRecorder();
+	
 
 	// ===========================================================
 	// Constructors
@@ -483,20 +484,14 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 							OSMUploader.uploadAsync(this, TraceRecorderService
 									.getRouteRecorder(), username, password,
 									description);
+							GPXToFileWriter.writeToFileAsync(TraceRecorderService.getRouteRecorder().getRecordedGeoPoints());
 
 							String resultsTextFormat = getString(R.string.contribute_track_uploaded);
 							String resultsText = String.format(
 									resultsTextFormat, description);
 
 							displayToast(resultsText);
-							for (RecordedWayPoint wtp : mRouteRecorder
-									.getRecordedWayPoints()) {
-								mOldRoutes.addWayPoint(wtp);
-							}
-							for (RecordedGeoPoint gpt : mRouteRecorder
-									.getRecordedGeoPoints()) {
-								mOldRoutes.add(gpt);
-							}
+							
 							TraceRecorderService.resetTrace();
 
 						} catch (IOException e) {
@@ -537,7 +532,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				}
 			}
 			if (resultCode == CLEAR_OLD_TRACES) {
-				mOldRoutes = new RouteRecorder();
+				
 				displayToast("Done");
 			}
 			refreshTracks();
@@ -546,6 +541,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 	}
 
 	public void refreshTracks() {
+		Log.v("OSM", "Refreshing tracks");
 		RouteRecorder routeRecorder = getRouteRecorder();
 		if (routeRecorder != null
 				&& routeRecorder.getRecordedGeoPoints() != null) {
@@ -564,22 +560,11 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 						+ " points");
 			// tell the viewer that it should redraw
 			SatNavActivity.this.mOsmv.postInvalidate();
+		} else {
+			Log.v("killme", "RR null");
 		}
 
-		if (mOldRoutes.getRecordedGeoPoints() != null) {
-			if (SatNavActivity.this.mOsmv.getOverlays().contains(
-					SatNavActivity.this.oldTraceOverlay)) {
-				SatNavActivity.this.mOsmv.getOverlays().remove(
-						SatNavActivity.this.oldTraceOverlay);
-			}
-			SatNavActivity.this.oldTraceOverlay = new OpenStreetMapViewOldTraceOverlay(
-					SatNavActivity.this, mOldRoutes);
-			SatNavActivity.this.mOsmv.getOverlays().add(
-					SatNavActivity.this.oldTraceOverlay);
-
-			// tell the viewer that it should redraw
-			SatNavActivity.this.mOsmv.postInvalidate();
-		}
+		
 
 	}
 
@@ -663,7 +648,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 				.getMapCenterLatitudeE6());
 		savedInstanceState.putInt("mLongitudeE6", this.mOsmv
 				.getMapCenterLongitudeE6());
-		savedInstanceState.putBundle("oldtrace", mOldRoutes.getBundle());
+		
 		savedInstanceState.putBoolean("viewTripStatistics", viewingTripStatistics);
 
 		if (to != null) {
@@ -693,7 +678,7 @@ public class SatNavActivity extends OpenStreetMapActivity implements
 						.getInt("toLongitudeE6"));
 		}
 
-		mOldRoutes = new RouteRecorder(savedInstanceState.getBundle("oldtrace"));
+		
 
 		autoFollowing = savedInstanceState.getBoolean("autoFollowing");
 		this.mOsmv.setZoomLevel(savedInstanceState.getInt("zoomLevel"));

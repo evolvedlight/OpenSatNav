@@ -59,7 +59,7 @@ public class TraceRecorderService extends Service implements OpenStreetMapConsta
 		if (mNotificationManager == null)
 			mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		if (mRouteRecorder == null)
-			mRouteRecorder = new RouteRecorder();
+			mRouteRecorder = new RouteRecorder(getApplicationContext());
 	}
 	
 	public synchronized void onStart(Intent intent, int startId) {
@@ -112,7 +112,7 @@ public class TraceRecorderService extends Service implements OpenStreetMapConsta
 	}
 	
 	public static void resetTrace() {
-		mRouteRecorder = new RouteRecorder();
+		mRouteRecorder.startNewJourney();
 	}
 	
 	public void onLocationChanged(final Location pLoc) {
